@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'office' => [
+            'driver' => 'session',
+            'provider' => 'office',
+        ],
 
         'api' => [
             'driver' => 'token',
@@ -69,6 +73,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+        'office' => [
+            'driver' => 'eloquent',
+            'model' => App\Model\Office_Account::class,
         ],
 
         // 'users' => [

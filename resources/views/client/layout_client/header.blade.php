@@ -114,7 +114,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link " href="property-grid.html">عروض عقارية</a>
+            <a class="nav-link " href="{{route('client.offers')}}">عروض عقارية</a>
           </li>
 
           <li class="nav-item">

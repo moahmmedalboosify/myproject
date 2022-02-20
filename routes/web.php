@@ -18,3 +18,8 @@ Route::get('/', function () {
 });
 
 Route::get('about','client\AboutPageController@index');
+Route::get('offers','client\AboutPageController@offers')->name('client.offers');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
