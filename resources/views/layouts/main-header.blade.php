@@ -252,10 +252,10 @@
 								<div class="dropdown-menu">
 									<div class="main-header-profile bg-primary p-3">
 										<div class="d-flex wd-100p">
-											<div class="main-img-user"><img alt="" src="{{URL::asset('officepanal/assets/img/faces/6.jpg')}}" class=""></div>
+											{{-- <div class="main-img-user"><img alt="" src="{{URL::asset('officepanal/assets/img/faces/6.jpg')}}" class=""></div>
 											<div class="mr-3 my-auto">
 												<h6>{{Auth::guard('office')->user()->email }}</h6><span>{{Auth::guard('office')->user()->role }}</span>
-											</div>
+											</div> --}}
 										</div>
 									</div>
 									<a class="dropdown-item" href="{{route('office.profile')}}"><i class="bx bx-user-circle">الملف الشخصي</i></a>

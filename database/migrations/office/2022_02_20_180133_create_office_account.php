@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOfficeAccountTable extends Migration
+class CreateOfficeAccount extends Migration
 {
     /**
      * Run the migrations.
@@ -18,11 +18,11 @@ class CreateOfficeAccountTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('role');
-            $table->integer('active');
+            $table->integer('state_account');
 
             $table->unsignedBigInteger('office_info_id');
             $table->foreign('office_info_id')->references('id')->on('office_info')->onDelete('cascade');
-
+            
             $table->softDeletes();
             $table->timestamps();
         });

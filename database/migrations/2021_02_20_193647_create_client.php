@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRegionTable extends Migration
+class CreateClient extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateRegionTable extends Migration
      */
     public function up()
     {
-        Schema::create('region', function (Blueprint $table) {
+        Schema::create('client', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('municipality_id');
-            $table->foreign('municipality_id')->references('id')->on('municipality')->onDelete('cascade');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('phone')->unique();
+            $table->string('image');
+          
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateRegionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('region');
+        Schema::dropIfExists('client');
     }
 }
