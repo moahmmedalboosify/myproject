@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -76,7 +77,7 @@ return [
         ],
         'office' => [
             'driver' => 'eloquent',
-            'model' => App\Model\Office_Account::class,
+            'model' => App\Model\office_Account::class,
         ],
 
         // 'users' => [

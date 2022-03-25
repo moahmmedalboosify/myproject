@@ -1,9 +1,9 @@
 <?php
 
+use App\Model\city;
 use Illuminate\Database\Seeder;
 
-
-class office_account extends Seeder
+class citySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,8 @@ class office_account extends Seeder
      */
     public function run()
     {
-        //
+        city::create([
+            'name' => ' طرابلس '
+        ]);
     }
 }

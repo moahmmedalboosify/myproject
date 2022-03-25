@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\office;
+namespace App\Model;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use PhpParser\Node\Expr\AssignOp\Mod;
 use Illuminate\Database\Eloquent\Model;
 
-class Office_Account extends Authenticatable{
+class office_Account extends Authenticatable{
 
     protected  $guard  ="office";
 

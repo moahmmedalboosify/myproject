@@ -14,8 +14,8 @@
 							<img alt="user-img" class="avatar avatar-xl brround" src="{{URL::asset('officepanal/assets/img/faces/6.jpg')}}"><span class="avatar-status profile-status bg-green"></span>
 						</div>
 						<div class="user-info">
-							{{-- <h4 class="font-weight-semibold mt-3 mb-0">{{Auth::guard('office')->user()->email}}</h4>
-							<span class="mb-0 text-muted">{{Auth::guard('office')->user()->role}}</span> --}}
+							<h4 class="font-weight-semibold mt-3 mb-0">{{Auth::guard('office')->user()->email}}</h4>
+							<span class="mb-0 text-muted">{{Auth::guard('office')->user()->role}}</span>
 						</div>
 					</div>
 				</div>
@@ -28,9 +28,8 @@
 					<li class="slide">
 						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label">إدارة العقارات</span><i class="angle fe fe-chevron-down"></i></a>
 						<ul class="slide-menu">
-							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}">عرض العقارات</a></li>
-							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}">أضافة عقار</a></li>
-							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}">أرشفة عقار</a></li>
+							<li><a class="slide-item" href="{{  route('offers.step-one') }}">عرض العقارات</a></li>
+							<li><a class="slide-item" href="{{  route('offers.step-one') }}">أضافة عقار</a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='chart-chartjs') }}">البحث عن عقار</a></li>
 							
 						</ul>
@@ -44,13 +43,53 @@
 						</ul>
 					</li>
 
+					
+
 					<li class="slide">
-						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label">المستخدمين </span><i class="angle fe fe-chevron-down"></i></a>
+						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label"> إدارة الطلبات </span><i class="angle fe fe-chevron-down"></i></a>
 						<ul class="slide-menu">
-							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> عرض المستخدمين </a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> طلبات المعاينة  </a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}"> طلبات التواصل </a></li>	
+						</ul>
+					</li>
+
+					{{-- <li class="slide">
+						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label"> أدارة المالية </span><i class="angle fe fe-chevron-down"></i></a>
+						<ul class="slide-menu">
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> مشتريات  </a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> عرض الواردات  </a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> إدخال عمولة  </a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> الرصيد العام  </a></li>
+						</ul>
+					</li> --}}
+
+
+					<li class="slide">
+						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label"> الموظفين </span><i class="angle fe fe-chevron-down"></i></a>
+						<ul class="slide-menu">
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> عرض الموظفين </a></li>
 							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}"> الصلاحيات </a></li>	
 						</ul>
 					</li>
+
+
+					<li class="slide">
+						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label"> أعدادات </span><i class="angle fe fe-chevron-down"></i></a>
+						<ul class="slide-menu">
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}">   عرض الحساب الشخصي</a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}"> تغيير كلمة المرور </a></li>	
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}">    معلومات المكتب </a></li>	
+						</ul>
+					</li>
+
+					<li class="slide">
+						<a class="side-menu__item" data-toggle="slide" href="{{ url('/' . $page='#') }}"><svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 5H5v14h14V5zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm2 0h14v14H5V5zm2 5h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg><span class="side-menu__label"> تسجيل الخروج </span></a>
+						{{-- <ul class="slide-menu">
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-morris') }}"> عرض الموظفين </a></li>
+							<li><a class="slide-item" href="{{ url('/' . $page='chart-flot') }}"> الصلاحيات </a></li>	
+						</ul> --}}
+					</li>
+
 
 				</ul>
 			</div>

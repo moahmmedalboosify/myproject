@@ -39,10 +39,10 @@ class CreateOfferInfo extends Migration
             
             
             
-            $table->unsignedBigInteger('property_owner_id');
-            $table->foreign('property_owner_id')->references('id')->on('property_owner')->onDelete('cascade');
+            $table->unsignedBigInteger('owner_info_id');
+            $table->foreign('owner_info_id')->references('id')->on('owner_info')->onDelete('cascade');
             
-            $table->softDeletes()();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ class CreatePropertyOwner extends Migration
      */
     public function up()
     {
-        Schema::create('property_owner', function (Blueprint $table) {
+        Schema::create('owner_info', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('phone')->unique();

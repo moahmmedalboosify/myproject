@@ -15,8 +15,8 @@ class CreateTimeWork extends Migration
     {
         Schema::create('time_work', function (Blueprint $table) {
             $table->id();
-            $table->timestamps('login');
-            $table->timestamps('logout');
+            $table->time('login');
+            $table->time('logout');
             $table->string('model_name');
             $table->integer('model_id');
             $table->timestamps();

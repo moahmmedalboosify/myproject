@@ -11,9 +11,12 @@
      <link rel="stylesheet" href="{{ URL::asset('officepanal/assets/plugins/sumoselect/sumoselect-rtl.css') }}">
      <!--Internal  TelephoneInput css-->
      <link rel="stylesheet" href="{{ URL::asset('officepanal/assets/plugins/telephoneinput/telephoneinput-rtl.css') }}">
+
+     <!-- style css !-->
+     <link rel="stylesheet" href="{{ URL::asset('officepanal/assets/css-rtl/substyle.css') }}">
  @endsection
  @section('title')
-     اضافة فاتورة
+     أضافة عقار
  @stop
 
  @section('page-header')
@@ -28,11 +31,12 @@
      </div>
      <!-- breadcrumb -->
  @endsection
+
  @section('content')
 
-     @if (session()->has('Add'))
+     @if (session()->has('step-one'))
          <div class="alert alert-success alert-dismissible fade show" role="alert">
-             <strong>{{ session()->get('Add') }}</strong>
+             <strong>{{ session()->get('step-one') }}</strong>
              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                  <span aria-hidden="true">&times;</span>
              </button>
@@ -40,48 +44,91 @@
      @endif
 
      <!-- row -->
-     <div class="row">
+     <div class="row" onload="myfunction()">
 
          <div class="col-lg-12 col-md-12">
              <div class="card">
                  <div class="card-body">
-                     <form action=" " method="post" enctype="multipart/form-data" autocomplete="off">
+                     <form action="{{ route('check.step-one') }}" method="post" enctype="multipart/form-data" 
+                         autocomplete="off">
                          {{ csrf_field() }}
                          {{-- 1 --}}
-
-
                          <div class="col-12">
-                             <h2 class="content-title mb-0 my-auto"> معلومات الزبون /</h2> <br>
-                             <hr> <br>
-                         </div>
-
-
-
-
+                            <h2 class="content-title mb-0 my-auto"> نوع العقار /</h2> <br>
+                        </div>
+                         <br>
                          <div class="row">
+                                <div class="col">
+                                    <label for="inputName" class="control-label"><h5> القسم </h5> </label>
+                                    <select name="type_offer" class="form-control SlectBox" >
+                                        <!--placeholder-->
+                                        <option value="0" selected disabled>حدد نوع العقار</option>
+                                        <option value="apartment"  > شقق</option>
+                                        <option value="houses"  > منازل </option>
+                                        <option value="villas_palaces"  > فلل-قصور </option>
+                                        <option value="lands"  > أراضي </option>
+                                        <option value="commercial"  > تجاري </option>
+                                       
+                                    </select>
+                                    @error('type_offer')
+                                    <div class="alert alert-danger">
+                                        <strong> {{ $message }} </strong>
+                                    </div>
+                                    @enderror
+                                </div>
 
-                             <div class="col"> <label for="inputName" class="control-label"> أسم الزبون</label>
-                                 <input type="text" class="form-control" id="inputName" name="name_owner"
-                                     title="يرجي ادخال أسم الزبون" required>
+                        </div>
+                        <br> 
+                        <br>
+                        <hr> 
+                        <br>
+                        <br>
+ 
+                        <div class="col-12">
+                             <h2 class="content-title mb-0 my-auto"> معلومات الزبون /</h2> <br> <br>
+                         </div>
+
+                        
+
+
+
+                         
+                         <div class="row" >
+
+                             <div class="col" >
+                                 <label for="inputName" class="control-label"> <h5> أسم الزبون </h5></label>
+                                 <input type="text" class="form-control " id="inputName" name="name_owner"
+                                     value="{{ old('name_owner') }}" title="يرجي ادخال أسم الزبون">
+
+                                 @error('name_owner')
+                                     <div class="alert alert-danger">
+                                         <strong> {{ $message }} </strong>
+                                     </div>
+                                 @enderror
+
+                                
+
                              </div>
 
-
-                             <div class="col"> <label for="inputName" class="control-label"> رقم الزبون</label>
-                                 <input type="text" class="form-control" id="inputName" name="phone_owner"
-                                     title="يرجي ادخال رقم الزبون" required> <br>
-                             </div>
-
+                          <div class="col "  >
+                                    <label for="inputName" class="control-label"><h5> رقم الزبون </h5></label>
+                                    <input type="text" class="form-control " id="inputName" name="phone" value="{{ old('phone') }}" title="يرجي ادخال رقم الزبون">
+                                    @error('phone')
+                                        <div class="alert alert-danger">
+                                            <strong> {{ $message }} </strong>
+                                        </div>
+                                    @enderror
+                              </div> 
 
                          </div>
 
-                         <br>   <br>   <br>   
+
+
+                         <br> <br> <br>
                          <div class="mg-t-15 d-flex justify-content-center text-right">
 
-                             <button type="submit"
-                                 class="col-sm-6 col-md-3 mg-t-5  btn btn-outline-primary btn-rounded btn-block next">التالي</button>
-                             <button
-                             type="submit"
-                                 class="col-sm-6 col-md-3 mg-t-10 mg-sm-t-0 btn btn-outline-secondary btn-rounded btn-block next">الرجوع</button>
+                             <button type="submit"  class="col-sm-6 col-md-3 mg-t-5  btn btn-outline-primary btn-rounded btn-block next">التالي</button>
+                             <button type="submit"  class="col-sm-6 col-md-3 mg-t-10 mg-sm-t-0 btn btn-outline-secondary btn-rounded btn-block next">الرجوع</button>
                          </div>
 
 
@@ -128,56 +175,16 @@
      <script src="{{ URL::asset('officepanal/assets/plugins/spectrum-colorpicker/spectrum.js') }}"></script>
      <!-- Internal form-elements js -->
      <script src="{{ URL::asset('officepanal/assets/js/form-elements.js') }}"></script>
+    
+     <script src="{{ URL::asset('officepanal/assets/js/step.one.offer.js') }}"></script>
 
-     <script>
-         var date = $('.fc-datepicker').datepicker({
-             dateFormat: 'yy-mm-dd'
-         }).val();
-     </script>
+    
 
-     <script>
-         $(document).ready(function() {
-             $('select[name="Section"]').on('change', function() {
-                 var SectionId = $(this).val();
-                 if (SectionId) {
-                     $.ajax({
-                         url: "{{ URL::to('section') }}/" + SectionId,
-                         type: "GET",
-                         dataType: "json",
-                         success: function(data) {
-                             $('select[name="product"]').empty();
-                             $.each(data, function(key, value) {
-                                 $('select[name="product"]').append('<option value="' +
-                                     value + '">' + value + '</option>');
-                             });
-                         },
-                     });
-                 } else {
-                     console.log('AJAX load did not work');
-                 }
-             });
-         });
-     </script>
+    
 
 
      <script>
-         function myFunction() {
-             var Amount_Commission = parseFloat(document.getElementById("Amount_Commission").value);
-             var Discount = parseFloat(document.getElementById("Discount").value);
-             var Rate_VAT = parseFloat(document.getElementById("Rate_VAT").value);
-             var Value_VAT = parseFloat(document.getElementById("Value_VAT").value);
-             var Amount_Commission2 = Amount_Commission - Discount;
-             if (typeof Amount_Commission === 'undefined' || !Amount_Commission) {
-                 alert('يرجي ادخال مبلغ العمولة ');
-             } else {
-                 var intResults = Amount_Commission2 * Rate_VAT / 100;
-                 var intResults2 = parseFloat(intResults + Amount_Commission2);
-                 sumq = parseFloat(intResults).toFixed(2);
-                 sumt = parseFloat(intResults2).toFixed(2);
-                 document.getElementById("Value_VAT").value = sumq;
-                 document.getElementById("Total").value = sumt;
-             }
-         }
+   
      </script>
 
 
