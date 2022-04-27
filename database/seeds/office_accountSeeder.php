@@ -1,6 +1,7 @@
 <?php
-use  App\Model\office\office_account;
-
+use  App\Model\office_account;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class office_accountSeeder extends Seeder
@@ -12,12 +13,36 @@ class office_accountSeeder extends Seeder
      */
     public function run()
     {
-        office_account::create([
-             'email' => 'test@test',
+        $user = office_account::create([
+             'name' => 'محمد البوسيفي',
+             'email' => 'mohammed@test',
              'password' => Hash::make('123456'),
-             'role' => 'test',
+             'role' => '["مدير المكتب"]',
              'state_account' => 1,
              'office_info_id'=> 1
         ]);
+
+        $role = Role::create(['guard_name' => 'office', 'name' => 'مدير المكتب']);
+        $permissions = Permission::where('guard_name','office')->pluck('id','id')->all();
+        $role->syncPermissions($permissions);
+        $user->assignRole([$role->id]);
+
+
+        $user = office_account::create([
+            'name' => 'أحمد البركي',
+            'email' => 'ahmed@test',
+            'password' => Hash::make('123456'),
+            'role' => '["مدخل بيانات"]',
+            'state_account' => 1,
+            'office_info_id'=> 1
+       ]);
+
+       $role = Role::create(['guard_name' => 'office', 'name' => 'مدخل بيانات']);
+       $permissions = Permission::where('guard_name','office')->pluck('id','id')->all();
+       $role->syncPermissions($permissions);
+       $user->assignRole([$role->id]);
+
+
+      
     }
 }

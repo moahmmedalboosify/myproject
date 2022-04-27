@@ -12,13 +12,16 @@ class offerController extends Controller
 {
 
 
-
-
-
-
-    public function show_step_one()
+    public function __construct()
     {
-        return view('office.offers.step-one');
+        // $this->middleware('auth');
+    }
+
+
+
+    public function show_create_offer()
+    {
+        return view('office.offers.create-offer');
     }
 
     public function check_step_one(step_one_validation $request)

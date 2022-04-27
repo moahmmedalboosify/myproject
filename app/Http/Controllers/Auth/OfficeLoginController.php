@@ -12,6 +12,8 @@ use App\Http\Requests\office\auth\loginValidation;
 
 class OfficeLoginController extends Controller
 {
+
+  
        Public function show_login(){  
          
            return view('auth.officelogin');

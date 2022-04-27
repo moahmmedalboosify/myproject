@@ -101,6 +101,8 @@
         <span></span>
         <span></span>
       </button>
+      {{-- التجمع <span class="color-b"> العقاري&nbsp;</span> --}}
+      
       <a class="navbar-brand text-brand" href="index.html">التجمع <span class="color-b"> العقاري&nbsp;</span></a>
 
       <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">

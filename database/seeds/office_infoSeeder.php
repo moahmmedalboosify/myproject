@@ -1,6 +1,6 @@
 <?php
 
-use  App\Model\office\office_info;
+use  App\Model\office_info;
 use Illuminate\Database\Seeder;
 
 class office_infoSeeder extends Seeder
