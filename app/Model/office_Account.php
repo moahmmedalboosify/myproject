@@ -21,8 +21,8 @@ class office_Account extends Authenticatable{
     protected $table = 'office_account';
     protected $guarded = [] ;
 
-    protected $casts = [
-        'role' => 'array', 
-        ];
+    // protected $casts = [
+    //     'role' => 'array', 
+    //     ];
 
 }

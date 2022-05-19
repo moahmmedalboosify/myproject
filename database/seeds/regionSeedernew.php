@@ -4,7 +4,7 @@ use App\Model\city;
 use App\Model\region;
 use Illuminate\Database\Seeder;
 
-class region extends Seeder
+class regionSeedernew extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,6 @@ class region extends Seeder
      */
     public function run()
     {
-       
         $region =[
             'طرابلس' =>['جنزور','السراج','غوط الشعال','السياحية','الدريبي','كشلاف','حي الأندلس','أبوسليم','طريق المطار','الهضبة','عين زارة','صلاح الدين'],
  
@@ -22,9 +21,13 @@ class region extends Seeder
             'مصراته' => ['شارع طرابلس','طمينة','زاوية المحجوب','السكيرات','الغيران','المقاوبة','الرملة','9 يوليو'],
             ] ;
  
-         $city = city::pluck('id','name')->all();
- 
+        //  $city = city::pluck('id','name')->all();
+        $city =[
+          'طرابلس' ,'بنغازي' ,'مصراته' ,'ترهونة' ,'الزاوية' ,'صبراته' ,'هون' ,'العزيزية' ,'السواني' ,'صرمان' ,'الخمس' ,'زليتن' ,
+      ] ;
+        $i=0;
         foreach($city as $city){
+          $i =0 ;
          foreach($region as $key => $rows){
                if($city->name == $key){
                  foreach($rows as $row){
@@ -34,7 +37,8 @@ class region extends Seeder
                    ]);
                  }
                }
-         }    
+         }  
+         $i++ ;  
         }
     }
 }

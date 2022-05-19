@@ -17,7 +17,7 @@ class office_accountSeeder extends Seeder
              'name' => 'محمد البوسيفي',
              'email' => 'mohammed@test',
              'password' => Hash::make('123456'),
-             'role' => '["مدير المكتب"]',
+             
              'state_account' => 1,
              'office_info_id'=> 1
         ]);
@@ -32,7 +32,7 @@ class office_accountSeeder extends Seeder
             'name' => 'أحمد البركي',
             'email' => 'ahmed@test',
             'password' => Hash::make('123456'),
-            'role' => '["مدخل بيانات"]',
+           
             'state_account' => 1,
             'office_info_id'=> 1
        ]);

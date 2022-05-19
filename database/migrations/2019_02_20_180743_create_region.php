@@ -17,9 +17,9 @@ class CreateRegion extends Migration
             $table->id();
             $table->string('name');
 
-            $table->unsignedBigInteger('municipality_id');
-            $table->foreign('municipality_id')->references('id')->on('municipality')->onDelete('cascade');
-            
+            $table->unsignedBigInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('city')->onDelete('cascade');
+ 
             $table->timestamps();
         });
     }

@@ -49,7 +49,7 @@
          <div class="col-lg-12 col-md-12">
              <div class="card">
                  <div class="card-body">
-                     <form action="{{ route('check.step-one') }}" method="post" enctype="multipart/form-data" 
+                     <form action="" method="post" enctype="multipart/form-data" 
                          autocomplete="off">
                          {{ csrf_field() }}
                          {{-- 1 --}}

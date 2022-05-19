@@ -12,8 +12,16 @@ class citySeeder extends Seeder
      */
     public function run()
     {
-        city::create([
-            'name' => ' طرابلس '
-        ]);
+       $city =[
+           'طرابلس' ,'بنغازي' ,'مصراته' ,'ترهونة' ,'الزاوية' ,'صبراته' ,'هون' ,'العزيزية' ,'السواني' ,'صرمان' ,'الخمس' ,'زليتن' ,
+       ] ;
+
+       foreach($city as $row){
+           city::create([
+               'name' =>$row
+           ]);
+       }
+        
+
     }
 }

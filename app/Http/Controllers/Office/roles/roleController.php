@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class roleController extends Controller
 {
@@ -31,8 +32,26 @@ class roleController extends Controller
 
     public function index(Request $request)
     {
+        // dd('test');
+        $i=0;
         $roles = Role::orderBy('id', 'ASC')->paginate(5);
-        $permission = Permission::get();
+        $permission =Permission::pluck('id','name')->all();
+        $data=[];
+       
+        foreach($permission as $key => $row){
+            $data [$i] = '<option value='.$row.'>'.$key.'</option>';
+        
+            $i++;        
+        }
+     
+        
+        if($request->ajax())
+        {
+            return response()->json([
+                'state' => 200 ,
+                'data' =>$data
+            ]);
+        }
       
         return view('office.roles.index', compact('roles','permission'));
     }
@@ -52,7 +71,7 @@ class roleController extends Controller
 
     public function create()
     {
-        $permission = Permission::get();
+        $permission = Permission::pulck('id','name')->all();
         return view('office.roles.create', compact('permission'));
     }
  
@@ -68,7 +87,6 @@ class roleController extends Controller
             'name_role.required' => 'يجب أدخال اسم الصلاحية',
             'name_role.unique' => 'أسم الصلاحيات موجود مسبقا',
             'select_permission.required' => 'يجب تحديد الأذونات',
-            
         ]);
 
         if($validator->fails())
@@ -80,7 +98,7 @@ class roleController extends Controller
         }
         else
         {
-            $role = Role::create(['name' => $request->input('name_role')]);
+            $role = Role::create(['guard_name' => 'office','name' => $request->input('name_role')]);
             $role->syncPermissions($request->input('select_permission'));
             return response()->json([
                 'status'=>200,
@@ -115,38 +133,102 @@ class roleController extends Controller
 
     public function edit($id)
     {
+        $i=0;
+        $flag=0;
+        $data=[]; //array  to store  html element <option> for load with ajax to libaray select multi-bootstrap
         $role = Role::find($id);
-        $permission = Permission::get();
-        
+        $test=[];
+        $permission = Permission::pluck('id','name')->all();
+        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
+        ->where("role_has_permissions.role_id",$id)->pluck('name')->all();
+       
+       
+       
+        foreach($permission as $key => $row){
+            if($this->search($rolePermissions,$key)){
+                $data [$i] = '<option selected  value='.$row.'>'.$key.'</option>'; 
+            }else{
+                $data [$i] = '<option  value='.$row.'>'.$key.'</option>'; 
+            }
+           $i++;  
+        }     
+
+                // 
+
         return response()->json([
             'status'=>200,
             'message'=>[
                 'role'=> $role ,
-                'permission' => $permission ,
+                'permission' =>$data,
             ]
         ]);
-    }
-  
+        
 
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'name' => 'required',
-            'permission' => 'required',
-        ]);
-        $role = Role::find($id);
-        $role->name = $request->input('name');
-        $role->save();
-        $role->syncPermissions($request->input('permission'));
-        return redirect()->route('office.show.roles')
-            ->with('success', 'Role updated successfully');
+    }
+
+  
+    public function search($r1,$value){
+        foreach($r1 as $row){
+              if($value == $row){
+                  return true;
+              }
+        }
+        return false;
+    }
+
+    
+    public function update(Request $request, $id){
+
+         // -------------- test unit ----------------
+
+        // return response()->json([
+        //             'status'=>200,
+        //             'editRoleName'=>$request->editRoleName,
+        //             'editpermission'=>$request->editpermission
+        //         ]);
+
+       
+
+        // -------------- work unit ----------------
+
+            $validator = Validator::make($request->all(), [
+                'editRoleName' => 'required|unique:roles,name,'.$id,
+                'editpermission' => 'required',
+            ],[
+            'editRoleName.required' => 'يجب أدخال اسم الصلاحية.' ,
+            'editRoleName.unique' => 'هذا الأسم موجود مسبقا.' ,
+            'editpermission.required' => 'يجب تحديد الاذونات.' ,
+            ]);
+
+            if($validator->fails())
+            {
+                return response()->json([
+                    'status'=>400,
+                    'errors'=>$validator->messages()
+                ]);
+
+            }else{
+                $role =Role::find($id);
+                $role->name = $request->editRoleName;
+                $role->syncPermissions($request->input('editpermission'));
+                $role->update();
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'تم تحديث الصلاحية بنجاح .'
+                ]);
+            }
     }
    
 
     public function delete($id)
     {
-        DB::table("roles")->where('id', $id)->delete();
-        return redirect()->route('roles.index')
-            ->with('success', 'Role deleted successfully');
+        if(Role::find($id))
+        {
+            Role::find($id)->delete();
+            return response()->json([
+                'status'=>200,
+                'message'=>'تم حذف الصلاحية بنجاح .'
+            ]);
+        }
     }
 }

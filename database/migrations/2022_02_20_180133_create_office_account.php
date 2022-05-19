@@ -18,7 +18,7 @@ class CreateOfficeAccount extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('password');
-            $table->text('role');
+            // $table->text('role');
             $table->integer('state_account');
 
             $table->unsignedBigInteger('office_info_id');

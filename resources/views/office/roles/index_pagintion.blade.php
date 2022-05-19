@@ -1,6 +1,6 @@
-{{$i=0}}
+<?php  $i=0; ?>
 <div class="table-responsive">
-    <table class="table mg-b-0 text-center text-md-nowrap table-hover ">
+    <table class="table mg-b-0 text-center text-md-nowrap table-hover " id="example1_wrapper">
         <thead>
             <tr>
                 <th>#</th>
@@ -14,27 +14,17 @@
                     <td>{{ ++$i }}</td>
                     <td>{{ $role->name }}</td>
                     <td>
-
-                        {{-- <button id="viewRole" class="btn btn-success btn-sm" data-target="#showRole"
-                            data-toggle="modal" data-role_name="{{ $role->name }}">عرض</button>
-                        <button class="btn btn-primary btn-sm" data-target="#editRole"
-                            data-toggle="modal">تعديل</button> --}}
+                    @can('عرض صلاحية')
                         <button type="button" value="{{ $role->id }}"
-                            class="showdetails btn btn-success btn-sm deletebtn">عرض</button>
+                            class="showdetails btn btn-success btn-sm ">عرض</button>
+                    @endcan
+                    @can('تعديل صلاحية')
                         <button type="button" value="{{ $role->id }}"
                             class="btn btn-primary btn-sm editbtn">تعديل</button>
-
-
-                        {{-- <a class="btn btn-primary btn-sm"
-                                href="{{ route('office.edit.roles', $role->id) }}">تعديل</a> --}}
-
-
-                        {!! Form::open(['method' => 'DELETE', 'route' => ['office.delete.roles', $role->id], 'style' => 'display:inline']) !!}
-                        {!! Form::submit('حذف', ['class' => 'btn btn-danger btn-sm']) !!}
-                        {!! Form::close() !!}
-
-
-
+                    @endcan
+                    @can('حذف صلاحية')
+                        <button class="btn btn-danger btn-sm deletebtn" value="{{ $role->id }}">حذف</button>
+                    @endcan
                     </td>
                 </tr>
             @endforeach

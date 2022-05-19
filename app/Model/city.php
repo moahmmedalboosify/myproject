@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\region;
 use App\Model\municipality;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,8 +12,8 @@ class city extends Model
     protected $guarded = [] ;
 
 
-    public function municipalities()
+    public function region()
     {
-        return $this->hasMany(municipality::class);
+        return $this->hasMany(region::class);
     }
 }

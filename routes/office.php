@@ -33,7 +33,11 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
 
   Route::group(['prefix' => 'offers', 'namespace' => 'offers', 'Middleware' => 'Auth:office'], function () {
 
-    Route::get('/step-one', 'offerController@show_create_offer')->name('show.create.offer')->middleware('auth:office');
+    Route::get('/add', 'offerController@add_offer')->name('office.add.offer');
+    Route::get('/step/one', 'offerController@step_one')->name('office.step_one.offer');
+    Route::get('/step/two', 'offerController@step_two')->name('office.step_two.offer');
+    Route::get('/step/four/city', 'offerController@step_four_city')->name('office.step_four_city.offer');
+    Route::get('/test', 'offerController@test')->name('office.test.offer');
   });
 
 
@@ -42,7 +46,9 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
   Route::group(['prefix' => 'users', 'namespace' => 'roles'], function () {
 
     Route::get('/show', 'employeeController@index')->name('office.show.users');
-    Route::post('/delete', 'employeeController@delete')->name('office.delete.users');
+    Route::get('/create', 'employeeController@create')->name('office.create.users');
+    Route::post('/store', 'employeeController@store')->name('office.store.users');
+    Route::post('/delete/{id}', 'employeeController@delete')->name('office.delete.users');
     Route::get('/edit/{id}', 'employeeController@edit')->name('office.edit.users');
     Route::post('/update/{id}', 'employeeController@update')->name('office.update.users');
   });
@@ -53,12 +59,15 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
   Route::group(['prefix' => 'roles', 'namespace' => 'roles'], function () {
 
     Route::get('/show', 'roleController@index')->name('office.show.roles');
-    
+  
     Route::post('/create', 'roleController@store')->name('office.store.roles');
     Route::get('/show/single/{id}', 'roleController@show')->name('office.show_single.roles');
     Route::post('/delete/{id}', 'roleController@delete')->name('office.delete.roles');
     Route::get('/edit/{id}', 'roleController@edit')->name('office.edit.roles');
     Route::post('/update/{id}', 'roleController@update')->name('office.update.roles');
   });
+
 });
-Route::get('/show/test', 'office\roles\roleController@fetch_data')->name('office.show_ajax.roles')->middleware('auth:office');
+Route::get('/show/test', 'office\roles\roleController@fetch_data')->name('office.show_ajax.roles');
+
+Route::get('/show/users', 'office\roles\employeeController@fetch_data')->name('office.show_users.roles');
