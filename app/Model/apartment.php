@@ -8,5 +8,9 @@ class apartment extends Model
 {
     protected $table = 'apartment' ; 
     protected $guarded = [] ;
+    protected $casts = [
+        'extra_features' => 'array',
+        'pyment_method' => 'array'
+    ];
 
 }

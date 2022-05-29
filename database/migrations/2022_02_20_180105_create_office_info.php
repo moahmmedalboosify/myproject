@@ -20,12 +20,12 @@ class CreateOfficeInfo extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('description');
-            $table->string('image');
             $table->string('state');
-            $table->string('location_lat');
-            $table->string('location_lng');
-            $table->unsignedBigInteger('city_id');
-            $table->foreign('city_id')->references('id')->on('city')->onDelete('cascade');
+            $table->string('point');
+            $table->string('lat');
+            $table->string('lng');
+            $table->unsignedBigInteger('region_id');
+            $table->foreign('region_id')->references('id')->on('region')->onDelete('cascade');
             $table->timestamps();
         });
     }

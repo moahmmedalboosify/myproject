@@ -2,6 +2,13 @@
 @section('css')
 
 
+    <link href="{{ URL::asset('officepanal/assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <link href="{{ URL::asset('officepanal/assets/plugins/fileuploads/css/fileupload.css') }}" rel="stylesheet"
         type="text/css" />
@@ -73,10 +80,10 @@
 
     </style>
     <link rel="stylesheet"
-    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
-<!-- Map APi css !-->
-<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
+    <!-- Map APi css !-->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
 
 
 @endsection
@@ -105,10 +112,11 @@
 
 
 
-    <form id="form">
+    <form id="form" enctype="multipart/form-data">
 
 
         <div class="list-group">
+
 
             <div class="list-group-item py-3 ttemps" data-acc-step>
                 <h5 class="mb-t-50" data-acc-title>معلومات الزبون <i
@@ -116,67 +124,47 @@
 
                 <div data-acc-content>
 
-                    <div class="custom-control custom-radio mg-t-20">
-                        <label class="custom-control-label" for="defaultGroupExample1">زبون جديد</label>
-                        <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="state_client"
-                            value="new">
-                    </div>
 
-                    <!-- Group of default radios - option 2 -->
-                    <div class="custom-control custom-radio g-t-20">
-                        <label class="custom-control-label" for="defaultGroupExample2">زبون قديم </label>
-                        <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="state_client"
-                            value="old">
-                    </div>
-
-                    <span id="error_state_client" class="text-danger">يجب تحديد حالة الزبون وملأ النموذج أولا</span>
-
+                    <input type="hidden" id="result_ajax" value="0">
 
                     <div id="show_new">
                         <div class="my-3">
                             <div class="row">
-                                <div class="col">
+                                <div class="col-lg-6">
                                     <label for="inputName" class="control-label">
-                                        <h6> أسم الزبون </h6>
+                                        <h6> إسم الزبون : </h6>
                                     </label>
                                     <input type="text" class="form-control " id="name_client" name="name_owner" value=""
                                         title="يرجي ادخال أسم الزبون" min="10" max="10">
                                     <span id="name_client_error" class="text-danger"></span>
                                 </div>
-                                <div class="col">
-                                    <label for="inputName" class="control-label">
-                                        <h6> رقم الزبون </h6>
-                                    </label> <br>
-                                    <input class="form-control new_client_phone " id="phone" name="phone_client"
-                                        type="tel"><br>
-                                    <span id="phone_error" class="text-danger"></span>
-
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn bg-transparent clear" style="margin-left: -40px; z-index: 100;"><i
-                                class="fa fa-times"></i>
-
-                    </div>
-
-                    <div id="show_old">
-                        <div class="my-3">
-                            <div class="row">
                                 <div class="col-lg-6">
                                     <label for="inputName" class="control-label">
-                                        <h6> رقم الزبون </h6>
+                                        <h6> رقم الزبون : </h6>
                                     </label> <br>
-                                    <input class="form-control old_client_phone" id="phone" name="phone" type="tel">
-                                    <span id="phone_old_error" class="text-danger"></span>
+                                    <input class="form-control" id="phone_client" name="phone_client" type="text">
+                                    <span id="phone_client_error" class="text-danger"></span>
+
                                 </div>
+
                             </div>
                         </div>
-                        <button class="btn bg-transparent clear" style="margin-left: -40px; z-index: 100;"><i
-                                class="fa fa-times"></i>
+                        <button onclick="not6()" id="more_offers" data-class="success" data-value="0"
+                            data-text="سيتم حفظ بيانات الزبون  وتخطي هذه المرحلة" class="btn btn-default"
+                            title="لدي الزبون أكثر من عقار"
+                            style="width: 70px; height:39px;    color: rgb(1, 98, 232);  font-size: 50px "><i
+                                class="fa-solid fa-square-plus"></i>
+                        </button>
+
 
                     </div>
 
+
+
                 </div>
+
+
+
             </div>
 
 
@@ -191,18 +179,16 @@
                                 <label for="inputName" class="control-label">
                                     <h5> القسم </h5>
                                 </label>
-                                <select name="type_offer" id="section" class="form-control SlectBox">
+                                <select name="section" id="section" class="form-control SlectBox">
                                     <!--placeholder-->
-                                    <option>حدد نوع العقار</option>
-                                    <option value="apartment"> شقق</option>
-                                    <option value="houses"> منازل </option>
-                                    <option value="villas_palaces"> فلل-قصور </option>
-                                    <option value="lands"> أراضي </option>
-                                    <option value="commercial"> تجاري </option>
+                                    <option>حدد القسم</option>
+                                    <option value="\apartment"> شقق</option>
+                                    <option value="\houses"> منازل </option>
+                                    <option value="\villas_palaces"> فلل-قصور </option>
+                                    <option value="\lands"> أراضي </option>
+                                    <option value="\commercial"> تجاري </option>
                                 </select>
                                 <span id="section_error" class="text-danger"></span>
-
-
                             </div>
                         </div>
                     </div>
@@ -210,869 +196,235 @@
             </div>
 
 
-            {{-- <div class="list-group-item py-3" data-acc-step>
+            <div class="list-group-item py-3" data-acc-step>
                 <h5 class="mb-0" data-acc-title>تفاصيل العقار<span id="text_title_detials"></span>
                     <i style="font-size:1.5em; color:rgb(253, 253, 253); float:left" class="typcn typcn-edit"></i>
                 </h5>
                 <div data-acc-content>
                     <div class="my-3">
 
-                        <div id="apartment">
-                            <div class="row">
+
+                        <div class="row">
 
 
 
-                                <div class="col" id="type_offer_div">
-                                    <label for="inputName" class="control-label mt-2">حالة</label>
-                                    <select name="Section" id="type_offer" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الغرض</option>
-                                        <option value="1"> إيجار</option>
-                                        <option value="2"> بيع</option>
-                                    </select>
-                                    <span id="type_offer_error" class="text-danger"></span>
-                                </div>
+                            <div class="col" id="type_offer_div">
+                                <label for="inputName" class="control-label mt-2">الغرض</label>
+                                <select name="type_offer" id="type_offer" class="form-control SlectBox">
+                                    <!--placeholder-->
+                                    <option value="0" selected disabled>حدد الغرض</option>
+                                    <option value="1"> إيجار</option>
+                                    <option value="2"> بيع</option>
+                                </select>
+                                <span id="type_offer_error" class="text-danger"></span>
+                            </div>
 
 
 
 
-                                <div class="col" id="document_div">
-                                    <label for="inputName" class="control-label mt-2">نوع الوثائق</label>
-                                    <select name="Section" id="document" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الوثيقة</option>
-                                        <option value="1"> شهادة عقارية</option>
-                                        <option value="2"> تخصيص</option>
-                                        <option value="3"> غير مسجلة</option>
-                                    </select>
-                                    <span id="document_error" class="text-danger"></span>
-                                </div>
+                            <div class="col" id="document_div">
+                                <label for="inputName" class="control-label mt-2">نوع الوثائق</label>
+                                <select name="document_type" id="document" class="form-control SlectBox">
+                                    <!--placeholder-->
+                                    <option value="0" selected disabled>حدد الوثيقة</option>
+                                    <option value="1"> شهادة عقارية</option>
+                                    <option value="2"> تخصيص</option>
+                                </select>
+                                <span id="document_error" class="text-danger"></span>
+                            </div>
 
 
-                                <div class="col" id="age_div">
-                                    <label for="inputName" class="control-label mt-2">عمر البناء</label>
-                                    <select id="age" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عمر البناء </option>
-                                        <option value="1">جديد</option>
-                                        <option value="2">1-5 سنة</option>
-                                        <option value="3">6-10 سنة</option>
-                                        <option value="+4">+10 سنة</option>
-                                    </select>
-                                    <span id="age_error" class="text-danger"></span>
-
-                                </div>
+                            <div class="col" id="age_div">
+                                <label for="inputName" class="control-label mt-2">عمر البناء</label>
+                                <select id="age" name="age" class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد عمر البناء </option>
+                                    <option value="جديد">جديد</option>
+                                    <option value="1-5">1-5 سنة</option>
+                                    <option value="6-10">6-10 سنة</option>
+                                    <option value="+10">+10 سنة</option>
+                                </select>
+                                <span id="age_error" class="text-danger"></span>
 
                             </div>
 
-                            <div class="row">
 
-                                <div class="col" id="area_div">
-                                    <label for="inputName" class="control-label mt-2">المساحة</label>
+                            <div class="col" id="wings_div">
+                                <label for="inputName" class="control-label mt-2"> عدد الأجنحة </label>
+                                <select id="wings" name="wings" class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد عددالأجنحة </option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="+4">+4</option>
 
-                                    <div class="input-group ">
+                                </select>
+                                <span id="wings_error" class="text-danger"></span>
 
-                                        <input type="number" id="area" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">متر مربع</span>
-                                        </div>
-                                    </div>
-                                    <span id="area_error" class="text-danger"></span>
-
-                                </div>
-
-
-                                <div class="col" id="room_div">
-                                    <label for="inputName" class="control-label mt-2">الغرف</label>
-                                    <select id="room" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عدد الغرف</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="room_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col" id="bathroom_div">
-                                    <label for="inputName" class="control-label mt-2">دورات المياه</label>
-                                    <select id="bathroom" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عدد دورات المياه</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="bathroom_error" class="text-danger"></span>
-
-                                </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col" id="floor_div">
-                                    <label for="inputName" class="control-label mt-2">الطابق</label>
-                                    <select id="floor" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد الطابق</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="floor_error" class="text-danger"></span>
 
-                                </div>
+                        </div>
+                        <div class="row">
 
-                                <div class="col" id="furnished_div">
-                                    <label for="inputName" class="control-label mt-2">نوع الفرش </label>
-                                    <select id="furnished" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد نوع الفرش </option>
-                                        <option value="1">مفروش</option>
-                                        <option value="0">غير مفروش</option>
+                            <div class="col" id="area_div">
+                                <label for="inputName" class="control-label mt-2">المساحة</label>
 
-                                    </select>
-                                    <span id="furnished_error" class="text-danger"></span>
+                                <div class="input-group ">
 
-                                </div>
-
-
-
-
-                                <div class="col">
-                                    <div class="col">
-                                        <label for="inputName" class="control-label mt-2">مميزات أضافية </label>
-                                        <select id="extra_features" name="extra_features" multiple
-                                            class="form-control SlectBox">
-                                            <option value="0" selected disabled>حدد </option>
-                                            <option value="1">مكيف</option>
-                                            <option value="2">قراج خاص</option>
-                                            <option value="3"> بلكونة</option>
-                                            <option value="4"> حديقة</option>
-                                            <option value="5"> مدخل خاص</option>
-                                            <option value="6"> قرب الخدمات</option>
-                                            <option value="7"> بئر ماء</option>
-                                            <option value="8"> قرب الخدمات</option>
-                                            <option value="9"> حارس</option>
-                                            <option value="10"> بركة سباحة</option>
-                                        </select>
-                                        <span id="extra_features_error" class="text-danger"></span>
+                                    <input type="number" id="area" name="area" class="form-control"
+                                        aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                    <div class="input-group-append ">
+                                        <span class="input-group-text" id="basic-addon2">متر مربع</span>
                                     </div>
                                 </div>
-
-
+                                <span id="area_error" class="text-danger"></span>
 
                             </div>
 
+                            <div class="col" id="area_land_div">
+                                <label for="inputName" class="control-label mt-2">المساحة الأرض</label>
 
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2">السعر</label>
+                                <div class="input-group ">
 
-                                    <div class="input-group ">
-
-                                        <input type="number" id="price" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">$</span>
-                                        </div>
+                                    <input type="number" id="area_land" name="area_land" class="form-control"
+                                        aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                    <div class="input-group-append ">
+                                        <span class="input-group-text" id="basic-addon2">متر مربع</span>
                                     </div>
-                                    <span id="price_error" class="text-danger"></span>
                                 </div>
+                                <span id="area_land_error" class="text-danger"></span>
 
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2"> طريقة الدفع </label>
-                                    <select id="pyment_method" name="pyment_method" multiple class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد طريقة الدفع </option>
-                                        <option value="1">نقدا</option>
-                                        <option value="2"> شيك</option>
-                                        <option value="3"> أقساط</option>
-                                    </select>
-                                    <span id="pyment_method_error" class="text-danger"></span>
-                                </div>
                             </div>
-                            <div class="row">
 
-                                <div class="col-8">
-                                    <label for="inputName" class="control-label mt-2">عنوان العرض </label>
-                                    <div class="input-group ">
-                                        <input type="text" id="title" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                            placeholder=" أدخل عنوان العرض مثل : شقة تشطيب فاخر">
-                                    </div>
-                                    <span id="title_error" class="text-danger"></span>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleTextarea">وصف العرض</label>
-                                    <textarea id="description" class="form-control" id="exampleTextarea" name="note" rows="3"></textarea>
-                                </div>
-                                <span id="description_error" class="text-danger"></span>
+
+
+                            <div class="col" id="room_div">
+                                <label for="inputName" class="control-label mt-2">الغرف</label>
+                                <select id="room" name="rooms" class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد عدد الغرف</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="+4">+4</option>
+                                </select>
+                                <span id="room_error" class="text-danger"></span>
                             </div>
+
+                            <div class="col" id="bathroom_div">
+                                <label for="inputName" class="control-label mt-2">دورات المياه</label>
+                                <select id="bathroom" name="bathrooms" class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد عدد دورات المياه</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="+4">+4</option>
+                                </select>
+                                <span id="bathroom_error" class="text-danger"></span>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col" id="floor_div">
+                                <label for="inputName" class="control-label mt-2">الطابق</label>
+                                <select id="floor" name="floor" class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد الطابق</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="+4">+4</option>
+                                </select>
+                                <span id="floor_error" class="text-danger"></span>
+
+                            </div>
+
+                            <div class="col" id="furnished_div">
+                                <label for="inputName" class="control-label mt-2">نوع الفرش </label>
+                                <select id="furnished" name="furnished" class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد نوع الفرش </option>
+                                    <option value="1">مفروش</option>
+                                    <option value="2">غير مفروش</option>
+
+                                </select>
+                                <span id="furnished_error" class="text-danger"></span>
+
+                            </div>
+
+
+
+                            <div class="col" id="extra_features_div">
+                                <label for="inputName" class="control-label mt-2">مميزات أضافية </label>
+                                <select id="extra_features" name="extra_features[]" multiple class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد </option>
+                                    <option value="مكيف">مكيف</option>
+                                    <option value="قراج خاص">قراج خاص</option>
+                                    <option value="بلكونة"> بلكونة</option>
+                                    <option value="حديقة"> حديقة</option>
+                                    <option value="مدخل خاص"> مدخل خاص</option>
+                                    <option value="قرب الخدمات"> قرب الخدمات</option>
+                                    <option value="بئر ماء"> بئر ماء</option>
+                                    <option value="حارس"> حارس</option>
+                                    <option value="بركة سباحة"> بركة سباحة</option>
+                                </select>
+                                <span id="extra_features_error" class="text-danger"></span>
+                            </div>
+
+
 
 
                         </div>
 
 
-                        <div id="houses">
-                            <div class="row">
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputName" class="control-label mt-2">السعر</label>
 
+                                <div class="input-group ">
 
-
-                                <div class="col" id="type_offer_div">
-                                    <label for="inputName" class="control-label mt-2">حالة</label>
-                                    <select name="Section" id="type_offer" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الغرض</option>
-                                        <option value="1"> إيجار</option>
-                                        <option value="2"> بيع</option>
-                                    </select>
-                                    <span id="type_offer_error" class="text-danger"></span>
+                                    <input type="number" id="price" name="price" class="form-control"
+                                        aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                    <div class="input-group-append ">
+                                        <span class="input-group-text" id="basic-addon2">$</span>
+                                    </div>
                                 </div>
-
-
-
-
-                                <div class="col" id="document_div">
-                                    <label for="inputName" class="control-label mt-2">نوع الوثائق</label>
-                                    <select name="Section" id="document" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الوثيقة</option>
-                                        <option value="1"> شهادة عقارية</option>
-                                        <option value="2"> تخصيص</option>
-                                        <option value="3"> غير مسجلة</option>
-                                    </select>
-                                    <span id="document_error" class="text-danger"></span>
-                                </div>
-
-
-                                <div class="col" id="age_div">
-                                    <label for="inputName" class="control-label mt-2">عمر البناء</label>
-                                    <select id="age" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عمر البناء </option>
-                                        <option value="1">جديد</option>
-                                        <option value="2">1-5 سنة</option>
-                                        <option value="3">6-10 سنة</option>
-                                        <option value="+4">+10 سنة</option>
-                                    </select>
-                                    <span id="age_error" class="text-danger"></span>
-
-                                </div>
-
-
+                                <span id="price_error" class="text-danger"></span>
                             </div>
 
-                            <div class="row">
-
-                                <div class="col" id="area_div">
-                                    <label for="inputName" class="control-label mt-2">المساحة</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="area" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">متر مربع</span>
-                                        </div>
-                                    </div>
-                                    <span id="area_error" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="col" id="area_land_div">
-                                    <label for="inputName" class="control-label mt-2">المساحة الأرض</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="area_land" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">متر مربع</span>
-                                        </div>
-                                    </div>
-                                    <span id="area_land_error" class="text-danger"></span>
-
-                                </div>
-
-
-                                <div class="col" id="room_div">
-                                    <label for="inputName" class="control-label mt-2">الغرف</label>
-                                    <select id="room" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عدد الغرف</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="room_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col" id="bathroom_div">
-                                    <label for="inputName" class="control-label mt-2">دورات المياه</label>
-                                    <select id="bathroom" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عدد دورات المياه</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="bathroom_error" class="text-danger"></span>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col" id="floor_div">
-                                    <label for="inputName" class="control-label mt-2">الطابق</label>
-                                    <select id="floor" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد الطابق</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="floor_error" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="col" id="furnished_div">
-                                    <label for="inputName" class="control-label mt-2">نوع الفرش </label>
-                                    <select id="furnished" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد نوع الفرش </option>
-                                        <option value="1">مفروش</option>
-                                        <option value="0">غير مفروش</option>
-
-                                    </select>
-                                    <span id="furnished_error" class="text-danger"></span>
-
-                                </div>
-
-
-
-
-                                <div class="col">
-                                    <div class="col">
-                                        <label for="inputName" class="control-label mt-2">مميزات أضافية </label>
-                                        <select id="extra_features" name="extra_features" multiple
-                                            class="form-control SlectBox">
-                                            <option value="0" selected disabled>حدد </option>
-                                            <option value="1">مكيف</option>
-                                            <option value="2">قراج خاص</option>
-                                            <option value="3"> بلكونة</option>
-                                            <option value="4"> حديقة</option>
-                                            <option value="5"> مدخل خاص</option>
-                                            <option value="6"> قرب الخدمات</option>
-                                            <option value="7"> بئر ماء</option>
-                                            <option value="8"> قرب الخدمات</option>
-                                            <option value="9"> حارس</option>
-                                            <option value="10"> بركة سباحة</option>
-                                        </select>
-                                        <span id="extra_features_error" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2">السعر</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="price" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">$</span>
-                                        </div>
-                                    </div>
-                                    <span id="price_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2"> طريقة الدفع </label>
-                                    <select id="pyment_method" name="pyment_method" multiple class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد طريقة الدفع </option>
-                                        <option value="1">نقدا</option>
-                                        <option value="2"> شيك</option>
-                                        <option value="3"> أقساط</option>
-                                    </select>
-                                    <span id="pyment_method_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-8">
-                                    <label for="inputName" class="control-label mt-2">عنوان العرض </label>
-                                    <div class="input-group ">
-                                        <input type="text" id="title" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                            placeholder=" أدخل عنوان العرض مثل : شقة تشطيب فاخر">
-                                    </div>
-                                    <span id="title_error" class="text-danger"></span>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleTextarea">وصف العرض</label>
-                                    <textarea id="description" class="form-control" id="exampleTextarea" name="note" rows="3"></textarea>
-                                </div>
-                                <span id="description_error" class="text-danger"></span>
+                            <div class="col">
+                                <label for="inputName" class="control-label mt-2"> طريقة الدفع </label>
+                                <select id="pyment_method" name="pyment_method[]" multiple class="form-control SlectBox">
+                                    <option value="0" selected disabled>حدد طريقة الدفع </option>
+                                    <option value="نقدا">نقدا</option>
+                                    <option value="شيك"> شيك</option>
+                                    <option value="أقساط"> أقساط</option>
+                                </select>
+                                <span id="pyment_method_error" class="text-danger"></span>
                             </div>
                         </div>
+                        <div class="row">
 
-                        <div id="villas_palaces">
-                            <div class="row">
-
-
-
-                                <div class="col" id="type_offer_div">
-                                    <label for="inputName" class="control-label mt-2">حالة</label>
-                                    <select name="Section" id="type_offer" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الغرض</option>
-                                        <option value="1"> إيجار</option>
-                                        <option value="2"> بيع</option>
-                                    </select>
-                                    <span id="type_offer_error" class="text-danger"></span>
+                            <div class="col-8">
+                                <label for="inputName" class="control-label mt-2">عنوان العرض </label>
+                                <div class="input-group ">
+                                    <input type="text" id="title" name="title" class="form-control"
+                                        aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                        placeholder=" أدخل عنوان العرض مثل : شقة تشطيب فاخر">
                                 </div>
 
-
-
-
-                                <div class="col" id="document_div">
-                                    <label for="inputName" class="control-label mt-2">نوع الوثائق</label>
-                                    <select name="Section" id="document" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الوثيقة</option>
-                                        <option value="1"> شهادة عقارية</option>
-                                        <option value="2"> تخصيص</option>
-                                        <option value="3"> غير مسجلة</option>
-                                    </select>
-                                    <span id="document_error" class="text-danger"></span>
-                                </div>
-
-
-                                <div class="col" id="age_div">
-                                    <label for="inputName" class="control-label mt-2">عمر البناء</label>
-                                    <select id="age" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عمر البناء </option>
-                                        <option value="1">جديد</option>
-                                        <option value="2">1-5 سنة</option>
-                                        <option value="3">6-10 سنة</option>
-                                        <option value="+4">+10 سنة</option>
-                                    </select>
-                                    <span id="age_error" class="text-danger"></span>
-
-                                </div>
-
-
-                                <div class="col" id="wings_div">
-                                    <label for="inputName" class="control-label mt-2"> عدد الأجنحة </label>
-                                    <select id="wings" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عددالأجنحة </option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-
-                                    </select>
-                                    <span id="wings_error" class="text-danger"></span>
-
-                                </div>
-
-
+                                <span id="title_error" class="text-danger"></span>
                             </div>
-                            <div class="row">
-
-                                <div class="col" id="area_div">
-                                    <label for="inputName" class="control-label mt-2">المساحة</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="area" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">متر مربع</span>
-                                        </div>
-                                    </div>
-                                    <span id="area_error" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="col" id="area_land_div">
-                                    <label for="inputName" class="control-label mt-2">المساحة الأرض</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="area_land" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">متر مربع</span>
-                                        </div>
-                                    </div>
-                                    <span id="area_land_error" class="text-danger"></span>
-
-                                </div>
-
-
-                                <div class="col" id="room_div">
-                                    <label for="inputName" class="control-label mt-2">الغرف</label>
-                                    <select id="room" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عدد الغرف</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="room_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col" id="bathroom_div">
-                                    <label for="inputName" class="control-label mt-2">دورات المياه</label>
-                                    <select id="bathroom" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد عدد دورات المياه</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="bathroom_error" class="text-danger"></span>
-
-                                </div>
+                            <div class="col-12">
+                                <label for="exampleTextarea">وصف العرض</label>
+                                <textarea id="description" name="description" class="form-control" id="exampleTextarea" name="note"
+                                    rows="3"></textarea>
                             </div>
-
-                            <div class="row">
-                                <div class="col" id="floor_div">
-                                    <label for="inputName" class="control-label mt-2">الطابق</label>
-                                    <select id="floor" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد الطابق</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="+4">+4</option>
-                                    </select>
-                                    <span id="floor_error" class="text-danger"></span>
-
-                                </div>
-
-                                <div class="col" id="furnished_div">
-                                    <label for="inputName" class="control-label mt-2">نوع الفرش </label>
-                                    <select id="furnished" name="product" class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد نوع الفرش </option>
-                                        <option value="1">مفروش</option>
-                                        <option value="0">غير مفروش</option>
-
-                                    </select>
-                                    <span id="furnished_error" class="text-danger"></span>
-
-                                </div>
-
-
-
-
-                                <div class="col">
-                                    <div class="col">
-                                        <label for="inputName" class="control-label mt-2">مميزات أضافية </label>
-                                        <select id="extra_features" name="extra_features" multiple
-                                            class="form-control SlectBox">
-                                            <option value="0" selected disabled>حدد </option>
-                                            <option value="1">مكيف</option>
-                                            <option value="2">قراج خاص</option>
-                                            <option value="3"> بلكونة</option>
-                                            <option value="4"> حديقة</option>
-                                            <option value="5"> مدخل خاص</option>
-                                            <option value="6"> قرب الخدمات</option>
-                                            <option value="7"> بئر ماء</option>
-                                            <option value="8"> قرب الخدمات</option>
-                                            <option value="9"> حارس</option>
-                                            <option value="10"> بركة سباحة</option>
-                                        </select>
-                                        <span id="extra_features_error" class="text-danger"></span>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2">السعر</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="price" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">$</span>
-                                        </div>
-                                    </div>
-                                    <span id="price_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2"> طريقة الدفع </label>
-                                    <select id="pyment_method" name="pyment_method" multiple class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد طريقة الدفع </option>
-                                        <option value="1">نقدا</option>
-                                        <option value="2"> شيك</option>
-                                        <option value="3"> أقساط</option>
-                                    </select>
-                                    <span id="pyment_method_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-8">
-                                    <label for="inputName" class="control-label mt-2">عنوان العرض </label>
-                                    <div class="input-group ">
-                                        <input type="text" id="title" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                            placeholder=" أدخل عنوان العرض مثل : شقة تشطيب فاخر">
-                                    </div>
-                                    <span id="title_error" class="text-danger"></span>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleTextarea">وصف العرض</label>
-                                    <textarea id="description" class="form-control" id="exampleTextarea" name="note" rows="3"></textarea>
-                                </div>
-                                <span id="description_error" class="text-danger"></span>
-                            </div>
-                        </div>
-
-
-                        <div id="lands">
-
-                            <div class="row">
-
-
-
-                                <div class="col" id="type_offer_div">
-                                    <label for="inputName" class="control-label mt-2">حالة</label>
-                                    <select name="Section" id="type_offer" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الغرض</option>
-                                        <option value="1"> إيجار</option>
-                                        <option value="2"> بيع</option>
-                                    </select>
-                                    <span id="type_offer_error" class="text-danger"></span>
-                                </div>
-
-
-
-
-                                <div class="col" id="document_div">
-                                    <label for="inputName" class="control-label mt-2">نوع الوثائق</label>
-                                    <select name="Section" id="document" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الوثيقة</option>
-                                        <option value="1"> شهادة عقارية</option>
-                                        <option value="2"> تخصيص</option>
-                                        <option value="3"> غير مسجلة</option>
-                                    </select>
-                                    <span id="document_error" class="text-danger"></span>
-                                </div>
-
-
-
-
-
-
-                            </div>
-
-                            <div class="row">
-
-                                <div class="col" id="area_land_div">
-                                    <label for="inputName" class="control-label mt-2">المساحة الأرض</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="area_land" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">متر مربع</span>
-                                        </div>
-                                    </div>
-                                    <span id="area_land_error" class="text-danger"></span>
-
-                                </div>
-
-
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2">مميزات أضافية </label>
-                                    <select id="extra_features" name="extra_features" multiple
-                                        class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد </option>
-                                        <option value="1">مكيف</option>
-                                        <option value="2">قراج خاص</option>
-                                        <option value="3"> بلكونة</option>
-                                        <option value="4"> حديقة</option>
-                                        <option value="5"> مدخل خاص</option>
-                                        <option value="6"> قرب الخدمات</option>
-                                        <option value="7"> بئر ماء</option>
-                                        <option value="8"> قرب الخدمات</option>
-                                        <option value="9"> حارس</option>
-                                        <option value="10"> بركة سباحة</option>
-                                    </select>
-                                    <span id="extra_features_error" class="text-danger"></span>
-                                </div>
-
-
-                            </div>
-
-
-
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2">السعر</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="price" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">$</span>
-                                        </div>
-                                    </div>
-                                    <span id="price_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2"> طريقة الدفع </label>
-                                    <select id="pyment_method" name="pyment_method" multiple class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد طريقة الدفع </option>
-                                        <option value="1">نقدا</option>
-                                        <option value="2"> شيك</option>
-                                        <option value="3"> أقساط</option>
-                                    </select>
-                                    <span id="pyment_method_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-8">
-                                    <label for="inputName" class="control-label mt-2">عنوان العرض </label>
-                                    <div class="input-group ">
-                                        <input type="text" id="title" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                            placeholder=" أدخل عنوان العرض مثل : شقة تشطيب فاخر">
-                                    </div>
-                                    <span id="title_error" class="text-danger"></span>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleTextarea">وصف العرض</label>
-                                    <textarea id="description" class="form-control" id="exampleTextarea" name="note" rows="3"></textarea>
-                                </div>
-                                <span id="description_error" class="text-danger"></span>
-                            </div>
-
-                        </div>
-
-                        <div id="commercial">
-                            <div class="row">
-
-                                <div class="col" id="type_offer_div">
-                                    <label for="inputName" class="control-label mt-2">حالة العقار</label>
-                                    <select name="Section" id="type_offer" class="form-control SlectBox">
-                                        <!--placeholder-->
-                                        <option value="0" selected disabled>حدد الغرض</option>
-                                        <option value="1"> إيجار</option>
-                                        <option value="2"> بيع</option>
-                                    </select>
-                                    <span id="type_offer_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col" id="area_div">
-                                    <label for="inputName" class="control-label mt-2">المساحة</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="area" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">متر مربع</span>
-                                        </div>
-                                    </div>
-                                    <span id="area_error" class="text-danger"></span>
-
-                                </div>
-
-
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2">مميزات أضافية </label>
-                                    <select id="extra_features" name="extra_features" multiple
-                                        class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد </option>
-                                        <option value="1">مكيف</option>
-                                        <option value="2">قراج خاص</option>
-                                        <option value="3"> بلكونة</option>
-                                        <option value="4"> حديقة</option>
-                                        <option value="5"> مدخل خاص</option>
-                                        <option value="6"> قرب الخدمات</option>
-                                        <option value="7"> بئر ماء</option>
-                                        <option value="8"> قرب الخدمات</option>
-                                        <option value="9"> حارس</option>
-                                        <option value="10"> بركة سباحة</option>
-                                    </select>
-                                    <span id="extra_features_error" class="text-danger"></span>
-                                </div>
-
-
-
-
-                            </div>
-
-
-
-
-                            <div class="row">
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2">السعر</label>
-
-                                    <div class="input-group ">
-
-                                        <input type="number" id="price" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                        <div class="input-group-append ">
-                                            <span class="input-group-text" id="basic-addon2">$</span>
-                                        </div>
-                                    </div>
-                                    <span id="price_error" class="text-danger"></span>
-                                </div>
-
-                                <div class="col">
-                                    <label for="inputName" class="control-label mt-2"> طريقة الدفع </label>
-                                    <select id="pyment_method" name="pyment_method" multiple class="form-control SlectBox">
-                                        <option value="0" selected disabled>حدد طريقة الدفع </option>
-                                        <option value="1">نقدا</option>
-                                        <option value="2"> شيك</option>
-                                        <option value="3"> أقساط</option>
-                                    </select>
-                                    <span id="pyment_method_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-8">
-                                    <label for="inputName" class="control-label mt-2">عنوان العرض </label>
-                                    <div class="input-group ">
-                                        <input type="text" id="title" class="form-control"
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                            placeholder=" أدخل عنوان العرض مثل : شقة تشطيب فاخر">
-                                    </div>
-                                    <span id="title_error" class="text-danger"></span>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleTextarea">وصف العرض</label>
-                                    <textarea id="description" class="form-control" id="exampleTextarea" name="note" rows="3"></textarea>
-                                </div>
-                                <span id="description_error" class="text-danger"></span>
-                            </div>
+                            <span id="description_error" class="text-danger"></span>
                         </div>
 
 
                     </div>
                 </div>
-            </div> --}}
+            </div>
 
 
             <div class="list-group-item py-3 mr-b-30" data-acc-step>
@@ -1081,47 +433,50 @@
                 <div data-acc-content>
                     <div class="my-3">
 
-                   
+
                         <div id='map' style='width:100%; min-height:300px;'></div>
 
-                        <span id="map_error" class="text-danger" style="display: none"> يجب تحديد موقع العقار علي الخريطة. </span>
-                        <span id="lat" style="display: none"> 0 </span>
-                        <span id="lng" style="display: none"> 0 </span>
-
+                        <span id="map_error" class="text-danger" style="display: none"> يجب تحديد موقع العقار علي
+                            الخريطة. </span>
+                        <input type="hidden" name="lat" id="lat" value="0">
+                        <input type="hidden" name="lng"  id="lng" value="0">
 
                         <div class="row mg-t-340">
                             <div class="col mg-t-30">
                                 <label for="inputName" class="control-label">
                                     <h6> المدينة<span style="color:red">*</span> </h6>
                                 </label>
-                                <select name="city" id="city" class="form-control SlectBox">
+                                <select name="city" id="city" class="form-control">
                                     <!--placeholder-->
                                     <option value="0" selected disabled>حدد المدينة </option>
                                     @foreach ($city as $row)
-                                    <option value="{{$row->id}}" > {{$row->name}} </option>
-                                        
+                                        <option value="{{ $row->id }}"> {{ $row->name }} </option>
                                     @endforeach
                                 </select>
-                               <span id="city_error" class="text-danger"  style="display: none">يجب تحديد المدينة.</span>
+                                <span id="city_error" class="text-danger" style="display: none">يجب تحديد
+                                    المدينة.</span>
 
                             </div>
                             <div class="col mg-t-30">
                                 <label for="inputName" class="control-label">
                                     <h6> المنطقة <span style="color:red">*</span> </h6>
                                 </label>
-                                <select name="type_offer" id="test"  class="form-control SlectBox">
+                                <select name="region" id="region" class="form-control">
                                     <!--placeholder-->
                                     <option value="0" selected disabled>حدد المنطقة</option>
                                 </select>
-                               <span id="region_error" class="text-danger"  style="display: none">يجب تحديد المنطقة.</span>
+                                <span id="region_error" class="text-danger" style="display: none">يجب تحديد
+                                    المنطقة.</span>
 
                             </div>
                             <div class="col mg-t-30">
                                 <label for="inputName" class="control-label">
                                     <h6> أقرب نقطة دالة <span style="color:red">*</span> </h6>
                                 </label>
-                                <input type="text" id="point" class="form-control " id="inputName" name="name_owner" value="" title="">
-                                 <span id="point_error" class="text-danger"  style="display: none">يجب تحديد أقرب نقطة دالة.</span>
+                                <input type="text" id="point" name="point" class="form-control " id="inputName"
+                                    name="name_owner" value="" title="">
+                                <span id="point_error" class="text-danger" style="display: none">يجب تحديد أقرب نقطة
+                                    دالة.</span>
 
                             </div>
                         </div>
@@ -1134,16 +489,19 @@
                         style="font-size:1.5em; color:rgb(253, 253, 253); float:left" class="la la-camera"></i></h5>
                 <div data-acc-content>
                     <div class="my-3">
-                        <div>
-                            <input id="demo" type="file" name="files"
-                                accept=".jpg, .png, image/jpeg, image/png, html, zip, css,js" multiple>
-                        </div>
+
+
+                        <input id="image" type="file" name="image_uplode" accept="image/*" multiple>
+                        <span id="uplode_image_error" class="text-danger"></span>
+
                     </div>
                 </div>
             </div>
 
 
+
         </div>
+
     </form>
 
     <!-- row -->
@@ -1160,6 +518,10 @@
 @endsection
 @section('js')
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/fontawesome.min.js"
+        integrity="sha512-5qbIAL4qJ/FSsWfIq5Pd0qbqoZpk5NcUVeAAREV2Li4EKzyJDEGlADHhHOSSCw0tHP7z3Q4hNHJXa81P92borQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     <!-- search plugin Map APi css !-->
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
@@ -1169,11 +531,18 @@
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
 
+    <!-- Internal notifIt js-->
+
+    <script src="{{ URL::asset('officepanal/assets/plugins/notify/js/notifIt.js') }}"></script>
+    <script src="{{ URL::asset('officepanal/assets/plugins/notify/js/notifit-custom.js') }}"></script>
+
     <!-- Internal Select2 js-->
     <script src="{{ URL::asset('officepanal/assets/plugins/select2/js/select2.min.js') }}"></script>
     <!--Internal Fileuploads js-->
+
     <script src="{{ URL::asset('officepanal/assets/plugins/fileuploads/js/fileupload.js') }}"></script>
     <script src="{{ URL::asset('officepanal/assets/plugins/fileuploads/js/file-upload.js') }}"></script>
+
     <!--Internal Fancy uploader js-->
     <script src="{{ URL::asset('officepanal/assets/plugins/fancyuploder/jquery.ui.widget.js') }}"></script>
     <script src="{{ URL::asset('officepanal/assets/plugins/fancyuploder/jquery.fileupload.js') }}"></script>
@@ -1197,59 +566,35 @@
     <script src="{{ URL::asset('officepanal/js/jquery.accordion-wizard.min.js') }}"></script>
 
 
-    <script src="{{ URL::asset('officepanal/assets/plugins/telephoneinput/telephoneinput.js') }}"></script>
-    <script src="{{ URL::asset('officepanal/assets/plugins/telephoneinput/inttelephoneinput.js') }}"></script>
 
 
 
     <!-- client info  js   first step  -->
-
     <script>
         $(document).ready(function() {
-            var test = 0;
-            $('#error_state_client').hide();
-            $("#show_new").hide();
-            $("#show_old").hide();
 
-            $('input[type="radio"]').click(function() {
-                $('#error_state_client').hide();
-                var value = $(this).val();
-
-                $("div.custom-radio").hide();
-                if (value == 'new') {
-                    $("#show_" + value).show();
-                } else {
-                    $("#show_" + value).show();
-                }
-
+            // button plus offers
+            $('#more_offers').on('click', function(e) {
+                $('#more_offers').each(function(index) {
+                    $(this).data('value') == '0 ' ? $(this).css('color', 'rgb(0, 128, 0)').data(
+                            "value", '1').data("text", 'سيتم حفظ بيانات الزبون  وتخطي هذه المرحلة')
+                        .data("class", 'success') : $(this).css('color', 'rgb(1, 98, 232)').data(
+                            "value", '0').data("text",
+                            'سيتم حذف بيانات الزبون  وعدم تخطي هذه المرحلة').data("class",
+                            'primary')
+                    // $(this).data("value",'0');
+                    // console.log( $(this).data("text"))
+                })
             });
-
-            $('.clear').click(function() {
-                clear_error();
-                $('input[name="state_client"]').prop('checked', false);
-                $("#show_new").hide();
-                $("#show_old").hide();
-                $("div.custom-radio").show();
-
-            });
-
-
-
-            // when client he have one offer  or more 
-            // $('.test').click(function(){
-            //   $('.list-group-item').first().hide();
-            // });
-
         });
     </script>
 
 
 
 
+
     <!-- Map Api js -->
     <script>
-
-           
         mapboxgl.accessToken =
             'pk.eyJ1IjoibW9oYW1tZWRhbGJvb3NpZnkiLCJhIjoiY2wzMHBpcmgyMXJyZDNibXA2aXM4cWN6MiJ9.zh5hoOMhrgtoAudRTSXAPg';
         const map = new mapboxgl.Map({
@@ -1269,10 +614,16 @@
         map.on('click', function(e) {
             var l = e.lngLat.wrap().lat;
             var g = e.lngLat.wrap().lng;
-            $('#lat').text(l);
-            $('#lng').text(g);
-
+            $('#lat').val(l);
+            $('#lng').val(g);
             marker.setLngLat([g, l]).addTo(map);
+        });
+
+     
+        $('#region').on('change', function(e) {
+            console.log( $('#region option:selected').text() );
+          $('.mapboxgl-ctrl-geocoder--input').val( $('#region option:selected').text() )
+        
         });
 
 
@@ -1284,6 +635,13 @@
                 marker: false
             })
         );
+
+
+
+      
+
+       
+
 
         // add search plugin
 
@@ -1302,8 +660,40 @@
     <!-- multi step forms js -->
 
     <script>
+
         $(document).ready(function() {
-           
+
+
+
+            $('#form').on('submit', function(e) {
+                e.preventDefault();
+
+                var form = new FormData(this);
+
+                var url = '{{ route('office.step_final.offer') }}';
+                
+                
+
+                console.log(form)
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: form,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+
+
+                    success: function(data) {
+                        console.log(data);
+                    }
+
+                });
+            });
+
+
+
             var options = {
                 mode: 'wizard',
                 autoButtonsNextClass: 'btn btn-primary mg-l-10  mg-t-380 float-left test-btn',
@@ -1313,42 +703,35 @@
 
                     switch (t) {
                         case 1:
+                        
 
-                            // step_one();
-                            // if ($('#result_ajax').val() == 1) {
-                            //     clear_error();
-                            //     return true;
-                            // }
-                            return true;
+                            return step_one(1) == 1 ? true : false
+
                             break;
 
                         case 2:
-                            return true;
-                            // if(  step_two() == 1){
-                            //   return true;
-                            // }else{
-                            // return false;
-                            // }
+                      
+                        return true
+                            return step_two() == 1 ? true : false
 
                             break;
 
                         case 3:
-
-                            //    if(step_three()){ return true}else{return false}
-                            // return true;
-
-                            step_four();
-                           return false;
+                 
+                        return true
+                     
+                            return step_three() == 1 ? true : false
 
                             break;
 
                         case 4:
+      
+                        return true
+                        
+                            return step_four() == 1 ? true : false
 
-                           step_four();
-                           return false;
+                            break;
 
-
-                        break;
 
 
                     }
@@ -1357,8 +740,11 @@
 
                 },
                 onSubmit: function() {
-                    alert('Form submitted!');
-                    return true;
+
+
+                    return false;
+
+
                 }
             }
 
@@ -1380,53 +766,43 @@
 
         // ###             step _ one                ###
 
-        function step_one() {
+        function step_one(flag) {
 
-            var state_client = $('input[name="state_client"]:checked').val();
-            if (!state_client) {
-                $('#error_state_client').show();
+            $('#result_ajax').val('0');
 
-            } else {
-                if (state_client == 'new') {
-                    data = {
-                        'state_client': state_client,
-                        'name_client': $('#name_client').val(),
-                        'phone': $('.new_client_phone').val(),
-                    }
-                } else {
-                    data = {
-                        'state_client': state_client,
-                        'phone': $('.old_client_phone').val(),
-                    }
-                }
+            $('#name_client_error').text('');
+            $('#phone_client_error').text('');
+
+
+
+            if ($('#name_client').val() == '') {
+                $('#name_client_error').text('يجب إدخال أسم الزبون .')
+                flag = 0;
             }
-            var url = '{{ route('office.step_one.offer') }}';
 
-            $.ajax({
-                type: "GET",
-                url: url,
-                data: data,
-                cache: false,
-                async: false,
-                success: function(res) {
-                    if (res.state == 400) {
-                        clear_error();
-                        $('#result_ajax').val('0');
-                        if (state_client == 'old') {
-                            $('#phone_old_error').empty("");
-                            $('#phone_old_error').text(res.errors.phone);
-                        } else {
-                            $.each(res.errors, function(key, err_value) {
-                                $('#' + key + '_error').empty("");
-                                $('#' + key + '_error').text(err_value);
-                            });
-                        }
-                    } else {
-                        clear_error();
-                        $('#result_ajax').val('1');
-                    }
-                }
-            });
+            if ($('#phone_client').val() == '') {
+                $('#phone_client_error').text('يجب إدخال رقم الزبون .')
+                flag = 0;
+            }
+
+            // if($('#name_client').length != 10 ){
+
+            // }
+
+            if ($('#name_client') > 30) {
+                $('#name_client_error').text('يجب أن  لا يتعدي الأسم 30 حرف . ')
+                flag = 0;
+            }
+
+            if ($('#phone_client').length == 0) {
+                $('#phone_client_error').text('يجب إدخال رقم الزبون .')
+
+
+                flag = 0;
+            }
+
+            return flag;
+
 
         }
 
@@ -1437,14 +813,16 @@
 
         function step_two() {
 
-            clear_error();
+            $('#section_error').text('');
 
 
-            if ($('#section option:selected').val() != 'حدد نوع العقار') {
+
+
+            if ($('#section option:selected').val() != 'حدد القسم') {
 
                 var type_offer = $('#section').val();
                 step_two_edit_form(type_offer);
-                //  step_three_process('clear');
+                step_three_rest_form_error();
                 return 1;
 
             } else {
@@ -1456,8 +834,7 @@
 
 
         function step_two_edit_form(type) {
-
-            step_two_hidden_forms();
+            step_two_rest_forms();
 
 
             switch (type) {
@@ -1465,31 +842,47 @@
                 case 'apartment':
 
                     $('#text_title_detials').text(' - شقق');
-                    $('#apartment').show();
+                    $('#wings_div').hide();
+                    $('#area_land_div').hide();
+
                     break;
 
                 case 'houses':
+
                     $('#text_title_detials').text(' - منازل');
-                    $('#houses').show();
+                    $('#wings_div').hide();
+
                     break;
 
                 case 'villas_palaces':
-                    $('#text_title_detials').text(' - فلل-قصور');
 
-                    $('#villas_palaces').show();
+                    $('#text_title_detials').text(' - فلل-قصور');
 
                     break;
 
                 case 'lands':
                     $('#text_title_detials').text(' - أراضي');
-                    $('#lands').show();
+                    $('#wings_div').hide();
+                    $('#area_div').hide();
+                    $('#age_div').hide();
+                    $('#room_div').hide();
+                    $('#bathroom_div').hide();
+                    $('#furnished_div').hide();
+                    $('#floor_div').hide();
+
 
                     break;
 
                 case 'commercial':
                     $('#text_title_detials').text(' - مشاريع تجارية');
 
-                    $('#commercial').show();
+                    $('#wings_div').hide();
+                    $('#room_div').hide();
+                    $('#area_land_div').hide();
+                    $('#age_div').hide();
+                    $('#bathroom_div').hide();
+                    $('#floor_div').hide();
+                    $('#furnished_div').hide();
 
                     break;
 
@@ -1501,31 +894,35 @@
 
         }
 
-        function step_two_hidden_forms() {
 
-            $('#apartment').hide();
-            $('#houses').hide();
-            $('#villas_palaces').hide();
-            $('#lands').hide();
-            $('#commercial').hide();
+        function step_two_rest_forms() {
 
+            $('#area_div').show();
+            $('#wings_div').show();
+            $('#area_land_div').show();
+            $('#age_div').show();
+            $('#bathroom_div').show();
+            $('#room_div').show();
+            $('#floor_div').show();
+            $('#furnished_div').show();
 
         }
 
 
+
         function step_three() {
 
-            step_three_process('clear');
-            if (step_three_process('check')) {
-                return true
+            step_three_rest_form_error()
+            if (step_three_process()) {
+                return 1
             } else {
-                return false
+                return 0
             }
 
 
         }
 
-        function step_three_process(type) {
+        function step_three_process() {
 
 
 
@@ -1544,21 +941,25 @@
                 '#furnished', '#price', '#title', '#description', '#extra_features', '#pyment_method'
             ];
             var lands = [
-                '#type_offer', '#document', '#area_land', '#bathroom', '#price', '#title', '#description',
+                '#type_offer', '#document', '#area_land', '#price', '#title', '#description',
                 '#extra_features', '#pyment_method'
             ];
             var commercial = [
-                '#type_offer', '#area', '#price', '#title', '#description', '#extra_features', '#pyment_method'
+                '#type_offer', '#document', '#area', '#price', '#title', '#description', '#extra_features',
+                '#pyment_method'
             ];
 
 
-
             switch ($('#section option:selected').val()) {
+
                 case 'apartment':
                     parametr = apartment
                     break;
                 case 'houses':
                     parametr = houses
+                    break;
+                case 'lands':
+                    parametr = lands
                     break;
                 case 'villas_palaces':
                     parametr = villas_palaces
@@ -1595,67 +996,134 @@
             ];
 
 
+            type = true;
+            for (let i = 0; i < parametr.length; i++) {
+                if (!$(parametr[i]).val() || $(parametr[i]).val() == 0 || $(parametr[i]).val() == null) {
 
-
-            if (type == 'clear') {
-                for (let i = 0; i < parametr.length; i++) {
+                    console.log($(parametr[i]).val() + '__' + parametr[i]);
+                    $(parametr[i] + '_error').text(' يجب عدم ترك الحقل فارغاّ .')
+                    type = false;
+                } else {
                     $(parametr[i] + '_error').text('');
                 }
-            } else if (type == 'check') {
-                type = true;
-                for (let i = 0; i < parametr.length; i++) {
-                    if (!$(parametr[i]).val() || $(parametr[i]).val() == 0) {
-                        console.log(parametr[i] + '__ ' + $(parametr[i]).val());
-
-                        $(parametr[i] + '_error').text(' يجب عدم ترك الحقل فارغاّ .')
-                        type = false;
-                    } else {
-                        $(parametr[i] + '_error').text('');
-                    }
-                }
             }
 
-            return type;
-        }
-
-
-        function step_four(){
-
-            step_four_validation();
+          return type;
 
         }
 
 
-        function  step_four_validation(){
+        function step_three_rest_form_error() {
+            var parametr = [
+                '#type_offer', '#document', '#age', '#wings', '#area_land', '#area', '#bathroom', '#room', '#floor',
+                '#furnished', '#price', '#title', '#description', '#extra_features', '#pyment_method'
+            ];
 
-            if($('#lat').text() == 0){
+            for (let i = 0; i < parametr.length; i++) {
+                $(parametr[i] + '_error').text('');
+            }
+        }
+
+    
+
+        function step_four() {
+
+            return step_four_validation(1);
+
+        }
+
+
+        function step_four_validation(flag) {
+
+            $('#map_error').hide();
+            $('#city_error').hide();
+            $('#region_error').hide();
+            $('#point_error').hide();
+
+            if ($('#lat').val() == 0) {
                 $('#map_error').show();
-                return false ;
+                flag= 0;
             }
-            if($('select[name="city"]').val()  == null ){
+            if ($('select[name="city"]').val() == null) {
                 $('#city_error').show();
-                return false ;
-            }
-            
-            if($('#region').val() ==  null ){
-                $('#region_error').show();
-                return false ;
-            }
-            if($('#point').val() ==''){
-                $('#point_error').show();
-                return false ;
+                flag= 0;       
             }
 
-            return true;
+            if ($('#region').val() == null) {
+                $('#region_error').show();
+                flag= 0;
+            }
+            if ($('#point').val() == '') {
+                $('#point_error').show();
+                flag= 0;
+            }
+
+           return flag ;
         }
 
-      
+
+        function step_five() {
+
+            $('#uplode_image_error').text('');
+
+            if ($('#uplode_image').val() == undefined)
+                $('#uplode_image_error').text('يجب تحميل المرفقات .');
+
+
+        }
+
+
+        function step_final() {
+
+            var section, type_offer, document
+            age,
+            wings,
+            area,
+            area_land,
+            room,
+            bathroom,
+            floor,
+            furnished,
+            extra_features,
+            price,
+            pyment_method,
+            title,
+            description,
+            lat,
+            lng,
+            city,
+            region,
+            point,
+            demo;
+
+
+            var url = '{{ route('office.step_four_city.offer') }}';
+
+
+
+            // data = {
+            //     ''
+            // }
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {
+                    'id_city': id_city
+                },
+                success: function(res) {
+                    $('#region').html(res.region);
+                }
+            });
+
+
+        }
+
+
 
         function clear_error() {
             $('#name_client_error').empty('');
             $('#phone_old_error').empty('');
             $('#phone_error').empty();
-            $('#section_error').empty('');
         }
     </script>
 
@@ -1664,30 +1132,31 @@
 
     <!--   Ajax section   -->
 
-<script>
-
-    //  ##############################################
-    //  ####
-    //  ####             Ajax section
-    //  ####
-    //  ##############################################
+    <script>
+        //  ##############################################
+        //  ####
+        //  ####             Ajax section
+        //  ####
+        //  ##############################################
 
         $(document).ready(function() {
-          
+
 
             $('#city').on('change', function(e) {
 
-                var id_city =  $(this).children("option:selected").val();
+                var id_city = $(this).children("option:selected").val();
 
                 e.preventDefault();
-                
+
                 var url = '{{ route('office.step_four_city.offer') }}';
                 $.ajax({
                     type: "GET",
                     url: url,
-                    data :{'id_city' : id_city},
-                    success: function(response){
-                      
+                    data: {
+                        'id_city': id_city
+                    },
+                    success: function(res) {
+                        $('#region').html(res.region);
                     }
                 });
 
@@ -1695,9 +1164,7 @@
 
 
         });
-
-
-</script>
+    </script>
 
 
 @endsection

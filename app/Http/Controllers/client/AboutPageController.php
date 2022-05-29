@@ -10,7 +10,7 @@ class AboutPageController extends Controller
 
 
     public function index(){
-        return view('client.about');
+        return view('client.agent-single');
     }
     public function offers(){
         return view('client.property-single');

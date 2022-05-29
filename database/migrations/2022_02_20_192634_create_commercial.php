@@ -17,15 +17,14 @@ class CreateCommercial extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-           
             $table->string('area');
-     
-            $table->string('extra_features');
-            $table->string('images');
-            $table->string('location_lat');
-            $table->string('location_lng');
+            $table->json('extra_features');
+            $table->string('point');
+            $table->string('lat');
+            $table->string('lng');
             $table->string('price');
-            $table->string('pyment_method');
+            $table->json('pyment_method');
+       
 
 
             $table->softDeletes();

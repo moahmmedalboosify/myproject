@@ -19,11 +19,11 @@ class CreateOfferInfo extends Migration
             $table->string('model_name');
             $table->string('model_id');
             $table->integer('sold');
-            $table->integer('number_offer');
+            $table->string('number_offer');
             $table->integer('views');
             $table->integer('state'); // sale or rent
 
-
+        
             $table->unsignedBigInteger('office_account_id');
             $table->foreign('office_account_id')->references('id')->on('office_account')->onDelete('cascade');
             
@@ -39,8 +39,8 @@ class CreateOfferInfo extends Migration
             
             
             
-            $table->unsignedBigInteger('owner_info_id');
-            $table->foreign('owner_info_id')->references('id')->on('owner_info')->onDelete('cascade');
+            $table->unsignedBigInteger('office_client_id');
+            $table->foreign('office_client_id')->references('id')->on('office_client')->onDelete('cascade');
             
             $table->softDeletes();
             $table->timestamps();

@@ -21,19 +21,18 @@ class regionSeeder extends Seeder
            'مصراته' => ['شارع طرابلس','طمينة','زاوية المحجوب','السكيرات','الغيران','المقاوبة','الرملة','9 يوليو'],
            ] ;
 
-        $city = city::pluck('id','name')->all();
 
-       foreach($city as $city){
+     
         foreach($region as $key => $rows){
-              if($city->name == $key){
+              if('طرابلس' == $key){
                 foreach($rows as $row){
                   region::create([
                       'name' => $row,
-                      'city_id' =>$city->id
+                      'city_id' =>'1'
                   ]);
                 }
               }
-        }    
+          
        }
         
 

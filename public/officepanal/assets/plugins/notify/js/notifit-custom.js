@@ -43,8 +43,8 @@ function not51() {
 }
 function not6() {
 	notif({
-		type: "primary",
-		msg: "Welcome to VALEX",
+		type: $('#more_offers').data('class'),
+		msg: $('#more_offers').data('text') ,
 		position: "right",
 		bottom:'10'
 	});

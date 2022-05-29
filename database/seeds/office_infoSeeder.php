@@ -18,11 +18,11 @@ class office_infoSeeder extends Seeder
            'email' => 'mohammed@ly' , 
            'phone' => '0910466559' , 
            'description' => 'لايوجد' , 
-           'image' => 'cool.png' , 
            'state' => '1' , 
-           'location_lat' => '52214' , 
-           'location_lng' => '32514' , 
-           'city_id' => '1' , 
+           'point' => 'يبسب' , 
+           'lat' => '52214' , 
+           'lng' => '32514' , 
+           'region_id' => '1' , 
 
         ]);
     }

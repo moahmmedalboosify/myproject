@@ -9,4 +9,9 @@ class houses extends Model
     protected $table = 'houses' ; 
     
     protected $guarded = [] ;
+
+    protected $casts = [
+        'extra_features' => 'array',
+        'pyment_method' => 'array'
+    ];
 }

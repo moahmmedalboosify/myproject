@@ -16,9 +16,7 @@ Route::get('/office/logout', 'Auth\OfficeLoginController@logout')->name('office.
 
 
 
-Route::get('test', function () {
-  return view('test');
-});
+
 
 Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Auth:office'], function () {
   
@@ -32,12 +30,17 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
   ################  route offers [ show - create - update - delete ]  ####################
 
   Route::group(['prefix' => 'offers', 'namespace' => 'offers', 'Middleware' => 'Auth:office'], function () {
-
+    Route::get('/test', function () {
+      dd (Auth::guard('office')->user()->office_info_id) ;
+    });
     Route::get('/add', 'offerController@add_offer')->name('office.add.offer');
     Route::get('/step/one', 'offerController@step_one')->name('office.step_one.offer');
     Route::get('/step/two', 'offerController@step_two')->name('office.step_two.offer');
     Route::get('/step/four/city', 'offerController@step_four_city')->name('office.step_four_city.offer');
-    Route::get('/test', 'offerController@test')->name('office.test.offer');
+    Route::post('/step/final', 'offerController@step_final')->name('office.step_final.offer');
+    Route::post('/test', 'offerController@step_final')->name('test');
+
+
   });
 
 

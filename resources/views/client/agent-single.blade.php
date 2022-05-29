@@ -1,4 +1,4 @@
-@extends('layout-client/main')
+@extends('client.layout_client.main')
 
 @section('content')
 <main id="main">

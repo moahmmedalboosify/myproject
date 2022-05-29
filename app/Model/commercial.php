@@ -9,4 +9,9 @@ class commercial extends Model
     protected $table = 'commercial';
      
     protected $guarded = [] ;
+
+    protected $casts = [
+        'extra_features' => 'array',
+        'pyment_method' => 'array'
+    ];
 }

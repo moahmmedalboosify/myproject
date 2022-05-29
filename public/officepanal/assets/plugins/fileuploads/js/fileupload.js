@@ -116,6 +116,7 @@ function Dropify(element, options) {
  */
 Dropify.prototype.onChange = function()
 {
+    $('#uplode_image_error').text('');
     this.resetPreview();
     this.readFile(this.element);
 };
@@ -489,6 +490,8 @@ Dropify.prototype.sizeToByte = function(size)
  */
 Dropify.prototype.validateImage = function()
 {
+    $('#uplode_image_error').text('');
+
     if (this.settings.minWidth !== 0 && this.settings.minWidth >= this.file.width) {
         this.pushError("minWidth");
     }
