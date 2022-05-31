@@ -15,5 +15,11 @@ class region extends Model
         return $this->belongsTo(city::class);
     }
 
+    
+    public function offer_region()
+    {
+        return $this->hasMany(offer_info::class,'region_id');
+    }
+
 }
 

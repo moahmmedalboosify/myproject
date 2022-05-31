@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Office\offers;
 use App\Model\city;
 use App\Model\lands;
 use App\Model\houses;
+use App\Model\images;
 use App\Model\region;
 use App\Model\apartment;
 use App\Model\commercial;
@@ -36,10 +37,8 @@ class offerController extends Controller
 
     public function add_offer()
     {
-
-
         $city = city::select('id', 'name')->get();
-        return view('office.offers.index', compact('city'));
+        return view('office.offers.create', compact('city'));
     }
 
 
@@ -130,64 +129,18 @@ class offerController extends Controller
 
     public function step_final(Request $request)
     {
-
-
-
-
-
-        $address = ['lat', 'lng', 'city', 'region', 'point'];
-        $data = array();
-
-
-
-
-
-
-
-
-
-
         DB::transaction(function () use ($request): void {
-
-
-
-
-            $client_id = $this->office_client($request);
-            $model_id = $this->offer_details($request);
-            $this->offer_final_store($request ,$model_id ,$client_id);
-
-            //   return response()->json([
-            //             'message'=>$this->offer_details($request) ;
-            //   ]);
+                     
+                $client_id =  $this->office_client($request);
+                $model_id  =  $this->offer_details($request);
+                $offer_id  =  $this->offer_store($request ,$model_id ,$client_id);
+                $this->offer_image($request,$offer_id);
         });
 
+        return response()->json([
+            'state' => 200
+        ]);
 
-        // if($request->hasFile('image_uplode')){
-
-
-        // return response()->json([
-        //     'message'=>$request->all()
-        // ]);
-
-        // $path = 'image/office';
-        // $file = $request->file('image_uplode');
-        // $file_name = time().'_'.$file->getClientOriginalName();
-
-        // //    $upload = $file->storeAs($path, $file_name);
-        // $upload = $file->storeAs($path, $file_name, 'public');
-
-        //     if($upload){
-        //         return response()->json([
-        //             'message'=>'uplode it complate'
-        //         ]);
-
-        //     }
-        // }else{
-        //     return response()->json([
-        //         'message'=>'uplode it not complate'
-        //     ]);
-
-        // }
     }
 
 
@@ -200,12 +153,11 @@ class offerController extends Controller
             $new_client = office_clients::create([
                 'name' => $request->name_owner,
                 'phone' => $request->phone_client,
-                'office_account_id' => Auth::user()->id
+                'office_account_id' => Auth::guard('office')->user()->id
             ]);
             return $new_client['id'];
         } else {
-            return 1;
-
+            return Auth::guard('office')->user()->id;
         }
     }
 
@@ -257,26 +209,58 @@ class offerController extends Controller
     }
 
 
-    public function  offer_final_store($request ,$model_id ,$client_id)
+    public function  offer_store($request, $model_id, $client_id)
     {
 
-       $offer_info = offer_info::create([
-             'model_name'  =>substr($request->section, 1),
-             'model_id'  => $model_id,
-             'sold'  => 0,
-             'number_offer'  =>Str::upper (Str::random(2)).rand(0,100000), 
-             'views'  => 0,
-             'state'  => 1,
-             'office_account_id'  => Auth::guard('office')->user()->id ,
-             'office_info_id'  => Auth::guard('office')->user()->office_info_id,
-             'region_id'  => $request->region,
-             'office_client_id'  => $client_id,
+        $offer_info = offer_info::create([
+            'model_name'  => substr($request->section, 1),
+            'model_id'  => $model_id,
+            'sold'  => 0,
+            'number_offer'  => Str::upper(Str::random(2)) . rand(0, 100000),
+            'views'  => 0,
+            'state'  => $request->type_offer,
+            'state_offer'  => 1,
+            'office_account_id'  => Auth::guard('office')->user()->id,
+            'office_info_id'  => Auth::guard('office')->user()->office_info_id,
+            'region_id'  => $request->region,
+            'office_client_id'  => $client_id,
         ]);
 
-       
-
-        
+        return  $offer_info->id;
     }
+
+    public function  offer_image($request, $offer_id)
+    {
+
+        if ($request->hasFile('image_uplode')) {
+            $path = 'image/office';
+            $files = $request->file('image_uplode');
+            $flag = false;
+
+            foreach ($files as $file) {
+
+                $file_name = time() . '_' . $file->getClientOriginalName();
+
+                $image =  images::create([
+                    'model_id' => $offer_id,
+                    'model_name' => 'offer_info',
+                    'name' => $file_name
+                ]);
+
+                $upload = $file->storeAs($path, $file_name, 'public');
+                if($upload){
+                    $flag =true;
+                }
+            }
+           if($flag){
+            return 200 ;
+           }else{
+            return 404 ;
+           }
+        }
+    }
+
+
 
 
 

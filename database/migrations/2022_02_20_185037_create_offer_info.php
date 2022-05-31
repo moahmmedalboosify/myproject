@@ -21,7 +21,8 @@ class CreateOfferInfo extends Migration
             $table->integer('sold');
             $table->string('number_offer');
             $table->integer('views');
-            $table->integer('state'); // sale or rent
+            $table->string('state'); // sale or rent
+            $table->integer('state_offer'); // active or not
 
         
             $table->unsignedBigInteger('office_account_id');

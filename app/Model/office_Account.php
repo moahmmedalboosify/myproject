@@ -24,5 +24,9 @@ class office_Account extends Authenticatable{
     // protected $casts = [
     //     'role' => 'array', 
     //     ];
+    public function offers()
+    {
+        return $this->hasMany(offer_info::class,'office_account_id');
+    }
 
 }

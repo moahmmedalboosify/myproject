@@ -30,15 +30,28 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
   ################  route offers [ show - create - update - delete ]  ####################
 
   Route::group(['prefix' => 'offers', 'namespace' => 'offers', 'Middleware' => 'Auth:office'], function () {
-    Route::get('/test', function () {
-      dd (Auth::guard('office')->user()->office_info_id) ;
-    });
+    // Route::get('/test', function () {
+    //   dd (/Aoffice_clients::where('phone','0910466559')->where('name','mohammed' )->select('id')->get()) ;
+    // });
     Route::get('/add', 'offerController@add_offer')->name('office.add.offer');
     Route::get('/step/one', 'offerController@step_one')->name('office.step_one.offer');
     Route::get('/step/two', 'offerController@step_two')->name('office.step_two.offer');
     Route::get('/step/four/city', 'offerController@step_four_city')->name('office.step_four_city.offer');
-    Route::post('/step/final', 'offerController@step_final')->name('office.step_final.offer');
+    Route::post('/step/final','offerController@step_final')->name('office.step_final.offer');
     Route::post('/test', 'offerController@step_final')->name('test');
+
+
+
+
+                      ################  view offers           ####################
+
+    Route::get('/show', 'indexController@index')->name('office.index.offer');
+    Route::get('/display', 'indexController@fetch')->name('office.fetch.offer');
+    Route::get('/view/details/{id}', 'indexController@view_offer')->name('office.view_offer.offer');
+    Route::post('/modal/edit/client/info', 'indexController@edit_client_ajax')->name('office.edit_client_ajax.offer');
+    Route::post('/modal/edit/offer/info', 'indexController@edit_offer_info_ajax')->name('office.edit_offer_info_ajax.offer');
+
+
 
 
   });
@@ -74,3 +87,5 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
 Route::get('/show/test', 'office\roles\roleController@fetch_data')->name('office.show_ajax.roles');
 
 Route::get('/show/users', 'office\roles\employeeController@fetch_data')->name('office.show_users.roles');
+
+Route::get('/client/ajax', 'office\offers\indexController@view_offer_client_info_ajax')->name('office.client_ajax.offer');
