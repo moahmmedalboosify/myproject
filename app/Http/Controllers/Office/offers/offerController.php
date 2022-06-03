@@ -42,67 +42,70 @@ class offerController extends Controller
     }
 
 
-    public function step_one(Request $request)
-    {
+ 
 
 
-        // delete data from session becouse new step
-        if (Session::has('offer_data')) {
-            Session::forget('offer_data');
-        }
+    // public function step_one(Request $request)
+    // {
 
-        $rules = [
-            'name_client' => 'required|alpha',
-            'phone' => 'required|unique:owner_info,phone|digits:10',
-        ];
-        $message = [
-            'name_client.alpha' => 'يجب أن يتكون الأسم من حروف.',
-            'name_client.required' => 'يجب أدخال الأسم.',
-            'phone.required' => 'يجب إدخال رقم الهاتف.',
-            'phone.unique' => 'هذا الرقم موجود مسبقا.',
-            'phone.digits' => 'يجب أن يتكون من 10 أرقام.',
-        ];
 
-        if ($request->state_client == 'old') {
-            $rules = [
-                'phone' => 'required|exists:owner_info,phone|digits:10',
-            ];
-            $message = [
-                'phone.required' => 'يجب إدخال رقم الهاتف.',
-                'phone.exists' => 'هذا الرقم غير موجود .',
-                'phone.digits' => 'يجب أن يتكون من 10 أرقام.',
-            ];
-        }
+    //     // delete data from session becouse new step
+    //     if (Session::has('offer_data')) {
+    //         Session::forget('offer_data');
+    //     }
 
-        $validator = Validator::make($request->all(), $rules, $message);
+    //     $rules = [
+    //         'name_client' => 'required|alpha',
+    //         'phone' => 'required|unique:owner_info,phone|digits:10',
+    //     ];
+    //     $message = [
+    //         'name_client.alpha' => 'يجب أن يتكون الأسم من حروف.',
+    //         'name_client.required' => 'يجب أدخال الأسم.',
+    //         'phone.required' => 'يجب إدخال رقم الهاتف.',
+    //         'phone.unique' => 'هذا الرقم موجود مسبقا.',
+    //         'phone.digits' => 'يجب أن يتكون من 10 أرقام.',
+    //     ];
 
-        if ($validator->fails()) {
-            return response()->json([
-                'state' => '400',
-                'errors' => $validator->messages()
-            ]);
-        } else {
-            if ($request->state_client == 'new') {
-                $request->session()->put('offer_data', array(
-                    'state_client' => $request->state_client,
-                    'name_client' => $request->name_client,
-                    'phone' => $request->phone,
-                    'ask' => $request->client_offer_counter,
-                ));
-            } else {
-                $request->session()->put('offer_data', array(
-                    'state_client' => $request->state_client,
-                    'phone' => $request->phone,
-                    'ask' => $request->client_offer_counter_old,
-                ));
-            }
+    //     if ($request->state_client == 'old') {
+    //         $rules = [
+    //             'phone' => 'required|exists:owner_info,phone|digits:10',
+    //         ];
+    //         $message = [
+    //             'phone.required' => 'يجب إدخال رقم الهاتف.',
+    //             'phone.exists' => 'هذا الرقم غير موجود .',
+    //             'phone.digits' => 'يجب أن يتكون من 10 أرقام.',
+    //         ];
+    //     }
 
-            return response()->json([
-                'state' => '200',
-                'message' => 'save data to session'
-            ]);
-        }
-    }
+    //     $validator = Validator::make($request->all(), $rules, $message);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'state' => '400',
+    //             'errors' => $validator->messages()
+    //         ]);
+    //     } else {
+    //         if ($request->state_client == 'new') {
+    //             $request->session()->put('offer_data', array(
+    //                 'state_client' => $request->state_client,
+    //                 'name_client' => $request->name_client,
+    //                 'phone' => $request->phone,
+    //                 'ask' => $request->client_offer_counter,
+    //             ));
+    //         } else {
+    //             $request->session()->put('offer_data', array(
+    //                 'state_client' => $request->state_client,
+    //                 'phone' => $request->phone,
+    //                 'ask' => $request->client_offer_counter_old,
+    //             ));
+    //         }
+
+    //         return response()->json([
+    //             'state' => '200',
+    //             'message' => 'save data to session'
+    //         ]);
+    //     }
+    // }
 
 
     public function step_four_city(Request $request)
@@ -136,11 +139,11 @@ class offerController extends Controller
                 $offer_id  =  $this->offer_store($request ,$model_id ,$client_id);
                 $this->offer_image($request,$offer_id);
         });
-
         return response()->json([
             'state' => 200
         ]);
 
+     
     }
 
 
@@ -157,7 +160,7 @@ class offerController extends Controller
             ]);
             return $new_client['id'];
         } else {
-            return Auth::guard('office')->user()->id;
+            return 1;
         }
     }
 

@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Model;
+use App\Model\offer_info;
+
+
+use PhpParser\Node\Expr\AssignOp\Mod;
 use Spatie\Permission\Traits\HasRoles;
-
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use PhpParser\Node\Expr\AssignOp\Mod;
-use Illuminate\Database\Eloquent\Model;
 
 class office_Account extends Authenticatable{
     

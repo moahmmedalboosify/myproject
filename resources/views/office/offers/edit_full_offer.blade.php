@@ -133,11 +133,14 @@
                     <div id="show_new">
                         <div class="my-3">
                             <div class="row">
+                                @foreach ($data as $key => $row)
+
                                 <div class="col-lg-6">
+
                                     <label for="inputName" class="control-label">
                                         <h6> إسم الزبون : </h6>
                                     </label>
-                                    <input type="text" class="form-control " id="name_client" name="name_owner" value=""
+                                    <input disabled type="text" class="form-control " id="name_client" name="name_owner" value="{{$row->clients->name}}"
                                         title="يرجي ادخال أسم الزبون" min="10" max="10">
                                     <span id="name_client_error" class="text-danger"></span>
                                 </div>
@@ -145,19 +148,19 @@
                                     <label for="inputName" class="control-label">
                                         <h6> رقم الزبون : </h6>
                                     </label> <br>
-                                    <input class="form-control" id="phone_client" name="phone_client" type="text">
+                                    <input disabled class="form-control" id="phone_client" name="phone_client" value="{{$row->clients->phone}}" type="text">
                                     <span id="phone_client_error" class="text-danger"></span>
 
+                                    <input  class="form-control" id="id_offer" name="id_offer" value="{{$row->id}}" type="hidden">
+                                    <input  class="form-control" id="modal_name_offer" name="modal_name_offer" value="\{{$row->model_name}}" type="hidden">
+                                    <input  class="form-control" id="modal_id_offer" name="modal_id_offer" value="{{$row->model_id}}" type="hidden">
+
                                 </div>
+                                @endforeach
 
                             </div>
                         </div>
-                        <button onclick="not6()" id="more_offers" data-class="success" data-value="0"
-                            data-text="سيتم حفظ بيانات الزبون  وتخطي هذه المرحلة" class="btn btn-default"
-                            title="لدي الزبون أكثر من عقار"
-                            style="width: 70px; height:39px;    color: rgb(1, 98, 232);  font-size: 50px "><i
-                                class="fa-solid fa-square-plus"></i>
-                        </button>
+                        
 
 
                     </div>
@@ -465,7 +468,9 @@
                                 </label>
                                 <select name="region" id="region" class="form-control">
                                     <!--placeholder-->
-                                    <option value="0" selected disabled>حدد المنطقة</option>
+                                     @foreach ($data as $row)
+                                        <option value="{{ $row->regions->id }}"> {{ $row->regions->name }} </option>
+                                    @endforeach
                                 </select>
                                 <span id="region_error" class="text-danger" style="display: none">يجب تحديد
                                     المنطقة.</span>
@@ -486,7 +491,7 @@
                 </div>
             </div>
 
-            <div class="list-group-item py-3" data-acc-step>
+            {{-- <div class="list-group-item py-3" data-acc-step>
                 <h5 class="mb-0" data-acc-title>مرفقات العقار<i
                         style="font-size:1.5em; color:rgb(253, 253, 253); float:left" class="la la-camera"></i></h5>
                 <div data-acc-content>
@@ -498,7 +503,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
 
@@ -671,22 +676,21 @@
     <script>
 
         $(document).ready(function() {
-
-
+            
 
             $('#form').on('submit', function(e) {
                 e.preventDefault();
-
+                console.log( 'test')
                 var form = new FormData(this);
-
-                var url = '{{ route('office.step_final.offer') }}';
+                var id = $('#id_offer').val()
+                var url = '{{ route('office.edit_full_offer_final_ajax.offer', ':id') }}';
+                url = url.replace(':id', id);
                 
                 
 
-                console.log(form)
                 $.ajax({
                     url: url,
-                    method: 'POST', 
+                    type: "POST",
                     data: form,
                     cache: false,
                     contentType: false,
@@ -695,19 +699,24 @@
 
 
                     success: function(data) {
+
+                        console.log(data) ;
                         
                         if(data.state == 200){
-                            $('#more_offers').data('value','1') ;
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                title: 'تم إضافة العرض بنجاح.',
+                                title: 'تم تحديث العرض بنجاح.',
                                 showConfirmButton: false,
                                 timer: 3000
                             });
-                            location.reload();
-                        
-                        }
+                           
+                            var id = $('#id_offer').val()
+                            var url = '{{ route('office.view_offer.offer', ':id') }}';
+                            url = url.replace(':id', id);
+                            location.href = url ;
+                               
+                      }
                       
                             
 
@@ -736,26 +745,26 @@
 
                         case 2:
                       
-                        return true
                             return step_two() == 1 ? true : false
 
                             break;
 
                         case 3:
                  
-                        return true
-                     
+                           return true;
+
                             return step_three() == 1 ? true : false
 
                             break;
 
-                        case 4:
-      
-                        return true
-                        
+                            case 4:
+                 
+                            return true;
+
                             return step_four() == 1 ? true : false
 
                             break;
+
 
 
 
@@ -861,8 +870,10 @@
         function step_two_edit_form(type) {
             step_two_rest_forms();
 
+            console.log()
 
-            switch (type) {
+             //value type = /value type.substring(1)  for remove first
+            switch (type.substring(1)) {
 
                 case 'apartment':
 
@@ -975,7 +986,7 @@
             ];
 
 
-            switch ($('#section option:selected').val()) {
+            switch ($('#section option:selected').val().substring(1)) {
 
                 case 'apartment':
                     parametr = apartment

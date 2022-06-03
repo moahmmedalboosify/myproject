@@ -16,18 +16,17 @@
             @php
               $i=0;  
             @endphp
-            @foreach ($data as $key => $row)
+           
                 <tr>
-                    {{-- {{ $row->state_offer }}  {{ $row->model_name }}<  --}}
                     <td>{{ ++$i }}</td>
-                    <td >{{ $row->number_offer }}</td>
+                    <td >{{ $data->number_offer }}</td>
                     <td>
-                       @switch($row->model_name)
+                       @switch($data->model_name)
                            @case('commercial')
                                  تجاري
                                @break
-                           @case('land')
-                                 أرضي
+                           @case('lands')
+                                 أراضي
                                @break
                             @case('apartment')  
                                 شقق
@@ -41,22 +40,22 @@
                        @endswitch
 
                     </td>
-                    <td>{{ $row->state }}</td>
-                    @if($row->state_offer == 1)
+                    <td>{{ $data->state }}</td>
+                    @if($data->state_offer == 1)
                         <td> <label  class="badge badge-success">مفعل</label>  </td>   
                     @else
                     <td> <label class="badge badge-danger">غير مفعل</label> </td>   
                     @endif
-                    <td>{{ $row->views }}</td>
-                    <td> <label class="badge badge-success">{{ $row->users->email }}</label> </td>
-                    <td>
-                     <button id="edit_offer_info_btn" data-value="{{$row->id}}" data-number_offer="{{ $row->number_offer }}" data-type_offer="{{$row->model_name}}"
-                        data-state="{{ $row->state }}" data-state_offer="{{ $row->state_offer }}"  data-views="{{ $row->views }}"  data-user="{{ $row->users->email }}" class="btn btn-sm btn-info"
+                    <td>{{ $data->views }}</td>
+                    
+                    <td> <label class="badge badge-success">{{$data->user->email}}</label> </td>
+                                <td>
+                     <button id="edit_offer_info_btn" data-value="{{$data->id}}" data-number_offer="{{ $data->number_offer }}" data-type_offer="{{$data->model_name}}"
+                        data-state="{{ $data->state }}" data-state_offer="{{ $data->state_offer }}"  data-views="{{ $data->views }}"  data-user="{{ $data->user->email }}" class="btn btn-sm btn-info"
                                 title="تعديل"><i class="las la-pen"></i></button>
                     </td> 
                     
                 </tr>
-            @endforeach
         </tbody>
     </table>
 </div> 
@@ -84,14 +83,23 @@
                         </span>
                     </div>
 
-                    <div class="parsley-input col-md-6 mg-t-20 mg-md-t-0" id="lnWrapper">
+                     <div class="parsley-input col-md-6 mg-t-20 mg-md-t-0" id="lnWrapper">
                         <label>نوع العقار: <span class="tx-danger">*</span></label>
-                        <input disabled class="form-control form-control-sm"
-                            data-parsley-class-handler="#lnWrapper" name="type_offer" id="type_offer" 
-                            type="text">
+                        
+                            <select name="type_offer" id="type_offer" class="form-control  nice-select  custom-select">
+                                <option value="">
+    
+                                </option>
+                                <option value="apartment"> شقق</option>
+                                <option value="houses"> منازل </option>
+                                <option value="villas_palaces"> فلل-قصور </option>
+                                <option value="lands"> أراضي </option>
+                                <option value="commercial"> تجاري </option>
+
+                            </select>
                         <span id="email_error">
                         </span>
-                    </div>
+                     </div>
                 </div>
               
                 <div class="row mg-b-20">
@@ -150,9 +158,6 @@
                         </span>
                     </div>
                 </div>
-
-              
-
 
 
             </div>

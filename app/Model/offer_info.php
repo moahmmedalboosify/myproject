@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\office_Account;
 use Illuminate\Database\Eloquent\Model;
 
 class offer_info extends Model
@@ -11,18 +12,18 @@ class offer_info extends Model
     protected $guarded = [] ;
     
 
-    public function  users()
+    public function  user()
     {
-        return $this->belongsTo(office_Account::class,'id');
+        return $this->belongsTo('App\Model\office_Account','office_account_id', 'id');
     }
 
     public function  regions()
     {
-        return $this->belongsTo(region::class,'id');
+        return $this->belongsTo(region::class,'region_id', 'id');
     }
 
     public function  clients()
     {
-        return $this->belongsTo(office_clients::class,'id');
+        return $this->belongsTo(office_clients::class,'office_client_id','id');
     }
 }

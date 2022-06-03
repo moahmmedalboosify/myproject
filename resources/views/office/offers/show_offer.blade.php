@@ -1,5 +1,9 @@
 @extends('layouts.master')
 @section('css')
+
+
+<link href="{{URL::asset('officepanal/assets/plugins/datatable/css/jquery.dataTables.min.css')}}" rel="stylesheet">
+<link href="{{URL::asset('officepanal/assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
     <!--- Internal Select2 css-->
     <link href="{{ URL::asset('officepanal/assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <!---Internal Fileupload css-->
@@ -58,7 +62,7 @@
                                     <li><a href="#tab2" class="nav-link " data-toggle="tab">معلومات العقار</a></li>
                                     <li><a href="#tab3" class="nav-link " data-toggle="tab">تفاصيل العقار</a></li>
                                     <li><a href="#tab4" class="nav-link " data-toggle="tab">عنوان العقار</a></li>
-                                    <li><a href="#tab4" class="nav-link " data-toggle="tab">مرفقات العقار</a></li>
+                                    <li><a href="#tab5" class="nav-link " data-toggle="tab">مرفقات العقار</a></li>
                                     
                                 </ul>
                             </div>
@@ -94,7 +98,11 @@
     <!-- main-content closed -->
 @endsection
 @section('js')
-    <!-- Internal Select2 js-->
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<!-- Internal Select2 js-->
     <script src="{{ URL::asset('officepanal/assets/plugins/select2/js/select2.min.js') }}"></script>
     <!--Internal Fileuploads js-->
     <script src="{{ URL::asset('officepanal/assets/plugins/fileuploads/js/fileupload.js') }}"></script>
@@ -122,7 +130,7 @@
     <script src="{{ URL::asset('officepanal/assets/js/step.one.offer.js') }}"></script>
 
    
-     {{--   client info        --}}
+     {{--   Modal  client info        --}}
    <script>
         $(document).ready(function() {
 
@@ -201,31 +209,89 @@
 
    </script>
 
-      {{--   offer info        --}}
+
+
+
+      {{--  Modal offer info        --}}
 
   
    <script>
 
     $(document).ready(function() {
-        $(document).on('click', '#edit_offer_info_btn', function(e) {
+
+
+
+
+        $(document).on('change', '#type_offer', function(e) {
 
             e.preventDefault();
+            selected = $('#edit_offer_info_btn').data('type_offer')
+            console.log(selected)
 
+            $('#edit_offer_info').modal('hide');
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        cancelButton: 'btn btn-danger mg-l-5',
+                        confirmButton: 'btn btn-success',
+                    },
+                    buttonsStyling: false
+                    })
+                    swalWithBootstrapButtons.fire({
+                            title: 'هل أنت متأكد من تغيير نوع العقار ؟ ',
+                            text: "في حالة الموافقة سيتم  الإنتقال الي إنشاء عرض جديد !",
+                            icon: 'error',
+                            showCancelButton: true,
+                            confirmButtonText: 'نعم',
+                            cancelButtonText: 'لا',
+                            reverseButtons: false
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            var id = $('#edit_offer_info_btn').data('value')
+                            var url = '{{ route('office.edit_full_offer_ajax.offer', ':id') }}';
+                            url = url.replace(':id', id);
+                            location.href = url; 
+                        } else{
+                            set_data_modal_offer_info()
+                        }
+
+                });
+        });
+        
+
+      
+
+        function set_data_modal_offer_info(){
             $('#state option[value='+$('#edit_offer_info_btn').data('state')+']').attr("selected", "selected");
+            $('#type_offer option[value='+$('#edit_offer_info_btn').data('type_offer')+']').attr("selected", "selected");
+
 
 
           $('#number_offer').val( $('#edit_offer_info_btn').data('number_offer') )
-          $('#type_offer').val( $('#edit_offer_info_btn').data('type_offer') )
           $('#state_offer').val( $('#edit_offer_info_btn').data('state_offer') )
           $('#views').val( $('#edit_offer_info_btn').data('views') )
           $('#user').val( $('#edit_offer_info_btn').data('user') )
        
             
           $('#edit_offer_info').modal('show');
+        }
+
+
+        $(document).on('click', '#edit_offer_info_btn', function(e) {
+
+            e.preventDefault();
+
+            set_data_modal_offer_info()
 
 
         }); 
-     
+
+        
+
+    //   for change value  then worring ask ? true then  send to page create new offer  else  continue for edit more fields
+
+       
+    
         $(document).on('click', '.close_edit_offer_info', function(e) {
         
               
@@ -273,11 +339,93 @@
                 }
             });
         });
+        
+        $(document).on('click', '#details_offer_btn', function(e) {
 
+            e.preventDefault();
+
+            $('#details_offer_modal').modal('show');
+
+
+        });
+
+
+        $(document).on('click', '#address_offer_btn', function(e) {
+
+          e.preventDefault();
+
+          $('#address_offer_modal').modal('show');
+
+
+        });
+
+        $(document).on('click', '.close_details_offer_modal', function(e) {
+
+        e.preventDefault();
+
+        $('#details_offer_modal').modal('hide');
+
+
+        }); 
     
     });
   
    </script>
+
+
+
+<script>
+    mapboxgl.accessToken =
+        'pk.eyJ1IjoibW9oYW1tZWRhbGJvb3NpZnkiLCJhIjoiY2wzMHBpcmgyMXJyZDNibXA2aXM4cWN6MiJ9.zh5hoOMhrgtoAudRTSXAPg';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        center: [$('#address_offer_btn').data('lng'),$('#address_offer_btn').data('lat')], // starting position [lng, lat]
+        zoom: 9 // starting zoom
+    });
+    // make new marker in static location 
+    var marker = new mapboxgl.Marker({
+            color: "red",
+            draggable: true
+        }).setLngLat($('#address_offer_btn').data('lng'),$('#address_offer_btn').data('lat'))
+        .addTo(map);
+
+    // move marker to new location and save location in var
+    // map.on('click', function(e) {
+    //     var l = e.lngLat.wrap().lat;
+    //     var g = e.lngLat.wrap().lng;
+    //     $('#lat').val(l);
+    //     $('#lng').val(g);
+    //     marker.setLngLat([g, l]).addTo(map);
+    // });
+
+ 
+    // $('#region').on('change', function(e) {
+    //     console.log( $('#region option:selected').text() );
+    //   $('.mapboxgl-ctrl-geocoder--input').val( $('#region option:selected').text() )
+    
+    // });
+
+
+    // add search plugin
+    // map.addControl(
+    //     new MapboxGeocoder({
+    //         accessToken: mapboxgl.accessToken,
+    //         mapboxgl: mapboxgl,
+    //         marker: false
+    //     })
+    // );
+
+
+    // add search plugin
+
+    mapboxgl.setRTLTextPlugin(
+        'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js');
+
+    map.addControl(new MapboxLanguage({
+        defaultLanguage: 'ar'
+    }));
+</script>
 
 
 

@@ -50,6 +50,9 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
     Route::get('/view/details/{id}', 'indexController@view_offer')->name('office.view_offer.offer');
     Route::post('/modal/edit/client/info', 'indexController@edit_client_ajax')->name('office.edit_client_ajax.offer');
     Route::post('/modal/edit/offer/info', 'indexController@edit_offer_info_ajax')->name('office.edit_offer_info_ajax.offer');
+    
+    Route::get('/edit/full/{id}', 'indexController@edit_full_offer_ajax')->name('office.edit_full_offer_ajax.offer');
+    Route::post('/edit/full/{id}', 'indexController@edit_full_offer_final_ajax')->name('office.edit_full_offer_final_ajax.offer');
 
 
 

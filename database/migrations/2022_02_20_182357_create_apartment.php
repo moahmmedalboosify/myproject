@@ -25,7 +25,6 @@ class CreateApartment extends Migration
             $table->string('age');
             $table->string('furnished');
             $table->json('extra_features');
-     
             $table->string('point');
             $table->string('lat');
             $table->string('lng');

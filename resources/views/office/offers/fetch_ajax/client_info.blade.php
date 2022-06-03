@@ -14,18 +14,20 @@
                 @php
                   $i=0;  
                 @endphp
-                @foreach ($data as $key => $row)
+               
                     <tr>
                         <td>{{ ++$i }}</td>
-                        <td >{{ $row->clients->name }}</td>
-                        <td>{{ $row->clients->phone }}</td>
-                        <td> <label class="badge badge-success">{{ $row->users->email }}</label> </td>
+                        <td >{{ $data->clients->name }}</td>
+                        <td>{{ $data->clients->phone }}</td>
+                        
+                        <td> <label class="badge badge-success">{{$data->user->email }}</label> </td>
+                   
                         <td>
-                         <button id="edit_client_btn" data-name="{{$row->clients->name}}"  data-phone="{{ $row->clients->phone}}"  data-value="{{$row->clients->id}}" class="btn btn-sm btn-info"
+                         <button id="edit_client_btn" data-name="{{$data->clients->name}}"  data-phone="{{ $data->clients->phone}}"  data-value="{{$data->clients->id}}" class="btn btn-sm btn-info"
                                     title="تعديل"><i class="las la-pen"></i></button>
                         </td> 
                     </tr>
-                @endforeach
+              
             </tbody>
         </table>
     </div> 
