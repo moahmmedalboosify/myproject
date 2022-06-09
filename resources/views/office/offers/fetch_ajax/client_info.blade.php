@@ -23,7 +23,7 @@
                         <td> <label class="badge badge-success">{{$data->user->email }}</label> </td>
                    
                         <td>
-                         <button id="edit_client_btn" data-name="{{$data->clients->name}}"  data-phone="{{ $data->clients->phone}}"  data-value="{{$data->clients->id}}" class="btn btn-sm btn-info"
+                         <button id="edit_client_btn" data-name="{{$data->clients->name}}"  data-phone="{{ $data->clients->phone}}"  data-id="{{$data->id}}"  data-id_client="{{$data->office_client_id}}" class="btn btn-sm btn-info"
                                     title="تعديل"><i class="las la-pen"></i></button>
                         </td> 
                     </tr>

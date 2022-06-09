@@ -19,28 +19,29 @@
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{ $row->number_offer }}</td>
-                    <td>{{ $row->model_name }}</td>
+                    <td>
+                        @switch($row->model_name)
+                        @case('commercial')
+                              تجاري
+                            @break
+                        @case('lands')
+                              أراضي
+                            @break
+                         @case('apartment')  
+                             شقق
+                            @break
+                         @case('houses')
+                            منازل
+                            @break   
+                         @case('villas_palaces')
+                           فلل-قصور
+                            @break   
+                    @endswitch
+                    </td>
                     <td>{{ $row->state }}</td>
                   
-                    <td> <label class="badge badge-success">{{ $user->email }}</label> </td>
+                    <td> <label class="badge badge-success">{{ $row->user->email }}</label> </td>
                 
-                    {{-- <td>
-                        @if ($user->state_account == '1')
-                            <span class="label align-center text-success d-flex">
-                                <div class="dot-label bg-success ml-1"></div>مفعل 
-                            </span>
-                        @else
-                            <span class="label text-danger d-flex">
-                                <div class="dot-label bg-danger ml-1"></div>غير مفعل
-                            </span>
-                        @endif
-                    </td>
-
-                    <td>
-                      
-
-                    </td> --}}
-
                     <td>
 
                     <div class="dropdown">
@@ -51,10 +52,10 @@
                             <a id="edit_user_btn"  href="{{route('office.view_offer.offer',['id' =>$row->id])}}" class="btn btn-sm btn-info"
                                 title="عرض التفاصيل"><i class="fa fa-eye" aria-hidden="true"></i></a>
 
-                            <a   id="delete_user_btn"  value="" class="btn btn-sm btn-success" title=" تغيير الحالة تم البيع"> 
+                            <a   id="solid_offer_btn" data-id="{{$row->id}}" class="btn btn-sm btn-success" title=" تغيير الحالة تم البيع"> 
                                 <i class="fas fa-dollar-sign"></i></a>
                                 
-                            <a   id="delete_user_btn"  value="" class="btn btn-sm btn-danger" title="حذف العقار"><i
+                            <a   id="delete_offer_btn"  data-id="{{$row->id}}"class="btn btn-sm btn-danger" title="حذف العقار"><i
                                             class="las la-trash"></i></a>
                       
                         </div>

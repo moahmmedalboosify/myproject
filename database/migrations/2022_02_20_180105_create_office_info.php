@@ -20,6 +20,7 @@ class CreateOfficeInfo extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('description');
+            $table->string('views');
             $table->string('state');
             $table->string('point');
             $table->string('lat');

@@ -12,7 +12,7 @@ class region extends Model
 
     public function cities()
     {
-        return $this->belongsTo(city::class);
+        return $this->belongsTo(city::class,'city_id');
     }
 
     

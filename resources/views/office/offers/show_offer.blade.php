@@ -1,6 +1,9 @@
 @extends('layouts.master')
+
 @section('css')
 
+<link href="{{URL::asset('officepanal/assets/plugins/multislider/multislider.css')}}" rel="stylesheet">
+<link href="{{URL::asset('officepanal/assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet">
 
 <link href="{{URL::asset('officepanal/assets/plugins/datatable/css/jquery.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{URL::asset('officepanal/assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
@@ -102,6 +105,9 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
+<script src="{{URL::asset('officepanal/assets/plugins/multislider/multislider.js')}}"></script>
+<script src="{{URL::asset('officepanal/assets/js/carousel.js')}}"></script>
+
 <!-- Internal Select2 js-->
     <script src="{{ URL::asset('officepanal/assets/plugins/select2/js/select2.min.js') }}"></script>
     <!--Internal Fileuploads js-->
@@ -136,7 +142,7 @@
 
             $(document).on('click', '#edit_client_btn', function(e) {
 
-            e.preventDefault();
+             e.preventDefault();
 
                 $('#name_client').val($('#edit_client_btn').data('name'))
                 $('#phone_client').val($('#edit_client_btn').data('phone'))
@@ -150,9 +156,10 @@
                 e.preventDefault();
 
                 $('.edit_client_save').text('تحديث');
-                
+            
+
                 data = {
-                    'id' :  $('#edit_client_btn').data('value'),
+                    'id_client' :  $('#edit_client_btn').data('id_client'),
                     'name' :  $('#name_client').val(),
                     'phone':  $('#phone_client').val()
                 } 
@@ -183,12 +190,11 @@
 
             function fetch_data_client_info(page) {
                 data = {
-                    'id' :  $('#edit_client_btn').data('value'),
-                
+                    'id' :  $('#edit_client_btn').data('id'),
                 } 
 
                     $.ajax({
-                        url: "/client/ajax?page=" + page,
+                        url: "/client/ajax?page=" + 1,
                         data: data,
                         success: function(data) {
                             $('#table_client_info').html(data);
@@ -371,6 +377,95 @@
     });
   
    </script>
+
+
+
+     {{--   Modal  image info        --}}
+ 
+<script>
+    $(document).ready(function() {
+
+        $(document).on('click', '#show_image_btn', function(e) {
+
+            e.preventDefault();
+            var el =$(this) ;
+
+            var path = el.data("path")
+            var id_offer = el.data("id_offer")
+   
+            var id = el.data("image_id")
+            var url = '{{ asset('/storage/image/office/:path') }}';
+            url = url.replace(':path', path);
+       
+             $('#image_add_src').attr("src",url);
+             $('#image_modal_id').val(id);
+             $('#offer_modal_id').val(id_offer);
+            $('#show_image_modal').modal('show');
+
+        
+        });
+
+        $(document).on('click', '.close_image_modal', function(e) {
+
+            e.preventDefault();
+            $('#image_add_src').attr("src",'');
+            $('#show_image_modal').modal('hide');
+
+
+        });
+
+        
+        $(document).on('click', '.delete_image_modal', function(e) {
+
+            e.preventDefault();
+            var offer_id =  $('#offer_modal_id').val();
+
+            $('.delete_image_modal').text('حذف...');
+
+            data = {
+                'id' :  $('#image_modal_id').val(),
+            } 
+
+
+            var url = '{{ route('office.delete_offer_image_ajax.offer') }}';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function(res) {
+
+                    if(res.state == 400){
+                            console.log(res.message) ;
+                    }else{
+                        fetch_data_image_offer(offer_id) ;
+                        $('#show_image_modal').modal('hide');
+
+                    }
+                }
+            });
+
+
+            });
+
+     
+
+   
+   
+        });
+
+        function fetch_data_image_offer(offer_id) {
+
+                    $.ajax({
+                        url: "/refresh/images",
+                        data: {'offer_id':offer_id},
+                        success: function(data) {
+                            $('#table_image_offer').html(data);
+                        }
+                    });
+        }
+
+               
+</script>
 
 
 

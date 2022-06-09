@@ -101,7 +101,6 @@
         <span></span>
         <span></span>
       </button>
-      {{-- التجمع <span class="color-b"> العقاري&nbsp;</span> --}}
       
       <a class="navbar-brand text-brand" href="index.html">التجمع <span class="color-b"> العقاري&nbsp;</span></a>
 
@@ -111,26 +110,28 @@
             <a class="nav-link active" href="index.html">الرئيسية</a>
           </li>
 
+        
           <li class="nav-item">
-            <a class="nav-link " href="{{asset('about')}}">من نحن</a>
+            <a class="nav-link " href="">عروض عقارية</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link " href="{{route('client.offers')}}">عروض عقارية</a>
+         
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خدماتنا</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item " href="property-single.html">مكاتب عقارية</a>
+              <a class="dropdown-item " href="blog-single.html">طلب خاص</a>
+            </div>
           </li>
 
           <li class="nav-item">
             <a class="nav-link " href="blog-grid.html">مقالات</a>
           </li>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خدماتنا</a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item " href="property-single.html">مكاتب عقارية</a>
-              <a class="dropdown-item " href="blog-single.html">تقييم عقاري</a>
-              <a class="dropdown-item "  href="agents-grid.html">المزيد قريبا</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link " href="{{asset('about')}}">من نحن</a>
           </li>
+
           <li class="nav-item">
             <a class="nav-link " href="contact.html">تواصل معنا </a>
           </li>

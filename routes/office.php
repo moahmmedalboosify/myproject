@@ -54,10 +54,39 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
     Route::get('/edit/full/{id}', 'indexController@edit_full_offer_ajax')->name('office.edit_full_offer_ajax.offer');
     Route::post('/edit/full/{id}', 'indexController@edit_full_offer_final_ajax')->name('office.edit_full_offer_final_ajax.offer');
 
+    Route::post('/delete/offer/image', 'indexController@delete_offer_image_ajax')->name('office.delete_offer_image_ajax.offer');
+    Route::get('/delete/offer/{id}', 'indexController@delete_offer_ajax')->name('office.delete_offer_ajax.offer');
+    Route::get('/solid/offer/{id}', 'indexController@solid_offer_ajax')->name('office.solid_offer_ajax.offer');
+
+
 
 
 
   });
+
+
+    ###############  Route requests [ show -  - delete ]  الطلبات
+
+    Route::group(['prefix' => 'requests', 'namespace' => 'requests'], function () {
+
+      Route::get('/show/requests', 'privateRequestController@index')->name('office.show.requests');
+      Route::get('/send/email', 'privateRequestController@chang_state_request')->name('office.chang_state_request.requests');
+      Route::get('/show/email/{id}', 'privateRequestController@show_email')->name('office.show_email.requests');
+      Route::get('/delete/email/{id}', 'privateRequestController@delete_email')->name('office.delete_email.requests');
+     
+    });
+
+
+
+    ###############  Route reports ##########################
+
+
+    Route::group(['prefix' => 'reports', 'namespace' => 'reports'], function () {
+
+      Route::get('/show/report/offers', 'reportOfferController@index')->name('office.index.reports');
+          
+    });
+  
 
 
   ###############  Route employee [ show - create - update - delete ]  المستخدمين
@@ -86,9 +115,26 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
     Route::post('/update/{id}', 'roleController@update')->name('office.update.roles');
   });
 
+
+  Route::group(['prefix' => 'setting', 'namespace' => 'setting'], function () {
+    
+Route::get('/show/Subscripe', 'SubscripeController@index')->name('office.index.Subscripe');
+
+   
+  });
+
 });
 Route::get('/show/test', 'office\roles\roleController@fetch_data')->name('office.show_ajax.roles');
 
 Route::get('/show/users', 'office\roles\employeeController@fetch_data')->name('office.show_users.roles');
 
+Route::get('/offers/display', 'office\offers\indexController@fetch_offers_ajax')->name('office.fetch_offers_ajax.offer');
+
 Route::get('/client/ajax', 'office\offers\indexController@view_offer_client_info_ajax')->name('office.client_ajax.offer');
+
+Route::get('/refresh/images', 'office\offers\indexController@refresh_offer_images_ajax')->name('office.refresh_offer_images_ajax.offer');
+
+Route::get('/fetch/private', 'office\requests\privateRequestController@fetch_private_request_ajax')->name('office.fetch_private_request_ajax.offer');
+
+
+

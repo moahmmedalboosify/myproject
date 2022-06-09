@@ -10,6 +10,7 @@ use App\Model\office_Account;
 use App\Model\office_clients;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Model\images;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,13 +21,13 @@ class indexController extends Controller
     {
         $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->with('user')->orderBy('id', 'DESC')->paginate(5);
         
-        foreach( $data as $row){
-            $user = office_Account::find($row->office_account_id) ;
-        }
+        // foreach( $data as $row){
+        //     $user = office_Account::find($row->office_account_id) ;
+        // }
 
         
      
-        return view('office.offers.index', compact('data','user'));
+        return view('office.offers.index', compact('data'));
     }
 
   
@@ -34,12 +35,12 @@ class indexController extends Controller
 
 
 
-    public function fetch_data(Request $request)
+    public function fetch_offers_ajax(Request $request)
     {
 
         if($request->ajax()){
-            $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->with('users')->orderBy('id', 'DESC')->paginate(5);
-            return view('office.users.index_pagination', compact('data'))->render();
+            $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->with('user')->orderBy('id', 'DESC')->paginate(5);
+            return view('office.offers.index_pagination', compact('data'))->render();
         }
     }
 
@@ -48,8 +49,7 @@ class indexController extends Controller
     {
 
         if($request->ajax()){
-            $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->where('id',$request->id)
-            ->with('users')->with('regions.cities')->with('clients')->orderBy('id', 'DESC')->paginate(5);
+            $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->where('id',$request->id)->with('clients')->first();
             return view('office.offers.fetch_ajax.client_info', compact('data')) ->render();
         }
     }
@@ -57,42 +57,51 @@ class indexController extends Controller
 
     public function view_offer($id)
     {
-         
-        $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->where('id',$id)->with('clients','user','regions')->find($id);
      
+        $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->where('id',$id)->with('clients','user','regions')->find($id);
+        if(!$data){
+            return view('404');
+
+        }else{
+            $images = images::select('id','name')->where('model_id',$data->id)->where('model_name','offer_info')->get();
         
-        $id= $data->model_id ;
-        $model =$data->model_name ;
-        $modal_name=$data->model_name ;
+
     
-
-        switch($model)
-        {
-            case('commercial'):
-                $model = 'App\Model\commercial';
-              break;
-          case('lands'):
-            $model = 'App\Model\lands';
-              break;
-           case('apartment')  :
-            $model = 'App\Model\apartment';
-              break;
-           case('houses'):
-            $model = 'App\Model\houses';
-              break ;  
-           case('villas_palaces'):
-            $model = 'App\Model\villas_palaces';
-              break   ;
-        }
+            $id= $data->model_id ;
+            $model =$data->model_name ;
+            $modal_name=$data->model_name ;
+        
+    
+            switch($model)
+            {
+                case('commercial'):
+                    $model = 'App\Model\commercial';
+                  break;
+              case('lands'):
+                $model = 'App\Model\lands';
+                  break;
+               case('apartment')  :
+                $model = 'App\Model\apartment';
+                  break;
+               case('houses'):
+                $model = 'App\Model\houses';
+                  break ;  
+               case('villas_palaces'):
+                $model = 'App\Model\villas_palaces';
+                  break   ;
+            }
+                
+    
             
-
+            $sub_model = $model::find($id); 
+       
+            $city =city::select('name')->find($data->regions->city_id);
+            
+            return view('office.offers.show_offer', compact('data','modal_name','sub_model','city','images'));
+    
+        }  
         
-        $sub_model = $model::find($id); 
-   
-        $city =city::select('name')->find($data->regions->city_id);
-        
-        return view('office.offers.show_offer', compact('data','modal_name','sub_model','city'));
-    }
+        }
 
     // thw function process when edit offer type then enter new offer in new page  the function call in page show_offer  in action  $(document).on('change', '#type_offer', function(e) 
     public function edit_full_offer_ajax($id)
@@ -209,7 +218,7 @@ class indexController extends Controller
                 'errors' => $validator->messages()
             ]);
         }else{
-            $office_client =office_clients::find($request->id);
+            $office_client =office_clients::find($request->id_client);
             $office_client->name = $request->name;
             $office_client->phone =$request->phone;
             $office_client->save();
@@ -231,5 +240,76 @@ class indexController extends Controller
         ]);
 
     }
+
+
+    public function delete_offer_image_ajax(Request $request){
+     
+        $images_offer = images::find($request->id);
+
+        $offercount =images::where('model_id',$images_offer->model_id)->get();
+
+        if( $offercount->count()>1){
+            $images_offer->delete() ;
+            return response()->json([
+                'state' => '200',
+                'message' => 'تم حذف الصورة بنجاح.'
+            ]);
+        }else{
+            return response()->json([
+                'state' => '400',
+                'message' => 'يجب أن يحتوي العقار علي صورة واحدة علي الأقل.'
+            ]);
+        }
+    }
+
+    public function refresh_offer_images_ajax(Request $request){
+        if($request->ajax()){
+
+            $images = images::select('id','name')->where('model_id',$request->offer_id)->where('model_name','offer_info')->get();
+
+
+            return view('office.offers.fetch_ajax.image_offer', compact('images')) ->render();
+        }
+    }
+
+
+    
+
+    public function delete_offer_ajax($id){
+     
+
+       $offer = offer_info::find($id);
+       if($offer){
+        \Storage::delete('image/office/'. $offer->name);
+        $offer->delete();
+        // File::delete(public_path('/storge/image/office/'.$offer->name));
+
+            return response()->json([
+                'state' => '200',
+            ]);
+       }else{
+        return view('404');
+       }
+    
+    }
+
+    public function solid_offer_ajax($id){
+
+        $offer = offer_info::find($id);
+       
+        if($offer){
+            $offer->sold =1;
+            $offer->save();
+             return response()->json([
+                 'state' => '200',
+             ]);
+        }else{
+         return view('404');
+        }
+     
+    }
+    
+
+
 
 }

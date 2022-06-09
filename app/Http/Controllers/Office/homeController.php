@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Office;
 
-use App\Http\Controllers\Controller;
+use App\Model\offer_info;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class homeController extends Controller
 {
@@ -12,6 +14,10 @@ class homeController extends Controller
         $this->middleware('auth:office',['except' => ['logout']]);
     }
     public function index(){
-        return view('office.index');
+        $count_offers  = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->count();
+        $count_offers_sold  = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->where('sold',1)->count(); ;
+
+
+        return view('office.index',compact('count_offers','count_offers_sold'));
     }
 }

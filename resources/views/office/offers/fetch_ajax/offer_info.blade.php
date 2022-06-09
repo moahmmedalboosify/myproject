@@ -2,13 +2,15 @@
     <table class="table mg-b-0 text-center text-md-nowrap table-hover " id="example1_wrapper">
         <thead>
             <tr>
-                <th class="wd-10p border-bottom-0">#</th>
-                <th class="wd-15p border-bottom-0"> رقم العقار</th>
+                <th class="wd-5p border-bottom-0">#</th>
+                <th class="wd-10p border-bottom-0"> رقم العقار</th>
                 <th class="wd-15p border-bottom-0"> نوع العقار</th>
                 <th class="wd-15p border-bottom-0"> غرض العقار</th>
-                <th class="wd-15p border-bottom-0"> حالة العرض</th>
-                <th class="wd-15p border-bottom-0"> عدد المشاهدات</th>
-                <th class="wd-15p border-bottom-0"> المستخدم</th>
+                <th class="wd-15p border-bottom-0">  حالة البيع</th>
+                <th class="wd-10p border-bottom-0"> حالة العرض</th>
+                <th class="wd-10p border-bottom-0"> عدد المشاهدات</th>
+                <th class="wd-12p border-bottom-0"> المستخدم</th>
+                <th class="wd-20p border-bottom-0"> تاريخ الإنشاء</th>
                 <th class="wd-10p border-bottom-0">العمليات</th>
             </tr>
         </thead>
@@ -46,10 +48,21 @@
                     @else
                     <td> <label class="badge badge-danger">غير مفعل</label> </td>   
                     @endif
+                    <td>
+                        @switch($data->sold)
+                        @case(1)
+                              تم البيع
+                            @break
+                        @case(0)
+                              قيد النشر
+                            @break
+                         
+                    @endswitch</td>
                     <td>{{ $data->views }}</td>
                     
                     <td> <label class="badge badge-success">{{$data->user->email}}</label> </td>
-                                <td>
+                    <td>{{date('d-m-Y', strtotime( $data->created_at))}} </td>
+                    <td>
                      <button id="edit_offer_info_btn" data-value="{{$data->id}}" data-number_offer="{{ $data->number_offer }}" data-type_offer="{{$data->model_name}}"
                         data-state="{{ $data->state }}" data-state_offer="{{ $data->state_offer }}"  data-views="{{ $data->views }}"  data-user="{{ $data->user->email }}" class="btn btn-sm btn-info"
                                 title="تعديل"><i class="las la-pen"></i></button>

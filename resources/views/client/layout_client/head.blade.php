@@ -4,6 +4,7 @@
   {{-- <title>EstateAgency Bootstrap Template - Index</title> --}}
   <meta content="" name="description">
   <meta content="" name="keywords">
+  <title> @yield("title") </title>
 
   <!-- Favicons -->
   {{-- <link href="client/assets/img/favicon.png" rel="icon"> --}}

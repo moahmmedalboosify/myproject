@@ -1,45 +1,64 @@
-<div class="card custom-card">
-    <div class="card-body ht-100p">
-        <div>
-            <h6 class="card-title mb-1">Multi Slider</h6>
-            <p class="text-muted card-sub-title">Multislider is a jQuery powered slideshow that specializes in showing more than one slide at a time. There's no need to find messy CSS and JS work arounds for other single-slide solutions. Multislider allows the developer to focus fully on each individual slide as it's own component, and then displays as many slides as you decide in a manner that is fluid, consistent, and dymanic.</p>
-        </div>
-        <div id="basicSlider">
-            <div class="MS-content">
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/1.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/2.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/3.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/4.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/5.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/6.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/7.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/8.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('assets/img/photos/9.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/10.jpg')}}" alt="" /> </a>
-                </div>
-                <div class="item">
-                    <a href="#" target="_blank"> <img src="{{URL::asset('officepanal/assets/img/photos/11.jpg')}}" alt="" /> </a>
+
+      	<div class="carousel-slider">
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+
+                    @foreach ($images as $key => $item)
+                       <div class="carousel-item {{$key ==0 ? 'active': ''}}" >
+                        <a data-id_offer={{$data->id}} data-path={{$item->name}} data-image_id={{$item->id}} id="show_image_btn"> <img style="height: 350px"src="{{asset('/storage/image/office/' . $item->name) }}" alt="img"></a>
+                       </div>
+                    @endforeach
+                   
+                <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                    <i class="fa fa-angle-left fs-30" aria-hidden="true"></i>
+                </a>
+                <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                    <i class="fa fa-angle-right fs-30" aria-hidden="true"></i>
+                </a>
+            </div>
+
+
+            <div class="clearfix">
+                <div id="thumbcarousel" class="carousel slide" data-interval="false">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            @foreach ($images as $key => $item)
+                            <div data-path={{$item->name}} data-image_id={{$item->id}}  id="show_image_btn" data-target="#carousel" data-slide-to="{{$key}}" class="thumb"><img src="{{  asset('/storage/image/office/' . $item->name) }}" alt="img"></div>
+                           @endforeach
+                         </div>
+                      
+                    </div>
+                    <a class="carousel-control-prev" href="#thumbcarousel" role="button" data-slide="prev">
+                        <i class="fa fa-angle-left fs-20" aria-hidden="true"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#thumbcarousel" role="button" data-slide="next">
+                        <i class="fa fa-angle-right fs-20" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    
+        <div class="modal" id="show_image_modal">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content tx-size-sm">
+                    <div class=" card-header tx-medium bd-0 tx-white bg-primary">
+                    عرض صورة العقار :   
+                    </div>
+                    <div class="card-body">
+                            <div>
+                                <img id="image_add_src" style="width: 100%; heigth:150px;" alt="img">
+                            </div>
+                            <input type="hidden" id="image_modal_id" value="">
+                            <input type="hidden" id="offer_modal_id" value="">
+                    </div>
+        
+                    <div class="modal-footer">
+                        <button class="btn ripple btn-danger delete_image_modal" type="button">حذف</button>
+                        <button class="btn ripple btn-secondary close_image_modal" type="button">رجوع</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+  
+     

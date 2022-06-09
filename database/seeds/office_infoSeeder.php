@@ -18,6 +18,7 @@ class office_infoSeeder extends Seeder
            'email' => 'mohammed@ly' , 
            'phone' => '0910466559' , 
            'description' => 'لايوجد' , 
+           'views' => '0' , 
            'state' => '1' , 
            'point' => 'يبسب' , 
            'lat' => '52214' , 
