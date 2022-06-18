@@ -16,10 +16,9 @@
 
 <div class="tab-pane" id="tab3">
 
-
-    @include('office.offers.fetch_ajax.details_offer')
-
-
+    <div id="table_offer_details">
+      @include('office.offers.fetch_ajax.details_offer')
+    </div>
 
 </div>
 

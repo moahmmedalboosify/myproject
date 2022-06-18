@@ -107,40 +107,57 @@
       <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" href="index.html">الرئيسية</a>
+            <a class="nav-link active" href="{{route('home')}}">الرئيسية</a>
           </li>
-
         
           <li class="nav-item">
-            <a class="nav-link " href="">عروض عقارية</a>
+            <a class="nav-link " href="{{route('view.offers')}}">عقارات</a>
           </li>
 
          
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خدماتنا</a>
             <div class="dropdown-menu">
-              <a class="dropdown-item " href="property-single.html">مكاتب عقارية</a>
+              <a class="dropdown-item " href="{{route('client.view_offices')}}">مكاتب عقارية</a>
+              @if(Auth::guard('client')->check())
               <a class="dropdown-item " href="blog-single.html">طلب خاص</a>
+              @endif
             </div>
           </li>
-
-          <li class="nav-item">
+        
+          {{-- <li class="nav-item">
             <a class="nav-link " href="blog-grid.html">مقالات</a>
-          </li>
+          </li> --}}
 
           <li class="nav-item">
-            <a class="nav-link " href="{{asset('about')}}">من نحن</a>
+            <a class="nav-link " href="{{route('client.view_about')}}">من نحن</a>
           </li>
-
+      
           <li class="nav-item">
-            <a class="nav-link " href="contact.html">تواصل معنا </a>
+            <a class="nav-link " href="{{ route('client.view_contact')}}">تواصل معنا </a>
           </li>
         </ul>
       </div>
 
-      <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+      <button type="button" class="m-l-10 float-leaft btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
         <i class="bi bi-search"></i>
       </button>
+
+
+      @if(Auth::guard('client')->check())
+      <a  href="{{ route('client.logout') }}"  title='تسجيل الخروج' style="background-color: #f04444; margin-left:10px"  type="button" class=" float-leaft  btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" >
+         <i class="bi bi-box-arrow-left"></i>
+
+      </a>
+      @else
+      <button type="button" id="test" title='تسجيل الدخول' style="background-color: #7d8575;"  class="m-l-10 float-leaft btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse">
+        <i class="bi bi-box-arrow-in-right"></i>
+      </button>
+      @endif
+     
+
+
+
 
     </div>
   </nav><!-- End Header/Navbar -->

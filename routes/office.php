@@ -10,10 +10,14 @@ use Illuminate\Support\Facades\Route;
 #######################   login    #####################
 
 Route::get('/office', 'Auth\OfficeLoginController@show_login')->name('office.show.login');
-Route::post('/office/login', 'Auth\OfficeLoginController@login')->name('office.login');
+Route::post('/office/login', 'Auth\OfficeLoginController@login')->name('office.login')->middleware('officeState');
 Route::get('/office/logout', 'Auth\OfficeLoginController@logout')->name('office.logout');
 
 
+
+Route::get('/office/subscripe/{id}', 'Auth\OfficeLoginController@show_subscripe')->name('office.show_subscripe');
+
+Route::get('/office/check', 'Auth\OfficeLoginController@check_code_subscripe')->name('office.check_code_subscripe');
 
 
 
@@ -50,6 +54,8 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
     Route::get('/view/details/{id}', 'indexController@view_offer')->name('office.view_offer.offer');
     Route::post('/modal/edit/client/info', 'indexController@edit_client_ajax')->name('office.edit_client_ajax.offer');
     Route::post('/modal/edit/offer/info', 'indexController@edit_offer_info_ajax')->name('office.edit_offer_info_ajax.offer');
+    Route::get('/modal/edit/offer/details', 'indexController@edit_offer_details_ajax')->name('office.edit_offer_details_ajax.offer');
+    Route::post('/save/edit/offer/details', 'indexController@save_edit_offer_details_ajax')->name('office.save_edit_offer_details_ajax.offer');
     
     Route::get('/edit/full/{id}', 'indexController@edit_full_offer_ajax')->name('office.edit_full_offer_ajax.offer');
     Route::post('/edit/full/{id}', 'indexController@edit_full_offer_final_ajax')->name('office.edit_full_offer_final_ajax.offer');
@@ -135,6 +141,8 @@ Route::get('/client/ajax', 'office\offers\indexController@view_offer_client_info
 Route::get('/refresh/images', 'office\offers\indexController@refresh_offer_images_ajax')->name('office.refresh_offer_images_ajax.offer');
 
 Route::get('/fetch/private', 'office\requests\privateRequestController@fetch_private_request_ajax')->name('office.fetch_private_request_ajax.offer');
+
+Route::get('/offer/details', 'office\offers\indexController@view_offer_offer_details_ajax')->name('office.view_offer_offer_details_ajax.offer');
 
 
 

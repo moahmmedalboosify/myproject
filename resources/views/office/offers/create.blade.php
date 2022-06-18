@@ -192,7 +192,7 @@
                                     <option value="\commercial"> تجاري </option>
                                 </select>
                                 <span id="section_error" class="text-danger"></span>
-                            </div>
+                            </div>  
                         </div>
                     </div>
                 </div>
@@ -736,22 +736,19 @@
 
                         case 2:
                       
-                        return true
+                     
                             return step_two() == 1 ? true : false
 
                             break;
 
                         case 3:
                  
-                        return true
-                     
                             return step_three() == 1 ? true : false
 
                             break;
 
                         case 4:
       
-                        return true
                         
                             return step_four() == 1 ? true : false
 
@@ -861,8 +858,9 @@
         function step_two_edit_form(type) {
             step_two_rest_forms();
 
+            console.log(type)
 
-            switch (type) {
+            switch (type.slice(1)) {
 
                 case 'apartment':
 

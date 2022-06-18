@@ -42,6 +42,10 @@ return [
             'driver' => 'session',
             'provider' => 'office',
         ],
+         'client' => [
+            'driver' => 'session',
+            'provider' => 'client',
+        ],
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -76,6 +80,10 @@ return [
         'office' => [
             'driver' => 'eloquent',
             'model' => App\Model\office_Account::class,
+        ],
+        'client' => [
+            'driver' => 'eloquent',
+            'model' => App\Model\client::class,
         ],
 
         // 'users' => [

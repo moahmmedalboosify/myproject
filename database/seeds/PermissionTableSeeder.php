@@ -36,7 +36,7 @@ class PermissionTableSeeder extends Seeder
         foreach ($permissions as $permission) {
 
       
-      Permission::create(['guard_name' => 'office', 'name' => $permission]);
+         Permission::create(['guard_name' => 'office', 'name' => $permission]);
 
         }
 

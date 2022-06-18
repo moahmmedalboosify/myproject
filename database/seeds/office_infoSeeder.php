@@ -12,19 +12,26 @@ class office_infoSeeder extends Seeder
      */
     public function run()
     {
+    
+
+        
         office_info::create([
            'name_office' => 'الاعمار' , 
            'name_owner' => 'محمد' , 
            'email' => 'mohammed@ly' , 
            'phone' => '0910466559' , 
-           'description' => 'لايوجد' , 
+           'description' => 'نعمل علي راحة الزبون ,نوفر جميع العروض' , 
            'views' => '0' , 
            'state' => '1' , 
-           'point' => 'يبسب' , 
+           'point' => 'جنزور السوق' , 
            'lat' => '52214' , 
            'lng' => '32514' , 
            'region_id' => '1' , 
-
         ]);
+
+       
+
+
+     
     }
 }

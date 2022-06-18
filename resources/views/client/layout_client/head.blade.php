@@ -23,3 +23,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300&display=swap" rel="stylesheet">
   <!-- Template Main CSS File -->
   <link href="client/assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+ <style>
+
+    
+    .dropdown-menu{
+      text-align: right; 
+
+    }
+</style> 

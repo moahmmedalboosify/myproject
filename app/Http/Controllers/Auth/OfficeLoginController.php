@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\office\auth\loginValidation;
+use App\Model\code_active;
+use App\Model\office_info;
 
 class OfficeLoginController extends Controller
 {
@@ -36,7 +38,6 @@ class OfficeLoginController extends Controller
             return redirect()->route('office.home');
         }
         return back()->withInput($request->only('email'))->withErrors(['password' => 'كلمة المرور غير صحيحة']);
-
        }
 
 
@@ -46,6 +47,47 @@ class OfficeLoginController extends Controller
         Session::flush();   
         return redirect()->route('office.show.login');
        }
+
+
+       
+       public function  show_subscripe($id){
+       
+             $id =$id ;
+           return view('office.subscripe.subscribe',compact('id'));
+       }
+
+
+       public function  check_code_subscripe(Request $request){
+
+     
+           $active = code_active::where('code',$request->code)->get();
+
+            if($active->count() > 0){
+               $office = office_info::where('id',$request->id)->first();
+               $office->state =1;
+               $office->save();
+
+                return response()->json([
+                    'state' => 200 ,
+                    'message' => 'تم   تفعيل المكتب  بنجاح'
+                ]);
+
+            }else{
+
+                return response()->json([
+                    'state' => 400 ,
+                    'message' => 'رمز التحقق غير صالح'
+                ]);
+            }
+
+
+       }
+
+       public function   test(){
+           dd('test');
+       }
+
+       
 
     
 

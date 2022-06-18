@@ -30,4 +30,11 @@ class office_Account extends Authenticatable{
         return $this->hasMany(offer_info::class,'office_account_id');
     }
 
+
+    
+    public function  office_infos()
+    {
+        return $this->belongsTo(office_info::class,'office_info_id', 'id');
+    }
+
 }

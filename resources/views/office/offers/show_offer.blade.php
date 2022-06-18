@@ -367,9 +367,9 @@
 
         $(document).on('click', '.close_details_offer_modal', function(e) {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        $('#details_offer_modal').modal('hide');
+            $('#details_offer_modal').modal('hide');
 
 
         }); 
@@ -378,6 +378,207 @@
   
    </script>
 
+ 
+<script>
+    $(document).ready(function() {
+
+        $(document).on('click', '.close_edit_details_offer_modal', function(e) {
+
+            e.preventDefault();
+
+            $('#edit_details_offer_model').modal('hide');
+
+
+        }); 
+
+
+        $(document).on('click', '#edit_details_offer_btn', function(e) {
+
+
+               data = {
+                    'id' :$('#sub_model_id').val(),
+                    'model' :$('#type_offer_test').val(),
+                } 
+
+                $('#model_test').val($('#type_offer_test').val())
+                $('#model_id_test').val($('#sub_model_id').val())
+
+                console.log(  $('#model').val())
+                edit_model_show_and_hide($('#type_offer_test').val());
+                $('#edit_details_offer_model').modal('show');
+
+                var url = '{{ route('office.edit_offer_details_ajax.offer') }}';
+                $.ajax({
+                    type: "GET",
+                    url: url, 
+                    data: data, 
+                    success: function(res) {
+                        $.each(res.state, function(key,value) {
+                            if($('#type_offer_test').val() =='apartment' || $('#type_offer_test').val() =='commercial' ){
+                                        if(key =='title' || key =='description' || key =='price'  || key =='area' )       
+                                        {
+                                            $('#'+key).val(value)
+
+                                        }else{
+                                                $('#'+key+'option[value="' +value+ '"]').attr('selected', 'selected');
+                                        }
+                            }else{
+
+                                if(key =='title' || key =='description' || key =='price'  || key =='area' || key =='area_land')       
+                                        {
+                                            $('#'+key).val(value)
+
+                                        }else{
+                                                $('#'+key+'option[value="' +value+ '"]').attr('selected', 'selected');
+                                        }
+                            }
+
+                            
+                           
+                        });
+                       
+                    }
+                });
+              
+          
+
+
+        }); 
+
+
+        $('#details_offer_form').on('submit', function(e) {
+            e.preventDefault();
+            var form = new FormData(this);
+
+        
+
+            var url = '{{ route('office.save_edit_offer_details_ajax.offer') }}';
+               
+            $.ajax({
+                url: url,
+                method: 'POST', 
+                data: form,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                
+                success: function(res) {
+                    $('#edit_details_offer_model').modal('hide');
+                   
+                     clearAllinput() ;
+                    fetch_data_details_offer();
+                }
+            });
+    
+
+        });
+
+
+        function fetch_data_details_offer(page) {
+                data = {
+                    'id' :  $('#id_offer').val(),
+                } 
+
+                    $.ajax({
+                        url: "/offer/details?page=" + 1,
+                        data: data,
+                        success: function(data) {
+                            console.log(data)
+                            $('#table_offer_details').html(data);
+
+                        }
+                    });
+        }
+
+              
+        function clearAllinput(){
+
+            $('#document_type').val('')
+        }
+
+
+
+
+        function edit_model_show_and_hide(type) {
+            rest_edit_model_show_and_hide();
+
+
+            switch (type) {
+
+                case 'apartment':
+
+                    $('#text_title_detials').text(' - شقق');
+                    $('#wings_div').hide();
+                    $('#area_land_div').hide();
+
+                    break;
+
+                case 'houses':
+
+                    $('#text_title_detials').text(' - منازل');
+                    $('#wings_div').hide();
+
+                    break;
+
+                case 'villas_palaces':
+
+                    $('#text_title_detials').text(' - فلل-قصور');
+
+                    break;
+
+                case 'lands':
+                    $('#text_title_detials').text(' - أراضي');
+                    $('#wings_div').hide();
+                    $('#area_div').hide();
+                    $('#age_div').hide();
+                    $('#room_div').hide();
+                    $('#bathroom_div').hide();
+                    $('#furnished_div').hide();
+                    $('#floor_div').hide();
+
+
+                    break;
+
+                case 'commercial':
+                    $('#text_title_detials').text(' - مشاريع تجارية');
+
+                    $('#wings_div').hide();
+                    $('#room_div').hide();
+                    $('#area_land_div').hide();
+                    $('#age_div').hide();
+                    $('#bathroom_div').hide();
+                    $('#floor_div').hide();
+                    $('#furnished_div').hide();
+
+                    break;
+
+
+
+            }
+
+
+
+        }
+
+
+        function rest_edit_model_show_and_hide() {
+
+            $('#area_div').show();
+            $('#wings_div').show();
+            $('#area_land_div').show();
+            $('#age_div').show();
+            $('#bathroom_div').show();
+            $('#room_div').show();
+            $('#floor_div').show();
+            $('#furnished_div').show();
+
+        }
+
+    });
+
+               
+</script>
 
 
      {{--   Modal  image info        --}}

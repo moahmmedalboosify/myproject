@@ -22,16 +22,16 @@ class regionSeeder extends Seeder
            ] ;
 
 
-     
+     $i=0 ;
         foreach($region as $key => $rows){
-              if('طرابلس' == $key){
-                foreach($rows as $row){
+          $i++;
+                foreach($rows as $index => $item){
                   region::create([
-                      'name' => $row,
-                      'city_id' =>'1'
+                      'name' => $item,
+                      'city_id' => $i
                   ]);
                 }
-              }
+             
           
        }
         

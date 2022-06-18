@@ -21,5 +21,10 @@ class region extends Model
         return $this->hasMany(offer_info::class,'region_id');
     }
 
+    public function office_region()
+    {
+        return $this->hasMany(office_info::class,'region_id');
+    }
+
 }
 

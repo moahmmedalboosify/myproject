@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Office\offers;
 
 use App\Model\city;
+use App\Model\images;
 use App\Model\commercial;
 use App\Model\offer_info;
 use Illuminate\Http\Request;
 use App\Model\office_Account;
 use App\Model\office_clients;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use App\Model\images;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Monolog\Handler\NewRelicHandler;
 
 class indexController extends Controller
 {
@@ -96,7 +98,7 @@ class indexController extends Controller
             $sub_model = $model::find($id); 
        
             $city =city::select('name')->find($data->regions->city_id);
-            
+
             return view('office.offers.show_offer', compact('data','modal_name','sub_model','city','images'));
     
         }  
@@ -309,6 +311,93 @@ class indexController extends Controller
      
     }
     
+
+
+    public function  edit_offer_details_ajax(Request $request){
+     
+        $model = App::make('\\App\\Model\\'.$request->model);
+
+        $offer = $model::find($request->id);
+
+        return response()->json([
+            'state' =>  $offer,
+        ]);
+        
+     
+    }
+
+    public function   save_edit_offer_details_ajax(Request $request){
+
+        $data = $request->all() ;
+        unset($data['model']);
+        unset($data['model_id']);
+
+        switch( $request->model)
+        {
+            case('apartment'):
+            unset($data['area_land']);
+            unset($data['wings']);
+
+              break;
+          case('houses'):
+            unset($data['wings']);
+              break;
+          
+           case('lands'):
+            unset($data['area']);
+            unset($data['wings']);  
+            unset($data['rooms']);  
+            unset($data['floor']);  
+            unset($data['bathrooms']);  
+            unset($data['furnished']);  
+            unset($data['age']);  
+             
+             break ;  
+           case('commercial'):
+            unset($data['area_land']);
+            unset($data['wings']);
+            unset($data['rooms']);  
+            unset($data['bathrooms']);  
+            unset($data['furnished']);  
+            unset($data['age']);  
+               break   ;
+        }
+
+        $model = App::make('\\App\\Model\\'.$request->model);
+    
+        $offer =  $model::find($request->model_id);
+
+       //  extra_features pyment_method
+        foreach( $data as $key => $item){
+            if($key=='extra_features' || $key=='pyment_method' ){
+                $offer->$key =  array($item);
+            }else{
+                $offer->$key =$item ;
+            }
+        
+        }
+        $offer->save();
+
+        return response()->json([
+            'state' => 200 ,
+            'message' => 'تم تحديث تفاصيل العقار بنجاح'
+        ]);
+
+
+    }
+
+
+    public function view_offer_offer_details_ajax(Request $request)
+    {
+
+        if($request->ajax()){
+            $data = offer_info::where('office_info_id',Auth::guard('office')->user()->office_info_id)->where('id',$request->id)->with('clients')->first();
+            $model = App::make('\\App\\Model\\'.$data->model_name);
+            $sub_model = $model::find( $data->model_id); 
+            return view('office.offers.fetch_ajax.details_offer', compact('data','sub_model')) ->render();
+        }
+    }
+  
 
 
 

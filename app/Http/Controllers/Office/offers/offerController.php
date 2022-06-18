@@ -45,67 +45,6 @@ class offerController extends Controller
  
 
 
-    // public function step_one(Request $request)
-    // {
-
-
-    //     // delete data from session becouse new step
-    //     if (Session::has('offer_data')) {
-    //         Session::forget('offer_data');
-    //     }
-
-    //     $rules = [
-    //         'name_client' => 'required|alpha',
-    //         'phone' => 'required|unique:owner_info,phone|digits:10',
-    //     ];
-    //     $message = [
-    //         'name_client.alpha' => 'يجب أن يتكون الأسم من حروف.',
-    //         'name_client.required' => 'يجب أدخال الأسم.',
-    //         'phone.required' => 'يجب إدخال رقم الهاتف.',
-    //         'phone.unique' => 'هذا الرقم موجود مسبقا.',
-    //         'phone.digits' => 'يجب أن يتكون من 10 أرقام.',
-    //     ];
-
-    //     if ($request->state_client == 'old') {
-    //         $rules = [
-    //             'phone' => 'required|exists:owner_info,phone|digits:10',
-    //         ];
-    //         $message = [
-    //             'phone.required' => 'يجب إدخال رقم الهاتف.',
-    //             'phone.exists' => 'هذا الرقم غير موجود .',
-    //             'phone.digits' => 'يجب أن يتكون من 10 أرقام.',
-    //         ];
-    //     }
-
-    //     $validator = Validator::make($request->all(), $rules, $message);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'state' => '400',
-    //             'errors' => $validator->messages()
-    //         ]);
-    //     } else {
-    //         if ($request->state_client == 'new') {
-    //             $request->session()->put('offer_data', array(
-    //                 'state_client' => $request->state_client,
-    //                 'name_client' => $request->name_client,
-    //                 'phone' => $request->phone,
-    //                 'ask' => $request->client_offer_counter,
-    //             ));
-    //         } else {
-    //             $request->session()->put('offer_data', array(
-    //                 'state_client' => $request->state_client,
-    //                 'phone' => $request->phone,
-    //                 'ask' => $request->client_offer_counter_old,
-    //             ));
-    //         }
-
-    //         return response()->json([
-    //             'state' => '200',
-    //             'message' => 'save data to session'
-    //         ]);
-    //     }
-    // }
 
 
     public function step_four_city(Request $request)
@@ -132,9 +71,11 @@ class offerController extends Controller
 
     public function step_final(Request $request)
     {
-        DB::transaction(function () use ($request): void {
+       $test = DB::transaction(function () use ($request){
                      
                 $client_id =  $this->office_client($request);
+            
+             
                 $model_id  =  $this->offer_details($request);
                 $offer_id  =  $this->offer_store($request ,$model_id ,$client_id);
                 $this->offer_image($request,$offer_id);
@@ -149,19 +90,35 @@ class offerController extends Controller
 
     public function  office_client($request)
     {
-
+        $id= 0;
         $client = office_clients::where('phone', $request->phone_client)->where('name', $request->name_owner)->select('id')->get();
-
+        
         if ($client->count() == 0) {
-            $new_client = office_clients::create([
-                'name' => $request->name_owner,
-                'phone' => $request->phone_client,
-                'office_account_id' => Auth::guard('office')->user()->id
-            ]);
-            return $new_client['id'];
+           $sub_client = office_clients::where('phone', $request->phone_client)->select('id')->get();
+         
+
+            if ($sub_client->count() == 0) {
+                $new_client = office_clients::create([
+                    'name' => $request->name_owner,
+                    'phone' => $request->phone_client,
+                    'office_account_id' => Auth::guard('office')->user()->id
+                ]);
+              //dd( $new_client->id);
+                
+               $id= $new_client->id;
+            goto aa ;
+            }else{
+
+                return 0;
+               
+            }
+        
         } else {
-            return 1;
+            // dd($client);
         }
+
+        aa:
+        return $id ;
     }
 
 
@@ -242,7 +199,7 @@ class offerController extends Controller
 
             foreach ($files as $file) {
 
-                $file_name = time() . '_' . $file->getClientOriginalName();
+                $file_name = time().'.'. $file->extension();
 
                 $image =  images::create([
                     'model_id' => $offer_id,
