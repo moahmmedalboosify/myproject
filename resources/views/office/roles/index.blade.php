@@ -55,9 +55,9 @@
                     <div class="col-lg-12 margin-tb">
                         <div class="pull-right" style="dir='RTL'">
                            
-                        @can('اضافة صلاحية')
+                        @can('إضافة صلاحية')
                             <button class="btn btn-success  clear_input_create btn-md col-sm-2 col-md-2 mg-t-10"
-                               id="add_role_btn" >إضافة</button>
+                               id="add_role_btn" >إضافة صلاحية</button>
                          @endcan      
                         </div>
                     </div>

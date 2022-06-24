@@ -21,8 +21,12 @@ class CreatePreviewRequests extends Migration
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('client')->onDelete('cascade');
            
-            $table->unsignedBigInteger('office_account_id');
-            $table->foreign('office_account_id')->references('id')->on('office_account')->onDelete('cascade');
+            $table->unsignedBigInteger('office_info_id');
+            $table->foreign('office_info_id')->references('id')->on('office_info')->onDelete('cascade');
+           
+
+            $table->unsignedBigInteger('offer_info_id');
+            $table->foreign('offer_info_id')->references('id')->on('offer_info')->onDelete('cascade');
            
             $table->timestamps();
         });

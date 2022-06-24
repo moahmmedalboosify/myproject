@@ -1,6 +1,8 @@
 @extends('client.layout_client.main')
 
-
+@section('title')
+المكاتب
+@endsection
 @section('content')
   <main id="main">
 
@@ -125,6 +127,9 @@
 
 
         });
+
+
+        
 
   </script>
 

@@ -52,7 +52,7 @@ class employeeController extends Controller
     {
        
          $rule =[
-            'user_name' => 'required|max:30|alpha_dash',
+            'user_name' => 'required|max:30',
             'email' => 'required|email|unique:office_account,email',
             'password' => 'required|same:confirm_password|max:30',
             'state' => 'required',
@@ -61,7 +61,7 @@ class employeeController extends Controller
          $message =[
             'user_name.required' => 'يجب أدخال الأسم. ' ,
             'user_name.max' => 'عدد الأحرف لا تتعدي 30. ' ,
-            'user_name.alpha_dash' =>'يجب أن يحتوي الأسم علي حروف  وأرقام.' ,
+           
             'email.required' => 'يجب أدخال البريدي الألكتروني.' ,
             'email.email' => 'يجب أدخال البريد بصيغه صحيحة مثلا: test@test.ly' ,
             'email.unique' => 'البريد الالكتروني موجود مسبقاّ' ,
@@ -85,8 +85,8 @@ class employeeController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->state_account = $request->state;
-            // $user->office_info_id = Auth::guard('office')->user()->office_info_id;
-            $user->office_info_id = 1;
+            $user->office_info_id = Auth::guard('office')->user()->office_info_id;
+           // $user->office_info_id = 1;
             $user->assignRole($request->role_user);
             $user->save();
 

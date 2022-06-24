@@ -41,6 +41,8 @@ Route::get('/login', 'Auth\clientLoginController@loginClient')->name('client.log
 
 Route::get('/logout', 'Auth\clientLoginController@logoutClient')->name('client.logout');
 
+Route::get('/refresh/header', 'client\indexController@refresh_header')->name('client.refresh_header');
+
 
 
 // #####################    contact us   
@@ -59,6 +61,35 @@ Route::get('/about', 'client\indexController@view_about')->name('client.view_abo
 
 Route::get('/offices', 'client\indexController@view_offices')->name('client.view_offices');
 Route::get('/offices/search', 'client\indexController@search_offices')->name('client.search_offices');
+Route::get('/offices/single/{id}', 'client\indexController@single_office')->name('client.search_single_offices');
 Route::get('/offices/view/{id}', 'client\indexController@single_office')->name('client.single_office');
 
+
+// #####################    offer single
+Route::get('/offer/{id}', 'client\indexController@view_offer_single')->name('client.view_offer_single');
+
+
+
+
+// #####################    request preview
+Route::get('/send/preview', 'client\indexController@send_preview')->name('client.request_send_preview');
+
+
+
+// #####################    request private
+Route::get('/view/private/request', 'client\indexController@view_private_request')->name('client.view_private_request');
+Route::post('/send/private/request', 'client\indexController@send_private_request')->name('client.send_private_request');
+
+
+// #####################   My request 
+
+Route::get('/my/request/{id}', 'client\indexController@my_requests')->name('client.myrequests');
+Route::get('/delete/request/{id}', 'client\indexController@delete_requests')->name('client.delete_request');
+Route::get('/details/request/{id}', 'client\indexController@details_requests')->name('client.details_request');
+
+
+
+
+// #####################   Search  
+Route::get('/Search/offer', 'client\indexController@view_offers')->name('client.search_advanced');
 

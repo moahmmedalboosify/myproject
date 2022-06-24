@@ -4,19 +4,18 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class private_request extends Model
+class preview_request extends Model
 {
-    protected $table = 'private_request';
+    protected $table = 'preview_requests';
     protected $guarded = [] ;
-
-    protected $casts = [
-        'extra_features' => 'array',
-        'address' => 'array'
-    ];
-
+    
     public function  offices()
     {
         return $this->belongsTo(office_info::class,'office_info_id', 'id');
     }
-}      
 
+    public function  offer()
+    {
+        return $this->belongsTo(offer_info::class,'offer_info_id', 'id');
+    }
+}

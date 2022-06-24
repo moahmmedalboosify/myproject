@@ -1,5 +1,7 @@
 @extends('client.layout_client.main')
-
+@section('title')
+العقارات
+@endsection
 
 @section('content')
   <main id="main">

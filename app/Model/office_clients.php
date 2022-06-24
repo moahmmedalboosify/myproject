@@ -16,4 +16,12 @@ class office_clients extends Model
         return $this->hasMany(offer_info::class,'office_client_id');
     }
 
+
+
+    public function  office_accounts()
+    {
+        return $this->belongsTo(office_Account::class,'office_account_id', 'id');
+    }
+
+
 }

@@ -26,7 +26,7 @@
     
                 <div class="col-4 mg-t-10">
     
-                <button type="button" id="name_office_search" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse" >
+                <button type="button" id="name_office_search" class="btn btn-b-n " >
                     <i class="bi bi-search"></i>
                   </button>
 

@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\office\offer\step_one_validation;
 
+
 class offerController extends Controller
 {
 
@@ -71,6 +72,8 @@ class offerController extends Controller
 
     public function step_final(Request $request)
     {
+
+        
        $test = DB::transaction(function () use ($request){
                      
                 $client_id =  $this->office_client($request);
@@ -179,10 +182,12 @@ class offerController extends Controller
             'number_offer'  => Str::upper(Str::random(2)) . rand(0, 100000),
             'views'  => 0,
             'state'  => $request->type_offer,
-            'state_offer'  => 1,
+            'state_offer'  => 1, 
+            'price'  => $request->price, 
             'office_account_id'  => Auth::guard('office')->user()->id,
             'office_info_id'  => Auth::guard('office')->user()->office_info_id,
             'region_id'  => $request->region,
+            'city_id'  => $request->city,
             'office_client_id'  => $client_id,
         ]);
 
@@ -197,10 +202,12 @@ class offerController extends Controller
             $files = $request->file('image_uplode');
             $flag = false;
 
-            foreach ($files as $file) {
+            $test = array();
 
-                $file_name = time().'.'. $file->extension();
+            foreach ($files as $key => $file) {
 
+                $file_name = rand(1,1000000000).'.'. $file->getClientOriginalExtension();
+              
                 $image =  images::create([
                     'model_id' => $offer_id,
                     'model_name' => 'offer_info',
@@ -212,6 +219,7 @@ class offerController extends Controller
                     $flag =true;
                 }
             }
+        
            if($flag){
             return 200 ;
            }else{

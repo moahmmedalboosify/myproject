@@ -75,17 +75,20 @@
   <script src="{{URL::asset('officepanal/assets/plugins/jquery/jquery.min.js')}}"></script>
 
   @yield('js')
-  <script src="client/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="client/assets/vendor/php-email-form/validate.js"></script>
-  <script src="client/assets/vendor/swiper/swiper-bundle.min.js"></script>
-  
+  <script src="{{asset('client/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{asset('client/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
 
+
+ 
   <!-- Template Main JS File -->
-  <script src="client/assets/js/main.js"></script>
-  <script src="client/assets/js/convert.js"></script>
+  <script src="{{asset('client/assets/js/main.js') }}"></script>
+  <script src="{{asset('client/assets/js/convert.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
   <script>
     $(document).ready(function() {
     
@@ -97,7 +100,7 @@
     
     
         });
-
+      
         
         $(document).on('click', '#new_account', function(e) {
           e.preventDefault();
@@ -136,6 +139,7 @@
           
          
            var url = '{{ route('client.registration') }}';
+           
            $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -174,15 +178,15 @@
           $('#password_error').text('')
 
           var data = {
-               'email' :$('#email').val(),
-               'password' :$('#password').val()
+               'email' :$('#email_login').val(),
+               'password' :$('#password_login').val()
           } 
 
          
           
          
            var url = '{{ route('client.login') }}';
-           console.log(url)
+           console.log(data)
            $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -204,10 +208,17 @@
                 }else if(res.state == 404){
                         $('#email_error').text(res.message);
                 }else{
+
+                  console.log(res.id)
                   $('#email').val(''),
                   $('#password').val('')
-            
-                  location.reload() 
+                  localStorage.setItem('state_login','200')
+                  localStorage.setItem('id_client',res.id)
+                  header_resresh();
+                   $('#login_client').modal('hide')
+                  
+
+                  //location.reload() 
 
                 }
          
@@ -218,9 +229,68 @@
           });    
  
       });
+
+      function header_resresh(){
+         var url = '{{ route('client.refresh_header') }}';
+          
+           $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+          $.ajax({
+              type: "GET",
+              url: url,
+       
+              success: function(res) {
+                $('#header_refresh').html(res)
+              }
+            });
+      }
+
+      $(document).on('click', '#logout_client', function(e) {
+          
+          e.preventDefault();
       
+          localStorage.setItem('state_login','0')
 
+          var url = '{{ route('client.logout') }}';
+          $.ajaxSetup({
+               headers: {
+                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+           });
+         $.ajax({
+             type: "GET",
+             url: url,
+            
+             success: function(res) {
+               console.log(res)
+               if(res.state == 200){
+                localStorage.removeItem("state_login");        
+                var url = '{{ route('home') }}';
+                    location.href = url ;
+                
+               }
+              }
+             
 
+         });    
+
+     });
+      
+      $(document).on('click', '#close_new_account_save', function(e) {
+                
+                e.preventDefault();
+            $('#new_account_modal').modal('hide')
+            $('#email_login').val(' '),
+            $('#password_login').val(' ')
+            $('#login_client').modal('show')
+
+                
+
+      });
+     
 
       $(document).on('change', '#search_offer_simple', function(e) {
          
@@ -241,6 +311,74 @@
           });
 
 
-        });
+      });
+
+
+      $('#city_search').on('change', function(e) {
+
+          var id_city = $(this).children("option:selected").val();
+
+          e.preventDefault();
+
+          console.log(id_city)
+          var url = '{{ route('office.step_four_city.offer') }}';
+          $.ajax({
+              type: "GET",
+              url: url,
+              data: {
+                  'id_city': id_city
+              },
+              success: function(res) {
+                console.log(res.region)
+                  $('#region_search').html(res.region);
+              }
+          });
+
+      });
+
+      $('#form_search').on('submit', function(e) {
+
+
+        e.preventDefault();
+
+       
+       var data ={
+        'city' : $('#city_search').val(),
+        'region' : $('#region_search').val(),
+        'price_max' : $('#price_max').val(),
+        'type_offer' : $('#type_offer').val(),
+        'state_offer' : $('#state_offer').val(),
+        'search' : '200'
+       }
+    
+
+          var url = '{{ route('client.search_advanced') }}';
+            
+            $.ajaxSetup({
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  }
+            });
+
+            $.ajax({
+                url: url,
+                method: 'GET', 
+                data: data,
+              
+                success: function(res) {
+                  $('#offer_fetch').html(res)
+                  $('body').removeClass('box-collapse-open');
+                  $('body').addClass('box-collapse-closed');
+
+                  
+                
+                  
+                  
+                }
+
+            });    
+  
+      });    
+
     });
 </script>

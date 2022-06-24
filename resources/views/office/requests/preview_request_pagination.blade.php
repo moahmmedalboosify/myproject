@@ -4,13 +4,13 @@
         <thead>
             <tr>
                 <th class="wd-5p border-bottom-0">#</th>
-                <th class="wd-10p border-bottom-0">نوع العقار</th>
-                <th class="wd-10p border-bottom-0">المساحة</th>
-                <th class="wd-15p border-bottom-0">السعر</th>
-                <th class="wd-15p border-bottom-0">الوصف</th>
-                <th class="wd-15p border-bottom-0">العنوان</th>
+                
+                <th class="wd-10p border-bottom-0">الرسالة</th>
                 <th class="wd-10p border-bottom-0">حالة الطلب</th>
-                <th class="wd-15p border-bottom-0">رقم الهاتف</th>
+                <th class="wd-10p border-bottom-0"> إسم الزبون</th>
+                <th class="wd-10p border-bottom-0"> رقم الزبون</th>
+                <th class="wd-10p border-bottom-0"> رقم العقار</th>
+                 {{-- ->offer->number_offer --}}
                 <th class="wd-10p border-bottom-0">تاريخ الإنشاء</th>
                 <th class="wd-20p border-bottom-0">العمليات</th>
             </tr>
@@ -23,35 +23,34 @@
             @foreach ($data as $key => $row)
                 <tr>
                     <td>{{ ++$i }}</td>
-                    <td>{{ $row->type_request }}</td>
-                    <td>{{ $row->area_from .' => ' . $row->area_to  }}</td>
-                    <td>{{ number_format($row->price_from) .' => ' . number_format($row->price_to)  }}</td>
-                    
                     <td>{{ $row->message }}</td>
-                    <td>{{ $row->city }}</td>
                     <td> <label class="badge badge-success">{{ $row->state }}</label> </td>
-                    <td>{{ $row->phone['phone'] }}</td>
-                        <td>{{date('d-m-Y', strtotime( $row->created_at))}} </td>
+                    <td>{{  $row->phone['name'] }}</td>
+                    <td>{{  $row->phone['phone'] }}</td>
+                 
+                    <td>
+                        <a title="عرض العقار" href="{{route('office.view_offer.offer',['id' =>$row->offer->id])}}">
+                            {{  $row->offer->number_offer }}
+                        </a>
+                    </td>
+                  
+                   
+                    <td>{{date('d-m-Y', strtotime( $row->created_at))}} </td>
+                 
 
                     <td>
 
-                        @if($row->state == 'تم التواصل مع الزبون')
-                          @can('عرض البريد الألكتروني')
-                                <a id="show_email_btn" data-id="{{$row->id }}" class="btn btn-sm btn-info"
-                                    title="عرض البريد الألكتروني"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <br>
-                            @endcan
-                        @endif
-                        
-                        @can('إرسال بريدالألكتروني إلي العميل')
-                          <a  id="send_email_btn" data-id="{{$row->id }}" data-email="{{$row->phone['email'] }}" data-name="{{$row->phone['name']}}" class="btn btn-sm btn-success" title="إرسال بريدالألكتروني إلي العميل"> 
+                      @if($row->state == 'قيد التنفيذ')
+                          @can('إرسال بريدالألكتروني إلي العميل')
+                            <a  id="send_email_btn" data-id="{{$row->id }}" data-email="{{$row->phone['email'] }}" data-name="{{$row->phone['name']}}" class="btn btn-sm btn-success" title="إرسال بريدالألكتروني إلي العميل"> 
                             <i class="fa fa-paper-plane"></i></a> <br>
-                        @endcan 
-                        
-                        @can('حذف الطلب')
-                        <a  id="delete_private_btn"  data-id="{{$row->id }}"  class="btn btn-sm btn-danger" title="حذف الطلب"><i
+                          @endcan
+                     @endif
+
+                         @can('حذف الطلب')
+                            <a  id="delete_preview_btn"  data-id="{{$row->id }}"  class="btn btn-sm btn-danger" title="حذف  الطلب"><i
                                         class="las la-trash"></i></a>
-                        @endcan 
+                          @endcan
                         
                     </td>
                 

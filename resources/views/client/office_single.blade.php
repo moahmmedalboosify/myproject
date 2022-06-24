@@ -1,10 +1,41 @@
 @extends('client.layout_client.main')
 
-
+@section('title')
+ معلومات المكتب
+@endsection
 
 @section('content')
 <main id="main">
 
+    <section class="intro-single">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 col-lg-8">
+              <div class="title-single-box">
+                <h1 class="title-single"> <strong>مكتب  <span class="color-b"> {{$office[0]['name_office']}} </span></strong></h1>
+                {{-- <span class="color-text-a">Agent Immobiliari</span> --}}
+                 <input type="hidden" id="id_office" value="{{$office[0]['id']}}" >
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+              <nav aria-label="breadcrumb" class="breadcrumb-box d-flex justify-content-lg-end">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="#">مكاتب</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a href="#">عقارية</a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    الصفحة الرئيسية
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section><!-- End Intro Single -->
+  
 
   <!-- ======= Agent Single ======= -->
   <section class="agent-single">
@@ -12,49 +43,54 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="row">
+           
+            @foreach( $office as $key => $item)
             <div class="col-md-6">
               <div class="agent-avatar-box">
-                <img src="assets/img/agent-7.jpg" alt="" class="agent-avatar img-fluid">
+                <img style="width:336; height:376px" src="{{asset('/storage/image/admin/'.$item['name']) }}" alt="" class="agent-avatar img-fluid">
               </div>
             </div>
             <div class="col-md-5 section-md-t3">
               <div class="agent-info-box">
                 <div class="agent-title">
                   <div class="title-box-d">
-                    <h3 class="title-d">Margaret Stone
-                      <br> Escala
+                    <h3 class="title-d"><strong>مكتب  <span class="color-b"> {{$item['name_office']}} </span></strong>
+                      <br> {{$item['regions']['name']}}
                     </h3>
                   </div>
                 </div>
                 <div class="agent-content mb-3">
-                  <p class="content-d color-text-a">
-                    Sed porttitor lectus nibh. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.
-                    Vivamus suscipit tortor
-                    eget felis porttitor volutpat. Vivamus suscipit tortor eget felis porttitor volutpat.
+                  <p  class="content-d color-text-a" >
+                    {{$item['description']}}
                   </p>
                   <div class="info-agents color-a">
                     <p>
-                      <strong>Phone: </strong>
-                      <span class="color-text-a"> +54 356 945234 </span>
+                      <strong>رقم الهاتف: </strong>
+                      <span class="color-text-a">  {{$item['phone']}} </span>
                     </p>
+                  
                     <p>
-                      <strong>Mobile: </strong>
-                      <span class="color-text-a"> 999 123 456 789</span>
+                      <strong>البريد الإلكتروني: </strong>
+                      <span class="color-text-a"> {{$item['email']}}</span>
                     </p>
+                   
                     <p>
-                      <strong>Email: </strong>
-                      <span class="color-text-a"> agents@example.com</span>
-                    </p>
-                    <p>
-                      <strong>skype: </strong>
-                      <span class="color-text-a"> Margaret.Es</span>
-                    </p>
-                    <p>
-                      <strong>Email: </strong>
-                      <span class="color-text-a"> agents@example.com</span>
+                      <strong>العنوان: </strong>
+                      <span class="color-text-a"> {{$item['regions']['cities']['name']}}/{{$item['regions']['name']}}</span>
                     </p>
                   </div>
+                    <a href="" onclick="return false;" id="request" data-value="0">
+                     <div class="property-price foo mg-b-20">
+                        <div class="card-header-c d-flex">
+                          <div class="card-box-ico">
+                         <strong> <h3 class="title-d" > تقييم المكتب</h3>  </strong>
+                          </div>
+                          
+                        </div>
+                    </a>
+                  
                 </div>
+           
                 <div class="socials-footer">
                   <ul class="list-inline">
                     <li class="list-inline-item">
@@ -81,307 +117,32 @@
                 </div>
               </div>
             </div>
+            @endforeach
           </div>
         </div>
+
+
+
         <div class="col-md-12 section-t8">
           <div class="title-box-d">
-            <h3 class="title-d">My Properties (6)</h3>
+            <h3 class="title-d">العقارات({{$data->count()}})</h3>
           </div>
         </div>
         <div class="row property-grid grid">
           <div class="col-sm-12">
             <div class="grid-option">
               <form>
-                <select class="custom-select">
-                  <option selected>All</option>
-                  <option value="1">New to Old</option>
-                  <option value="2">For Rent</option>
-                  <option value="3">For Sale</option>
+                <select id="search_offer_simple" class="custom-select">
+                  <option selected>جميع العقارات</option>
+                
+                  <option value="البيع">البيع</option>
+                  <option value="الإيجار">الإيجار</option>
                 </select>
               </form>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-1.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">rent | $ 12.000</span>
-                    </div>
-                    <a href="#" class="link-a">Click here to view
-                      <span class="bi bi-chevron-right"></span>
-                    </a>
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-3.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">rent | $ 12.000</span>
-                    </div>
-                    <a href="#" class="link-a">Click here to view
-                      <span class="bi bi-chevron-right"></span>
-                    </a>
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-6.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">rent | $ 12.000</span>
-                    </div>
-                    <a href="#" class="link-a">Click here to view
-                      <span class="bi bi-chevron-right"></span>
-                    </a>
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-7.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">rent | $ 12.000</span>
-                    </div>
-                    <a href="#" class="link-a">Click here to view
-                      <span class="bi bi-chevron-right"></span>
-                    </a>
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-8.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">rent | $ 12.000</span>
-                    </div>
-                    <a href="#" class="link-a">Click here to view
-                      <span class="bi bi-chevron-right"></span>
-                    </a>
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card-box-a card-shadow">
-              <div class="img-box-a">
-                <img src="assets/img/property-10.jpg" alt="" class="img-a img-fluid">
-              </div>
-              <div class="card-overlay">
-                <div class="card-overlay-a-content">
-                  <div class="card-header-a">
-                    <h2 class="card-title-a">
-                      <a href="#">204 Mount
-                        <br /> Olive Road Two</a>
-                    </h2>
-                  </div>
-                  <div class="card-body-a">
-                    <div class="price-box d-flex">
-                      <span class="price-a">rent | $ 12.000</span>
-                    </div>
-                    <a href="#" class="link-a">Click here to view
-                      <span class="bi bi-chevron-right"></span>
-                    </a>
-                  </div>
-                  <div class="card-footer-a">
-                    <ul class="card-info d-flex justify-content-around">
-                      <li>
-                        <h4 class="card-info-title">Area</h4>
-                        <span>340m
-                          <sup>2</sup>
-                        </span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Beds</h4>
-                        <span>2</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Baths</h4>
-                        <span>4</span>
-                      </li>
-                      <li>
-                        <h4 class="card-info-title">Garages</h4>
-                        <span>1</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div id="office_single_offer">
+            @include('client.fetch_ajax.office_single_offer')
           </div>
         </div>
       </div>
@@ -391,3 +152,49 @@
 </main><!-- End #main -->
 
 @endsection
+
+
+
+@section('js')
+
+
+<script>
+
+    $(document).ready(function() {
+
+        $(document).on('change', '#search_offer_simple', function(e) {
+       
+         var data = {
+               'value' :$('#search_offer_simple').val()
+         }
+
+         console.log(data)
+         var id =$('#id_office').val()
+         var url = '{{ route('client.search_single_offices', ':id') }}';
+         url = url.replace(':id', id);
+          $.ajax({
+              type: "GET",
+              url: url,
+              data: data,
+              success: function(res) {
+
+         console.log(res)
+
+                $('#office_single_offer').html(res)
+              }
+
+          });
+
+
+        });
+
+
+   });
+
+</script>
+
+
+
+
+@endsection
+

@@ -53,7 +53,7 @@
                     <div class="col-6">
                         <div class="mt-0 text-center">
                             <span class="text-white">العملاء</span>
-                            <h2 class="text-white mb-0">23</h2>
+                            <h2 class="text-white mb-0">{{$client_office}}</h2>
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                     <div class="col-6">
                         <div class="mt-0 text-center">
                             <span class="text-white"> المبيعات </span>
-                            <h2 class="text-white mb-0">15</h2>
+                            <h2 class="text-white mb-0">{{$sold_offers}}</h2>
                         </div>
                     </div>
                 </div>
@@ -90,8 +90,8 @@
                     </div>
                     <div class="col-6">
                         <div class="mt-0 text-center">
-                            <span class="text-white"> الزيارات</span>
-                            <h2 class="text-white mb-0">980</h2>
+                            <span class="text-white">  الزيارات المكتب</span>
+                            <h2 class="text-white mb-0">{{ $views_office->views}}</h2>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                     <div class="col-6">
                         <div class="mt-0 text-center">
                             <span class="text-white">العروض</span>
-                            <h2 class="text-white mb-0">35</h2>
+                            <h2 class="text-white mb-0">{{$offers}}</h2>
                         </div>
                     </div>
                 </div>
@@ -133,15 +133,15 @@
                 <div class="row">
                     <div class="col text-center">
                         <label class="tx-12">اليوم</label>
-                        <p class="font-weight-bold tx-20">15</p>
+                        <p class="font-weight-bold tx-20">{{$offers_day}}</p>
                     </div><!-- col -->
                     <div class="col border-right text-center">
                         <label class="tx-12">الأسبوع</label>
-                        <p class="font-weight-bold tx-20">25</p>
+                        <p class="font-weight-bold tx-20">{{$offers_week}}</p>
                     </div><!-- col -->
                     <div class="col border-right text-center">
                         <label class="tx-12">الشهر</label>
-                        <p class="font-weight-bold tx-20">145</p>
+                        <p class="font-weight-bold tx-20">{{$offers_mount}}</p>
                     </div><!-- col -->
                 </div><!-- row -->
                 <div class="progress ht-20 mt-4">
@@ -270,10 +270,10 @@
             element: 'morrisDonut1',
             data: [{
                 label: 'الطلبات الخاصة',
-                value: 12
+                value: {{ $request_private['all'] }}
             }, {
                 label: 'الطلبات المعاينة',
-                value: 30
+                value:  {{ $request_preview['all'] }}
             }],
             colors: ['#f7557a', '#285cf7', '#f7557a'],
             resize: true,
@@ -284,10 +284,10 @@
             element: 'morrisDonut2',
             data: [{
                 label: 'قيد التنفيذ',
-                value: 60
+                value:{{ $request_private['process'] }}
             }, {
                 label: 'تم التواصل مع العميل',
-                value: 20
+                value:{{ $request_private['done'] }}
             }],
             colors: ['#6d6ef3', '#285cf7', '#f7557a'],
             resize: true,
@@ -299,10 +299,10 @@
             element: 'morrisDonut3',
             data: [{
                 label: 'تم التواصل مع العميل',
-                value: 43
+                value: {{ $request_preview['done'] }}
             }, {
                 label:  'قيد التنفيذ',
-                value: 15
+                value: {{ $request_preview['process'] }}
             }],
             colors: ['#f7557a', '#285cf7', '#f7557a'],
             resize: true,

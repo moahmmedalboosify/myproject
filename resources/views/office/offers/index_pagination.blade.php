@@ -48,16 +48,18 @@
                         <button aria-expanded="false" aria-haspopup="true" class="btn ripple btn-primary btn-sm"
                         data-toggle="dropdown" id="dropdownMenuButton" type="button"><i class="fas fa-caret-down ml-1"></i></button>
                         <div  class="dropdown-menu tx-13">
-                           
+                            @can('عرض عقار')
                             <a id="edit_user_btn"  href="{{route('office.view_offer.offer',['id' =>$row->id])}}" class="btn btn-sm btn-info"
                                 title="عرض التفاصيل"><i class="fa fa-eye" aria-hidden="true"></i></a>
-
+                           @endcan
+                                @can('تغيير حالة العقار تم البيع')
                             <a   id="solid_offer_btn" data-id="{{$row->id}}" class="btn btn-sm btn-success" title=" تغيير الحالة تم البيع"> 
                                 <i class="fas fa-dollar-sign"></i></a>
-                                
+                                @endcan
+                                @can('حذف عقار')
                             <a   id="delete_offer_btn"  data-id="{{$row->id}}"class="btn btn-sm btn-danger" title="حذف العقار"><i
                                             class="las la-trash"></i></a>
-                      
+                                  @endcan
                         </div>
                     </div>
                        

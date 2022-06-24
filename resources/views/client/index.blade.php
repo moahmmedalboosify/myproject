@@ -1,5 +1,10 @@
 @extends('client.layout_client.main')
 
+
+@section('title')
+الصفحة الرئيسية
+@endsection
+
 @section('content')
 
 
@@ -27,9 +32,12 @@
                         <br>  رقم العقار :{{$row['number_offer']}}
                       </p>
                       <h1 class="intro-title mb-4 ">
-                        <span class="color-b">
-                        {{$row['title']}}
-                        </span> 
+                        <a href="{{route('client.view_offer_single',['id'=>$row['id']])}}">
+                          <span class="color-b">
+                            {{$row['title']}}
+                            </span> 
+                        </a>
+                        
                         <br>
                       </h1>
                       <p class="intro-subtitle intro-price">
@@ -181,7 +189,7 @@
                     <div class="card-overlay-a-content">
                       <div class="card-header-a">
                         <h2 class="card-title-a">
-                          <a href="property-single.html">
+                          <a href="{{route('client.view_offer_single',['id'=>$item['id']])}}">
                             {{$item['title']}}
                           </a>
                         </h2>
@@ -190,7 +198,7 @@
                         <div class="price-box d-flex">
                           <span class="price-a">{{$item['state']}} | $ {{number_format($item['price'])}}</span>
                         </div>
-                        <a href="#" class="link-a">المزيد من التفاصيل
+                        <a  href="{{route('client.view_offer_single',['id'=>$item['id']])}}" class="link-a">المزيد من التفاصيل
                           <span class="bi bi-chevron-right"></span>
                         </a>
                       </div>
@@ -258,7 +266,7 @@
                 <h2 class="title-a">أفضل المكاتب</h2>
               </div>
               <div class="title-link">
-                <a href="agents-grid.html">جميع المكاتب
+                <a href="{{route('client.view_offices')}}">جميع المكاتب
                   <span class="bi bi-chevron-right"></span>
                 </a>
               </div>
@@ -332,133 +340,17 @@
       </div>
     </section><!-- End Agents Section -->
 
-    <!-- ======= Latest News Section ======= -->
-    <section class="section-news section-t8">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="title-wrap d-flex justify-content-between">
-              <div class="title-box">
-                <h2 class="title-a">مقالات حديثة</h2>
-              </div>
-              <div class="title-link">
-                <a href="blog-grid.html">جميع المقالات
-                  <span class="bi bi-chevron-right"></span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="news-carousel" class="swiper">
-          <div class="swiper-wrapper">
-
-            <div class="carousel-item-c swiper-slide">
-              <div class="card-box-b card-shadow news-box">
-                <div class="img-box-b">
-                  <img src="client/assets/img/post-2.jpg" alt="" class="img-b img-fluid">
-                </div>
-                <div class="card-overlay">
-                  <div class="card-header-b">
-                    <div class="card-category-b">
-                      <a href="#" class="category-b">House</a>
-                    </div>
-                    <div class="card-title-b">
-                      <h2 class="title-2">
-                        <a href="blog-single.html">House is comming
-                          <br> new</a>
-                      </h2>
-                    </div>
-                    <div class="card-date">
-                      <span class="date-b">18 Sep. 2017</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End carousel item -->
-
-            <div class="carousel-item-c swiper-slide">
-              <div class="card-box-b card-shadow news-box">
-                <div class="img-box-b">
-                  <img src="client/assets/img/post-5.jpg" alt="" class="img-b img-fluid">
-                </div>
-                <div class="card-overlay">
-                  <div class="card-header-b">
-                    <div class="card-category-b">
-                      <a href="#" class="category-b">Travel</a>
-                    </div>
-                    <div class="card-title-b">
-                      <h2 class="title-2">
-                        <a href="blog-single.html">Travel is comming
-                          <br> new</a>
-                      </h2>
-                    </div>
-                    <div class="card-date">
-                      <span class="date-b">18 Sep. 2017</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End carousel item -->
-
-            <div class="carousel-item-c swiper-slide">
-              <div class="card-box-b card-shadow news-box">
-                <div class="img-box-b">
-                  <img src="client/assets/img/post-7.jpg" alt="" class="img-b img-fluid">
-                </div>
-                <div class="card-overlay">
-                  <div class="card-header-b">
-                    <div class="card-category-b">
-                      <a href="#" class="category-b">Park</a>
-                    </div>
-                    <div class="card-title-b">
-                      <h2 class="title-2">
-                        <a href="blog-single.html">Park is comming
-                          <br> new</a>
-                      </h2>
-                    </div>
-                    <div class="card-date">
-                      <span class="date-b">18 Sep. 2017</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End carousel item -->
-
-            <div class="carousel-item-c swiper-slide">
-              <div class="card-box-b card-shadow news-box">
-                <div class="img-box-b">
-                  <img src="client/assets/img/post-3.jpg" alt="" class="img-b img-fluid">
-                </div>
-                <div class="card-overlay">
-                  <div class="card-header-b">
-                    <div class="card-category-b">
-                      <a href="#" class="category-b">Travel</a>
-                    </div>
-                    <div class="card-title-b">
-                      <h2 class="title-2">
-                        <a href="#">Travel is comming
-                          <br> new</a>
-                      </h2>
-                    </div>
-                    <div class="card-date">
-                      <span class="date-b">18 Sep. 2017</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End carousel item -->
-
-          </div>
-        </div>
-
-        <div class="news-carousel-pagination carousel-pagination"></div>
-      </div>
-    </section><!-- End Latest News Section -->
-
-
+ 
   </main><!-- End #main -->
 
 
 
 @endsection
+
+@section('js')
+<script>
+
+ 
+</script>
+
+ @endsection

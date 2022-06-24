@@ -28,4 +28,17 @@ class office_info extends Model
         return $this->hasMany(office_Account::class,'office_info_id');
     }
 
+    public function private_request()
+    {
+        return $this->hasMany(private_request::class,'office_info_id');
+    }
+
+    
+    public function preview_request()
+    {
+        return $this->hasMany(preview_request::class,'office_info_id');
+    }
+
+  
+
 }

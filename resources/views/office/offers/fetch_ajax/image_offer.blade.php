@@ -9,12 +9,13 @@
                        </div>
                     @endforeach
                    
-                <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-                    <i class="fa fa-angle-left fs-30" aria-hidden="true"></i>
-                </a>
-                <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-                    <i class="fa fa-angle-right fs-30" aria-hidden="true"></i>
-                </a>
+                    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                        <i class="fa fa-angle-left fs-30" aria-hidden="true"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                        <i class="fa fa-angle-right fs-30" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
 
 
@@ -38,12 +39,43 @@
             </div>
         </div>
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="modal" id="show_image_modal">
-            <div class="modal-dialog modal-md" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content tx-size-sm">
-                    <div class=" card-header tx-medium bd-0 tx-white bg-primary">
-                    عرض صورة العقار :   
-                    </div>
+                 
                     <div class="card-body">
                             <div>
                                 <img id="image_add_src" style="width: 100%; heigth:150px;" alt="img">

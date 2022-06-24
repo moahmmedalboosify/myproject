@@ -216,7 +216,7 @@
                                     <!--placeholder-->
                                     <option value="0" selected disabled>حدد الغرض</option>
                                     <option value="البيع"> البيع</option>
-                                    <option value="إيجار"> إيجار</option>
+                                    <option value="الإيجار"> الإيجار</option>
                                 </select>
                                 <span id="type_offer_error" class="text-danger"></span>
                             </div>
@@ -1182,10 +1182,7 @@
                         $('#region').html(res.region);
                     }
                 });
-
             });
-
-
         });
     </script>
 

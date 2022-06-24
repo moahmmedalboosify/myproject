@@ -84,6 +84,7 @@ class clientLoginController extends Controller
             if(Auth::guard('client')->attempt(['email' => $request->email, 'password' => $request->password])){
                 return response()->json([
                     'state'=>200,
+                    'id'=>Auth::guard('client')->user()->id,
                 ]);
             }else{
                 return response()->json([
@@ -103,6 +104,8 @@ class clientLoginController extends Controller
     Public function logoutClient(Request $request){   
         Auth::guard('client')->logout();
         Session::flush();   
-        return redirect()->route('home');
+        return response()->json([
+            'state' =>200
+        ]);
     }
 }

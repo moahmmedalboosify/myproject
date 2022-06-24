@@ -124,7 +124,7 @@
     </script>
 
 
-     show_email_modal show_email_btn id
+  
  {{-- request evants  --}}
 
     <script>

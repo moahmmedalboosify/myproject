@@ -28,19 +28,7 @@ class office_accountSeeder extends Seeder
         $user->assignRole([$role->id]);
 
 
-        $user = office_account::create([
-            'name' => 'أحمد البركي',
-            'email' => 'ahmed@test',
-            'password' => Hash::make('123456'),
-           
-            'state_account' => 1,
-            'office_info_id'=> 1
-       ]);
-
-       $role = Role::create(['guard_name' => 'office', 'name' => 'مدخل بيانات']);
-       $permissions = Permission::where('guard_name','office')->pluck('id','id')->all();
-       $role->syncPermissions($permissions);
-       $user->assignRole([$role->id]);
+       
 
 
       

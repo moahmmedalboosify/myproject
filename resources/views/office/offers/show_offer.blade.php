@@ -1,7 +1,11 @@
 @extends('layouts.master')
 
 @section('css')
+<link rel="stylesheet"
+href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
+<!-- Map APi css !-->
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
 <link href="{{URL::asset('officepanal/assets/plugins/multislider/multislider.css')}}" rel="stylesheet">
 <link href="{{URL::asset('officepanal/assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet">
 
@@ -21,6 +25,20 @@
 
     <!-- style css !-->
     <link rel="stylesheet" href="{{ URL::asset('officepanal/assets/css-rtl/substyle.css') }}">
+
+    <style>
+
+        #map_show{
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+        }
+        
+    </style>
 @endsection
 @section('title')
     عرض عقار
@@ -104,7 +122,12 @@
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 
+<!--  Map APi css !-->
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
 <script src="{{URL::asset('officepanal/assets/plugins/multislider/multislider.js')}}"></script>
 <script src="{{URL::asset('officepanal/assets/js/carousel.js')}}"></script>
 
@@ -165,6 +188,8 @@
                 } 
 
 
+                console.log(data) ;
+
                 var url = '{{ route('office.edit_client_ajax.offer') }}';
                 $.ajax({
                     type: "POST",
@@ -173,8 +198,6 @@
                     success: function(res) {
                         if(res.state == 400){
                                 console.log(res.message) ;
-
-                        
                         }else{
 
                             fetch_data_client_info();
@@ -465,9 +488,9 @@
                 
                 success: function(res) {
                     $('#edit_details_offer_model').modal('hide');
-                   
-                     clearAllinput() ;
-                    fetch_data_details_offer();
+                    clearAllinput() ;
+                    location.reload();
+                    // fetch_data_details_offer();
                 }
             });
     
@@ -609,7 +632,7 @@
         $(document).on('click', '.close_image_modal', function(e) {
 
             e.preventDefault();
-            $('#image_add_src').attr("src",'');
+            // $('#image_add_src').attr("src",'');
             $('#show_image_modal').modal('hide');
 
 
@@ -638,7 +661,7 @@
                     if(res.state == 400){
                             console.log(res.message) ;
                     }else{
-                        fetch_data_image_offer(offer_id) ;
+                       location.reload();
                         $('#show_image_modal').modal('hide');
 
                     }
@@ -669,48 +692,133 @@
 </script>
 
 
+  <!-- Modal  address info    -->
 
 <script>
+
+        $('#city_edit').on('change', function(e) {
+
+                var id_city = $(this).children("option:selected").val();
+
+                e.preventDefault();
+
+                var url = '{{ route('office.step_four_city.offer') }}';
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: {
+                        'id_city': id_city
+                    },
+                    success: function(res) {
+                    console.log(res.region)
+                        $('#region_edit').html(res.region);
+                    }
+                });
+
+        });
+
+
+        $(document).on('click', '.close_edit_address', function(e) {
+                $('#edit_address_offer_model').modal('hide');     
+        });
+
+        $(document).on('click', '#edit_address_offer_btn', function(e) {
+
+                e.preventDefault();
+
+                console.log();
+                $('#point_edit').val( $('#edit_address_offer_btn').data('point') );
+
+                $('#edit_address_offer_model').modal('show');
+
+
+        }); 
+
+
+        $(document).on('click', '.edit_address_offer_save', function(e) {
+
+            e.preventDefault();
+
+
+             $('.edit_client_save').text('...تحديث');
+
+       
+         
+            data = {
+           
+                'id' : $( "#edit_address_offer_btn" ).data('id_offer'),
+                'model_id' : $( "#edit_address_offer_btn" ).data('id'),
+                'model_name' : $( "#edit_address_offer_btn" ).data('model'),
+                'region_id' : $( "#region_edit option:selected" ).val(),
+                'point': $( "#point_edit" ).val()
+            } 
+
+            console.log(data)
+
+            var url = '{{ route('office.edit_address.offer') }}';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function(res) {
+                
+                    if(res.state == 200){
+                        location.reload()
+                    }else{
+                        Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'هناك حطأ ما !! حاول مرة أخرة.',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                    }
+                   
+                }
+            });
+
+            
+           
+
+        }); 
+
+
+</script>
+
+
+
+<script>
+
+
+ 
+
+    
+
     mapboxgl.accessToken =
         'pk.eyJ1IjoibW9oYW1tZWRhbGJvb3NpZnkiLCJhIjoiY2wzMHBpcmgyMXJyZDNibXA2aXM4cWN6MiJ9.zh5hoOMhrgtoAudRTSXAPg';
     const map = new mapboxgl.Map({
-        container: 'map', // container ID
+        container: 'map_show', // container ID
         style: 'mapbox://styles/mapbox/streets-v11', // style URL
-        center: [$('#address_offer_btn').data('lng'),$('#address_offer_btn').data('lat')], // starting position [lng, lat]
-        zoom: 9 // starting zoom
+        center: [$('#address_offer_btn').data('lng'), $('#address_offer_btn').data('lat')], // starting position [lng, lat]
+        zoom: 12 // starting zoom
     });
+
     // make new marker in static location 
     var marker = new mapboxgl.Marker({
             color: "red",
             draggable: true
-        }).setLngLat($('#address_offer_btn').data('lng'),$('#address_offer_btn').data('lat'))
+        }).setLngLat([$('#address_offer_btn').data('lng'), $('#address_offer_btn').data('lat')])
         .addTo(map);
 
-    // move marker to new location and save location in var
-    // map.on('click', function(e) {
-    //     var l = e.lngLat.wrap().lat;
-    //     var g = e.lngLat.wrap().lng;
-    //     $('#lat').val(l);
-    //     $('#lng').val(g);
-    //     marker.setLngLat([g, l]).addTo(map);
-    // });
-
- 
-    // $('#region').on('change', function(e) {
-    //     console.log( $('#region option:selected').text() );
-    //   $('.mapboxgl-ctrl-geocoder--input').val( $('#region option:selected').text() )
-    
-    // });
+  
 
 
-    // add search plugin
-    // map.addControl(
-    //     new MapboxGeocoder({
-    //         accessToken: mapboxgl.accessToken,
-    //         mapboxgl: mapboxgl,
-    //         marker: false
-    //     })
-    // );
+
+
+
+  
+
+   
 
 
     // add search plugin

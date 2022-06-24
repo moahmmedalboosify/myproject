@@ -1,5 +1,8 @@
 @extends('client.layout_client.main')
 
+@section('title')
+تواصل معنا
+@endsection
 @section('content')
   <main id="main">
 

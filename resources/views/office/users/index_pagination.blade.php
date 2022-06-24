@@ -41,10 +41,10 @@
                     </td>
 
                     <td>
-                      @can('تعديل مستخدم')
+                      {{-- @can('تعديل مستخدم') --}}
                             <button id="edit_user_btn"  value="{{$user->id}}" class="btn btn-sm btn-info"
                                 title="تعديل"><i class="las la-pen"></i></button>
-                       @endcan
+                       {{-- @endcan --}}
 
                        @can('حذف مستخدم')
                         <button   id="delete_user_btn"  value="{{$user->id}}" class="btn btn-sm btn-danger" title="حذف"><i

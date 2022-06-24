@@ -21,7 +21,7 @@
 <title> @yield("title") </title>
 
 
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <!-- Favicon -->
 
 <link rel="icon" href="{{URL::asset('officepanal/assets/img/brand/favicon.png')}}" type="image/x-icon"/>
@@ -40,3 +40,5 @@
 <link href="{{URL::asset('officepanal/assets/css-rtl/style-dark.css')}}" rel="stylesheet">
 <!---Skinmodes css-->
 <link href="{{URL::asset('officepanal/assets/css-rtl/skin-modes.css')}}" rel="stylesheet">
+
+

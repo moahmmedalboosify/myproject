@@ -64,6 +64,7 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
     Route::get('/delete/offer/{id}', 'indexController@delete_offer_ajax')->name('office.delete_offer_ajax.offer');
     Route::get('/solid/offer/{id}', 'indexController@solid_offer_ajax')->name('office.solid_offer_ajax.offer');
 
+    Route::post('/edit/address', 'indexController@edit_address_offer')->name('office.edit_address.offer');
 
 
 
@@ -80,7 +81,15 @@ Route::group(['prefix' => 'office', 'namespace' => 'Office', 'Middleware' => 'Au
       Route::get('/show/email/{id}', 'privateRequestController@show_email')->name('office.show_email.requests');
       Route::get('/delete/email/{id}', 'privateRequestController@delete_email')->name('office.delete_email.requests');
      
+
+      Route::get('/show/request/preview', 'previewController@index')->name('office.show.requests.preview');
+      Route::get('/send/email/preview', 'previewController@chang_state_request')->name('office.chang_state_request.preview');
+      Route::get('/delete/request/preview/{id}', 'previewController@delete_request')->name('office.delete_preview.requests');
+
     });
+
+
+  
 
 
 
@@ -141,6 +150,8 @@ Route::get('/client/ajax', 'office\offers\indexController@view_offer_client_info
 Route::get('/refresh/images', 'office\offers\indexController@refresh_offer_images_ajax')->name('office.refresh_offer_images_ajax.offer');
 
 Route::get('/fetch/private', 'office\requests\privateRequestController@fetch_private_request_ajax')->name('office.fetch_private_request_ajax.offer');
+
+Route::get('/fetch/preview', 'office\requests\previewController@index')->name('office.fetch_preview_request_ajax.offer');
 
 Route::get('/offer/details', 'office\offers\indexController@view_offer_offer_details_ajax')->name('office.view_offer_offer_details_ajax.offer');
 

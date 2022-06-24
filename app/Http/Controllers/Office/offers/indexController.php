@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Office\offers;
 
+use Carbon\Carbon;
 use App\Model\city;
 use App\Model\images;
 use App\Model\commercial;
@@ -13,8 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Monolog\Handler\NewRelicHandler;
+use Illuminate\Support\Facades\Validator;
 
 class indexController extends Controller
 {
@@ -99,7 +100,10 @@ class indexController extends Controller
        
             $city =city::select('name')->find($data->regions->city_id);
 
-            return view('office.offers.show_offer', compact('data','modal_name','sub_model','city','images'));
+
+           // dd($sub_model) ;
+            
+           return view('office.offers.show_offer', compact('data','modal_name','sub_model','city','images'));
     
         }  
         
@@ -397,7 +401,60 @@ class indexController extends Controller
             return view('office.offers.fetch_ajax.details_offer', compact('data','sub_model')) ->render();
         }
     }
-  
+
+
+
+     public function edit_address_offer(Request $request){
+
+        if($request->ajax()){
+            $id_offer = $request->id ;
+          
+
+            $model = App::make('\\App\\Model\\'.$request->model_name);
+            $offer =$model::find($request->model_id);
+
+           
+
+            $data =$request->all() ;
+          
+            unset($data['model_name'] );
+            unset($data['model_id'] );
+           
+
+
+            foreach ($data as $key => $row){
+               if(is_null($row)){
+                unset($data[$key]);
+               }else{
+                if($key =='region_id'){
+                    $get_offer_info =offer_info::find($id_offer);
+                    $get_offer_info->region_id = $data[$key] ;
+                    $get_offer_info->save();
+                }else{
+                    $offer->$key = $data[$key] ;
+                }
+               
+               }
+            }
+
+            $offer->save();
+            if($offer){
+                return response()->json([
+                    'state' => 200 ,
+                 
+                ]);
+            }else{
+                return response()->json([
+                    'state' => 404 ,
+                
+                ]);
+            }
+            
+
+         
+        }
+
+     }
 
 
 

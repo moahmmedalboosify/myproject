@@ -13,11 +13,18 @@ use Illuminate\Support\Facades\Mail;
 class privateRequestController extends Controller
 {
     public function index(){
+        
         $client_phone =0;
+        
         $data =private_request::where('office_info_id',Auth::guard('office')->user()->office_info_id)->orderBy('id', 'DESC')->paginate(5);
+     
         foreach($data as $row){
-            $client_phone = client::find($row->client_id) ;
+         
+             $row['phone'] =client::select('phone','email','name')->find($row->client_id)->toArray() ;
+            
         }
+   
+        
 
         return view('office.requests.private_request', compact('data','client_phone'));  
     }

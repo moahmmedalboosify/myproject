@@ -9,7 +9,10 @@
 </head>
 
 <body id='body' dir="RTL">
-    @include('client.layout_client.header')
+    
+    <div id="header_refresh">
+        @include('client.layout_client.header')
+    </div>   
 
     @yield('content')
 
@@ -31,7 +34,7 @@
                     <div class="modal-body">				
                         <div class="form-group text-right">
                             <label><strong>  البريد الإلكتروني : </strong></label>
-                            <input type="email" id="email" class="form-control" required="required">
+                            <input type="email" id="email_login" class="form-control" required="required">
                             <span id="email_error" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -40,7 +43,7 @@
                                 
                             </div>
                             
-                            <input type="password" id="password" class="form-control" required="required" min="3" max="15">
+                            <input type="password" id="password_login" class="form-control" required="required" min="3" max="15">
                             <span id="password_error" class="text-danger"></span>
 
                         </div>
@@ -96,8 +99,10 @@
                         </div>
 
                     </div>
-                    <div dir="ltr" class=" modal-footer justify-content-between">
-                        <input type="submit" id="new_account_save" style="background-color:#2eca6a ;border-color: #2eca6a;" class="float-left btn btn-primary" value="إنشاء حساب">
+                    <div dir="ltr" class=" modal-footer">
+                        <input type="submit" id="close_new_account_save" style="background-color:#708f7c;border-color: #708f7c;" class=" btn btn-primary" value=" رجوع">
+                        <input type="submit" id="new_account_save" style="background-color:#2eca6a ;border-color: #2eca6a;" class=" btn btn-primary" value="إنشاء حساب">
+                   
                     </div>
                 </form>  
             </div>
@@ -106,7 +111,15 @@
   
 
    
-
+    {{-- <a href="">
+        <div class="property-price d-flex justify-content-center foo">
+           <div class="card-header-c d-flex">
+             <div class="card-box-ico">
+              <strong> <h3>  طلب معاينة</h3> </strong>
+             </div>
+           </div>
+        </div>
+       </a> --}}
 </body>
 
 </html>

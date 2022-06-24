@@ -42,10 +42,10 @@
         <div class="card">
             <div class="card-header pb-0">
                 <div class="col-sm-4 col-md-5">
-                    {{-- @can('اضافة مستخدم') --}}
+                    @can('إضافة مستخدم')
                         <button id="add_user_btn" class="btn btn-success btn-md col-sm-2 col-md-4 mg-t-10 mg-b-10"
-                            id="add_role_btn">إضافة</button>
-                    {{-- @endcan --}}
+                            id="add_role_btn">إضافة مستخدم</button>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">

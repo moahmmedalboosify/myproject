@@ -33,4 +33,16 @@ class offer_info extends Model
     {
         return $this->belongsTo(office_info::class,'office_info_id','id');
     }
+
+    public function preview_request_offer()
+    {
+        return $this->hasMany(preview_request::class,'offer_info_id');
+    }
+
+
+
+
+ 
+
+   
 }

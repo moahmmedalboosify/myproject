@@ -32,31 +32,10 @@
             <div class="price-box d-flex">
               <span class="price-a">{{$row['state']}} | $  {{number_format( $offer_details[$row->id]['price'] )}}</span>
             </div>
-            <a href="property-single.html" class="link-a">إضغط هنا لتفاصيل العقار
+     
+            <a href="{{route('client.view_offer_single',['id'=>$row['id']])}}" class="link-a">إضغط هنا لتفاصيل العقار
               <span class="bi bi-chevron-right"></span>
             </a>
-          </div>
-          <div class="card-footer-a">
-            <ul class="card-info d-flex justify-content-around">
-              <li>
-                <h4 class="card-info-title">Area</h4>
-                <span>340m
-                  <sup>2</sup>
-                </span>
-              </li>
-              <li>
-                <h4 class="card-info-title">Beds</h4>
-                <span>2</span>
-              </li>
-              <li>
-                <h4 class="card-info-title">Baths</h4>
-                <span>4</span>
-              </li>
-              <li>
-                <h4 class="card-info-title">Garages</h4>
-                <span>1</span>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

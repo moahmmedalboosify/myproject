@@ -3,6 +3,7 @@
 <!-- Back-to-top -->
 <a href="#top" id="back-to-top"><i class="las la-angle-double-up"></i></a>
 <!-- JQuery min js -->
+<script src="{{URL::asset('js/search_offer.js')}}"></script>
 <script src="{{URL::asset('officepanal/assets/plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap Bundle js -->
 <script src="{{URL::asset('officepanal/assets/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
